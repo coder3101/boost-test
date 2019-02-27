@@ -15,6 +15,7 @@
  */
 
 #include <benchmark.hpp>
+#include <blas_matrix.hpp>
 #include <chrono>
 #include <thread>
 void some_func(void) {
@@ -23,7 +24,22 @@ void some_func(void) {
 
 int main() {
   using boost::test::benchmark;
-  benchmark::run("Foo", some_func).print_beautifully();
+  using mat = boost::test::blas_matrix<int>;
+  mat a = {{1, 5, 6, 8}, 
+               {7, 8, 6, 9}, 
+               {8, 3, 4, 5}, 
+               {9, 9, 5, 2}};
+
+  mat b = {{1, 5, 6, 8}, 
+               {7, 8, 6, 9}, 
+               {8, 3, 4, 5}, 
+               {9, 9, 5, 2}};
+  
+  mat c = a + b - b;
+  mat d = a - b + b * c;
+  // std::cout<<5 + 5 << "\n";
+  c.view();
+  d.view();
 
   return 0;
 }
