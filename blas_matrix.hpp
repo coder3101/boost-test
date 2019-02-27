@@ -102,6 +102,100 @@ class blas_matrix final : public expression<blas_matrix<dtype>> {
     }
   }
 
+  template <typename E>
+  blas_matrix &operator+=(expression<E> const &expr) {
+    if (this->dimen != expr.get_dimension()) {
+      throw std::logic_error(
+          std::string("+= operator not permitted. Dimensions are ") +
+          this->dimen.to_string() + std::string(" and ") +
+          expr.get_dimension().to_string());
+    }
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++)
+        matrix[a][b] += expr.get(a, b);
+    }
+    return *this;
+  }
+
+  template <typename E>
+  blas_matrix &operator-=(expression<E> const &expr) {
+    if (this->dimen != expr.get_dimension()) {
+      throw std::logic_error(
+          std::string("-= operator not permitted. Dimensions are ") +
+          this->dimen.to_string() + std::string(" and ") +
+          expr.get_dimension().to_string());
+    }
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++)
+        matrix[a][b] -= expr.get(a, b);
+    }
+    return *this;
+  }
+
+  template <typename E>
+  blas_matrix &operator*=(expression<E> const &expr) {
+    if (this->dimen != expr.get_dimension()) {
+      throw std::logic_error(
+          std::string("*= operator not permitted. Dimensions are ") +
+          this->dimen.to_string() + std::string(" and ") +
+          expr.get_dimension().to_string());
+    }
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++)
+        matrix[a][b] *= expr.get(a, b);
+    }
+    return *this;
+  }
+
+  template <typename E>
+  blas_matrix &operator/=(expression<E> const &expr) {
+    if (this->dimen != expr.get_dimension()) {
+      throw std::logic_error(
+          std::string("/= operator not permitted. Dimensions are ") +
+          this->dimen.to_string() + std::string(" and ") +
+          expr.get_dimension().to_string());
+    }
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++)
+        matrix[a][b] /= expr.get(a, b);
+    }
+    return *this;
+  }
+
+  template <typename E>
+  bool operator==(expression<E> const &expr) {
+    if (this->dimen != expr.get_dimension()) {
+      throw std::logic_error(
+          std::string("== operator not permitted. Dimensions are ") +
+          this->dimen.to_string() + std::string(" and ") +
+          expr.get_dimension().to_string());
+    }
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++)
+        if (matrix[a][b] != expr.get(a, b)) return false;
+    }
+    return true;
+  }
+
+  template <typename T>
+  void scalar_add(T t) {
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++) matrix[a][b] += t;
+    }
+  }
+  template <typename T>
+  void scalar_sub(int t) {
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++) matrix[a][b] -= t;
+    }
+  }
+  template <typename T>
+  void scalar_mul(T t) {
+    for (size_t a = 0; a < dimen.row_dimen; a++) {
+      for (size_t b = 0; b < dimen.col_dimen; b++) matrix[a][b] *= t;
+    }
+  }
+
   void view() {
     int printedX = 0;
     int printedY = 0;
@@ -129,7 +223,7 @@ class add_expr : public expression<add_expr<E1, E2>> {
 
  public:
   add_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()){
+    if (u.get_dimension() != v.get_dimension()) {
       throw std::logic_error(
           std::string("Cannot perform binary operation addition ") +
           std::string("matrices with different dimensions. Dimensions are ") +
@@ -149,7 +243,7 @@ class sub_expr : public expression<sub_expr<E1, E2>> {
 
  public:
   sub_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()){
+    if (u.get_dimension() != v.get_dimension()) {
       throw std::logic_error(
           std::string("Cannot perform binary operation subtraction ") +
           std::string("matrices with different dimensions. Dimensions are ") +
@@ -169,9 +263,10 @@ class mul_expr : public expression<mul_expr<E1, E2>> {
 
  public:
   mul_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()){
+    if (u.get_dimension() != v.get_dimension()) {
       throw std::logic_error(
-          std::string("Cannot perform binary operation element wise multiplication ") +
+          std::string("Cannot perform binary operation element wise "
+                      "multiplication ") +
           std::string("matrices with different dimensions. Dimensions are ") +
           u.get_dimension().to_string() + std::string(" and ") +
           v.get_dimension().to_string());
@@ -189,9 +284,10 @@ class div_expr : public expression<div_expr<E1, E2>> {
 
  public:
   div_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()){
+    if (u.get_dimension() != v.get_dimension()) {
       throw std::logic_error(
-          std::string("Cannot perform binary operation element wise division ") +
+          std::string(
+              "Cannot perform binary operation element wise division ") +
           std::string("matrices with different dimensions. Dimensions are ") +
           u.get_dimension().to_string() + std::string(" and ") +
           v.get_dimension().to_string());
@@ -200,6 +296,37 @@ class div_expr : public expression<div_expr<E1, E2>> {
 
   auto get(size_t i, size_t j) const { return _u.get(i, j) / _v.get(i, j); };
   auto get_dimension() const { return _u.get_dimension(); }
+};
+
+template <typename E1, typename E2>
+class dot_expr : public expression<dot_expr<E1, E2>> {
+  E1 const &_u;
+  E2 const &_v;
+
+ public:
+  dot_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
+    if (u.get_dimension().col_dimen != v.get_dimension().row_dimen) {
+      throw std::logic_error(
+          std::string("Cannot perform binary operation dot product ") +
+          std::string("matrices with different dimensions. Dimensions are ") +
+          u.get_dimension().to_string() + std::string(" and ") +
+          v.get_dimension().to_string());
+    }
+  }
+
+  auto get(size_t i, size_t j) const {
+    decltype(_u.get(0, 0)) ans = decltype(_u.get(0, 0))();
+    for (int t = 0; t < _u.get_dimension().col_dimen; t++) {
+      ans += _u.get(i, t) * _v.get(t, j);
+    }
+    return ans;
+  };
+  auto get_dimension() const {
+    dimension res;
+    res.row_dimen = _u.get_dimension().row_dimen;
+    res.col_dimen = _v.get_dimension().col_dimen;
+    return res;
+  }
 };
 
 // Overloads
@@ -218,6 +345,11 @@ mul_expr<E1, E2> operator*(E1 const &u, E2 const &v) {
 template <typename E1, typename E2>
 mul_expr<E1, E2> operator/(E1 const &u, E2 const &v) {
   return mul_expr<E1, E2>(u, v);
+}
+// | is a dot/matrix multiplication operator.
+template <typename E1, typename E2>
+dot_expr<E1, E2> operator|(E1 const &u, E2 const &v) {
+  return dot_expr<E1, E2>(u, v);
 }
 
 }  // namespace boost::test
