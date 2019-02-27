@@ -4,6 +4,14 @@ This repository contains the test code for uBLAS Linear Algebra Proposal of **Go
 
 
 
+#### Beware other my friends (Students)
+
+> *Do not try to copy this code to apply into `boost.uBLAS` this summer 2019 at Google Summer of Code. All the code in this repository is already submitted by me. You can just take an idea from this repository*
+
+> **Please Google MOSS(Measure Of Software Similarity), before blindly copying this code. ** 
+
+
+
 The code contains following things :
 
 - Generic Matrix Class(es)
@@ -40,6 +48,34 @@ The code contains following things :
 
 
 
+## Slight Introduction to `blas_matrix`
+
+This Matrix does lazy evaluation all the times and only evaluates itself when the `expression` is converted to `blas_matrix` type. 
+
+Say,
+
+```cpp
+using mat = boost::test::blas_matrix<int>;
+
+mat a = {{1,2,3},
+         {1,2,3},
+         {1,2,3}};
+mat b = {{1,1,1},
+         {2,2,2},
+         {3,3,3}};
+
+mat c = a + b;
+//Quickly Evalutes and stores to c
+
+auto c = a + b;
+// c is not a matrix, It is just a node in AST that represents this computation.
+
+mat d{c};
+// c is now evaluated and result goes to d.
+```
+
+Nothing more...
+
 ## Builds
 
 I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main`
@@ -54,7 +90,7 @@ I used CMake as the Build-tool-generator. Main's artifact could be found at `./b
 
 # My Projects
 
-I have an OpenSource Library named `testcaser` (still in beta) that contains more than 10,000 lines of code please check it at https://github.com/coder3101/testcaser .  You can also check other projects.
+I have an Open-Source Library named `testcaser` (still in beta) that contains more than 10,000 lines of code please check it at https://github.com/coder3101/testcaser .  You can also check other projects.
 
 ---
 
