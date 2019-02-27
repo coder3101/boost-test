@@ -16,30 +16,90 @@
 
 #include <benchmark.hpp>
 #include <blas_matrix.hpp>
+#include <cassert>
 #include <chrono>
-#include <thread>
-void some_func(void) {
-  std::this_thread::sleep_for(std::chrono::microseconds(1500000));
-}
+#include <normal_matrix.hpp>
 
+auto get_iMatrix = [](size_t row, size_t col, int v) -> boost::test::iMatrix {
+  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
+  for (int t = 0; t < row; t++)
+    for (int j = 0; j < col; j++) data[t][j] = v;
+  return boost::test::iMatrix(data);
+};
+
+auto get_NormalMatrix = [](size_t row, size_t col,
+                           int v) -> boost::test::Matrix<int> {
+  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
+  for (int t = 0; t < row; t++)
+    for (int j = 0; j < col; j++) data[t][j] = v;
+  return boost::test::Matrix<int>(data);
+};
+
+auto compute_sum = [](auto &target, auto &scope) {
+  target =
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope + scope;
+};
+
+auto answer = [](auto target) {
+  size_t row = target.get_dimension().row_dimen;
+  size_t col = target.get_dimension().col_dimen;
+  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
+  for (int t = 0; t < row; t++)
+    for (int j = 0; j < col; j++) data[t][j] = 192;
+  return boost::test::iMatrix(data);
+};
+
+auto answer2 = [](auto target) {
+  size_t row = target.get_row();
+  size_t col = target.get_col();
+  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
+  for (int t = 0; t < row; t++)
+    for (int j = 0; j < col; j++) data[t][j] = 192;
+  return boost::test::Matrix<int>(data);
+};
 int main() {
   using boost::test::benchmark;
-  using mat = boost::test::blas_matrix<int>;
-  mat a = {{1, 5, 6, 8}, 
-               {7, 8, 6, 9}, 
-               {8, 3, 4, 5}, 
-               {9, 9, 5, 2}};
+  using boost::test::iMatrix;
+  using Matrix = boost::test::Matrix<int>;
+  // Create the matrices a and b filled with 1 and 0
+  iMatrix a = get_iMatrix(1000, 1000, 0);
+  iMatrix b = get_iMatrix(1000, 1000, 1);
 
-  mat b = {{1, 5, 6, 8}, 
-               {7, 8, 6, 9}, 
-               {8, 3, 4, 5}, 
-               {9, 9, 5, 2}};
-  
-  mat c = a + b - b;
-  mat d = a - b + b * c;
-  // std::cout<<5 + 5 << "\n";
-  c.view();
-  d.view();
+  Matrix a2 = get_NormalMatrix(1000, 1000, 0);
+  Matrix b2 = get_NormalMatrix(1000, 1000, 1);
 
+  // Run a benchmark with 192 length chained addition.
+  benchmark::run("Execution with Expression template",
+                 [&]() { compute_sum(a, b); })
+      .print_beautifully();
+  benchmark::run("Execution without Expression template",
+                 [&]() { compute_sum(a2, b2); })
+      .print_beautifully();
+
+  assert(a2 == answer2(a2));
+  assert(a == answer(a));
+
+  // call .view() to see the contents of the matrix on stdout
   return 0;
 }

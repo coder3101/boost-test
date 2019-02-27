@@ -22,7 +22,7 @@
 #include <iostream>
 
 #ifndef BEAUTIFICATION_FACTOR
-#define BEAUTIFICATION_FACTOR (50)
+#define BEAUTIFICATION_FACTOR (80)
 #endif
 
 namespace boost::test {

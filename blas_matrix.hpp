@@ -17,6 +17,7 @@
 #ifndef BLAS_MATRIX_HPP
 #define BLAS_MATRIX_HPP
 
+#include <complex>
 #include <initializer_list>
 #include <iostream>
 #include <stdexcept>
@@ -82,6 +83,19 @@ class blas_matrix final : public expression<blas_matrix<dtype>> {
     size_t cxc = ff.size();
     for (auto e : elem) {
       if (e.size() != ff.size())
+        std::logic_error(
+            "Cannot create a matrix out of the provided initializer_list");
+    }
+    for (auto e : elem) matrix.push_back(e);
+    dimen.col_dimen = cxc;
+    dimen.row_dimen = rxc;
+  }
+  // cppcheck-suppress noExplicitConstructor
+  blas_matrix(std::vector<std::vector<dtype>> elem) {
+    auto cxc = elem[0].size();
+    auto rxc = elem.size();
+    for (auto e : elem) {
+      if (e.size() != cxc)
         std::logic_error(
             "Cannot create a matrix out of the provided initializer_list");
     }
@@ -351,6 +365,16 @@ template <typename E1, typename E2>
 dot_expr<E1, E2> operator|(E1 const &u, E2 const &v) {
   return dot_expr<E1, E2>(u, v);
 }
+
+// Some Outer Helper Functions
+
+typedef blas_matrix<int> iMatrix;
+typedef blas_matrix<long long> lMatrix;
+typedef blas_matrix<float> fMatrix;
+typedef blas_matrix<double> dMatrix;
+typedef blas_matrix<std::complex<float>> cfMatrix;
+typedef blas_matrix<std::complex<double>> cdMatrix;
+typedef blas_matrix<std::complex<long long>> clMatrix;
 
 }  // namespace boost::test
 #endif
