@@ -5,18 +5,21 @@
  * \section intro_sec Introduction
  *
  * Lazy Matrix is a Single header only Matrix Library for basic operations it
- * implements the expression template style to lazy-ly evaluate when it is required.
- * This Project was the part of boost.uBLAS Competancy Test in Google Summer of Codes 2019
- * However you are free to use this any ways you want.
+ * implements the expression template style to lazy-ly evaluate when it is
+ * required. This Project was the part of boost.uBLAS Competancy Test in Google
+ * Summer of Codes 2019 However you are free to use this any ways you want.
  *
  * \section install_sec Documentation
  *
- * Head over to this `URL` for the complete documentation of `lazy_matrix.hpp`
- * 
- * You can also read Sample Examples at `url`
- * 
+ * Head over to this <a
+ * href="https://coder3101.github.io/gsoc19-boost-test/html/classboost_1_1test_1_1lazy__matrix.html"><b>URL</b></a>
+ * for the complete documentation of `lazy_matrix.hpp`
+ *
+ * You can also read Sample Examples at <a
+ * href="https://github.com/coder3101/gsoc19-boost-test>this url</a>"
+ *
  * \section license License
- * 
+ *
  * Copyright 2019 Ashar <ashar786khan@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +33,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  */
 
 #ifndef LAZY_MATRIX_HPP
@@ -809,9 +812,9 @@ template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
                                          v.get_dimension().col_dimen);
   for (size_t i = 0; i < u.get_dimension().row_dimen; i++) {
     for (size_t j = 0; j < v.get_dimension().col_dimen; j++) {
-      ans.get(i,j) = 0;
+      ans.get(i, j) = 0;
       for (size_t k = 0; k < v.get_dimension().row_dimen; k++)
-        ans.get(i,j) += u.get(i, k) * v.get(k, j);
+        ans.get(i, j) += u.get(i, k) * v.get(k, j);
     }
   }
   return ans;
