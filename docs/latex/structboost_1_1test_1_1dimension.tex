@@ -1,0 +1,146 @@
+\hypertarget{structboost_1_1test_1_1dimension}{}\section{boost\+::test\+::dimension Struct Reference}
+\label{structboost_1_1test_1_1dimension}\index{boost::test::dimension@{boost::test::dimension}}
+
+
+This Structure holds the dimension of the Matrix. It overloads the basic operators.  
+
+
+
+
+{\ttfamily \#include $<$lazy\+\_\+matrix.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structboost_1_1test_1_1dimension_a994469ba24de50ea73d852cc92b80bd4}{dimension}} ()=default
+\begin{DoxyCompactList}\small\item\em Construct a new dimension object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structboost_1_1test_1_1dimension_a550aa7f36f42fb470ccffd6c8c11dabb}{dimension}} (size\+\_\+t r, size\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Construct a new dimension object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{structboost_1_1test_1_1dimension_ad780c612257d89320f485ee3708620cc}{operator==}} (\mbox{\hyperlink{structboost_1_1test_1_1dimension}{dimension}} const \&b)
+\begin{DoxyCompactList}\small\item\em Overload for the comparting of the two dimension object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{structboost_1_1test_1_1dimension_ac1ffbf35ade4a10609b393c62dd5a8c2}{operator!=}} (\mbox{\hyperlink{structboost_1_1test_1_1dimension}{dimension}} const \&b)
+\begin{DoxyCompactList}\small\item\em Overload for the comparaing of two dimension object. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{structboost_1_1test_1_1dimension_a0ab6b006f11c653d8a4221a1523714a6}{to\+\_\+string}} () const
+\begin{DoxyCompactList}\small\item\em Converts a dimension into a human readable string format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{structboost_1_1test_1_1dimension_acd374bb986e34a3f0333b5a26770de0f}{row\+\_\+dimen}} = 0
+\begin{DoxyCompactList}\small\item\em the number of rows in the matrix \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{structboost_1_1test_1_1dimension_aec2eb72845bed9b2997eda3985305edf}{col\+\_\+dimen}} = 0
+\begin{DoxyCompactList}\small\item\em the number of columns in the matrix \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This Structure holds the dimension of the Matrix. It overloads the basic operators. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_a994469ba24de50ea73d852cc92b80bd4}\label{structboost_1_1test_1_1dimension_a994469ba24de50ea73d852cc92b80bd4}} 
+\index{boost::test::dimension@{boost::test::dimension}!dimension@{dimension}}
+\index{dimension@{dimension}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{dimension()}{dimension()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily boost\+::test\+::dimension\+::dimension (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+Construct a new dimension object. 
+
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_a550aa7f36f42fb470ccffd6c8c11dabb}\label{structboost_1_1test_1_1dimension_a550aa7f36f42fb470ccffd6c8c11dabb}} 
+\index{boost::test::dimension@{boost::test::dimension}!dimension@{dimension}}
+\index{dimension@{dimension}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{dimension()}{dimension()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily boost\+::test\+::dimension\+::dimension (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{r,  }\item[{size\+\_\+t}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new dimension object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & The row of the matrix \\
+\hline
+{\em c} & The column of the matrix \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_ac1ffbf35ade4a10609b393c62dd5a8c2}\label{structboost_1_1test_1_1dimension_ac1ffbf35ade4a10609b393c62dd5a8c2}} 
+\index{boost::test::dimension@{boost::test::dimension}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily auto boost\+::test\+::dimension\+::operator!= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structboost_1_1test_1_1dimension}{dimension}} const \&}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Overload for the comparaing of two dimension object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & the rhs argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool returns true if lhs is not equal to rhs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_ad780c612257d89320f485ee3708620cc}\label{structboost_1_1test_1_1dimension_ad780c612257d89320f485ee3708620cc}} 
+\index{boost::test::dimension@{boost::test::dimension}!operator==@{operator==}}
+\index{operator==@{operator==}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily auto boost\+::test\+::dimension\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structboost_1_1test_1_1dimension}{dimension}} const \&}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Overload for the comparting of the two dimension object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & the rhs aragument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool returns true if lhs is equal to rhs 
+\end{DoxyReturn}
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_a0ab6b006f11c653d8a4221a1523714a6}\label{structboost_1_1test_1_1dimension_a0ab6b006f11c653d8a4221a1523714a6}} 
+\index{boost::test::dimension@{boost::test::dimension}!to\_string@{to\_string}}
+\index{to\_string@{to\_string}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{to\_string()}{to\_string()}}
+{\footnotesize\ttfamily std\+::string boost\+::test\+::dimension\+::to\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Converts a dimension into a human readable string format. 
+
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_aec2eb72845bed9b2997eda3985305edf}\label{structboost_1_1test_1_1dimension_aec2eb72845bed9b2997eda3985305edf}} 
+\index{boost::test::dimension@{boost::test::dimension}!col\_dimen@{col\_dimen}}
+\index{col\_dimen@{col\_dimen}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{col\_dimen}{col\_dimen}}
+{\footnotesize\ttfamily size\+\_\+t boost\+::test\+::dimension\+::col\+\_\+dimen = 0}
+
+
+
+the number of columns in the matrix 
+
+\mbox{\Hypertarget{structboost_1_1test_1_1dimension_acd374bb986e34a3f0333b5a26770de0f}\label{structboost_1_1test_1_1dimension_acd374bb986e34a3f0333b5a26770de0f}} 
+\index{boost::test::dimension@{boost::test::dimension}!row\_dimen@{row\_dimen}}
+\index{row\_dimen@{row\_dimen}!boost::test::dimension@{boost::test::dimension}}
+\subsubsection{\texorpdfstring{row\_dimen}{row\_dimen}}
+{\footnotesize\ttfamily size\+\_\+t boost\+::test\+::dimension\+::row\+\_\+dimen = 0}
+
+
+
+the number of rows in the matrix 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+lazy\+\_\+matrix.\+hpp\end{DoxyCompactItemize}

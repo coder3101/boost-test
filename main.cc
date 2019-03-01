@@ -14,28 +14,30 @@
  * limitations under the License.
  */
 
-#include <benchmark.hpp>
-#include <blas_matrix.hpp>
 #include <cassert>
 #include <chrono>
-#include <normal_matrix.hpp>
+#include "benchmark.hpp"
+#include "lazy_matrix.hpp"
+#include "normal_matrix.hpp"
 
 auto get_iMatrix = [](size_t row, size_t col, int v) -> boost::test::iMatrix {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (int t = 0; t < row; t++)
-    for (int j = 0; j < col; j++) data[t][j] = v;
+  for (size_t t = 0; t < row; t++)
+    for (size_t j = 0; j < col; j++)
+      data[t][j] = v;
   return boost::test::iMatrix(data);
 };
 
-auto get_NormalMatrix = [](size_t row, size_t col,
-                           int v) -> boost::test::Matrix<int> {
+auto get_NormalMatrix =
+    [](size_t row, size_t col, int v) -> boost::test::Matrix<int> {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (int t = 0; t < row; t++)
-    for (int j = 0; j < col; j++) data[t][j] = v;
+  for (size_t t = 0; t < row; t++)
+    for (size_t j = 0; j < col; j++)
+      data[t][j] = v;
   return boost::test::Matrix<int>(data);
 };
 
-auto compute_sum = [](auto &target, auto &scope) {
+auto compute_sum = [](auto& target, auto& scope) {
   target =
       scope + scope + scope + scope + scope + scope + scope + scope + scope +
       scope + scope + scope + scope + scope + scope + scope + scope + scope +
@@ -65,8 +67,9 @@ auto answer = [](auto target) {
   size_t row = target.get_dimension().row_dimen;
   size_t col = target.get_dimension().col_dimen;
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (int t = 0; t < row; t++)
-    for (int j = 0; j < col; j++) data[t][j] = 192;
+  for (size_t t = 0; t < row; t++)
+    for (size_t j = 0; j < col; j++)
+      data[t][j] = 192;
   return boost::test::iMatrix(data);
 };
 
@@ -74,8 +77,9 @@ auto answer2 = [](auto target) {
   size_t row = target.get_row();
   size_t col = target.get_col();
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (int t = 0; t < row; t++)
-    for (int j = 0; j < col; j++) data[t][j] = 192;
+  for (size_t t = 0; t < row; t++)
+    for (size_t j = 0; j < col; j++)
+      data[t][j] = 192;
   return boost::test::Matrix<int>(data);
 };
 int main() {

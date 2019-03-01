@@ -31,22 +31,24 @@ struct benchmark_result {
   std::string label;
   benchmark_result() = delete;
   benchmark_result(long long e, std::string &lbl)
-      : execution_time(e), label(lbl){};
+      : execution_time(e), label(lbl) {}
 
   void print_beautifully() {
-    for (int t = 0; t < BEAUTIFICATION_FACTOR; t++) std::cout << "*";
+    for (int t = 0; t < BEAUTIFICATION_FACTOR; t++)
+      std::cout << "*";
 
     std::cout << "\n"
               << label << " executed for " << execution_time << " miliseconds ("
               << execution_time / 1000.0 << " s) \n";
 
-    for (int t = 0; t < BEAUTIFICATION_FACTOR; t++) std::cout << "*";
+    for (int t = 0; t < BEAUTIFICATION_FACTOR; t++)
+      std::cout << "*";
     std::cout << std::endl;
   }
 };
 
 struct benchmark {
-  static auto run(std::string label,std::function<void()> func) {
+  static auto run(std::string label, std::function<void()> func) {
     auto start = std::chrono::high_resolution_clock::now();
     func();
     auto stop = std::chrono::high_resolution_clock::now();
@@ -57,5 +59,5 @@ struct benchmark {
   }
 };
 
-}  // namespace boost::test
+} // namespace boost::test
 #endif
