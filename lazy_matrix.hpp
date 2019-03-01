@@ -16,7 +16,7 @@
  * for the complete documentation of `lazy_matrix.hpp`
  *
  * You can also read Sample Examples at <a
- * href="https://github.com/coder3101/gsoc19-boost-test>this url</a>"
+ * href="https://github.com/coder3101/gsoc19-boost-test">this url</a>
  *
  * \section license License
  *
