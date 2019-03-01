@@ -94,7 +94,7 @@ The Documentation was automatically generated using `doxygen` from the source co
 
 ## Builds
 
-I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main`
+I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . **The complete code has been formatted using `clang-format` using `LLVM` coding style.**
 
 
 
