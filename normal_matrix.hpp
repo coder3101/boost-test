@@ -17,15 +17,15 @@
 #ifndef NORMAL_MATRIX_HPP
 #define NORMAL_MATRIX_HPP
 
+#include "lazy_matrix.hpp"
 #include <iostream>
 #include <vector>
 
 namespace boost::test {
-template <class T>
-class Matrix {
+template <class T> class Matrix {
   int row, col;
 
- public:
+public:
   std::vector<std::vector<T>> matrix;
 
   explicit Matrix(int r, int c)
@@ -33,17 +33,19 @@ class Matrix {
   // cppcheck-suppress noExplicitConstructor
   Matrix(std::initializer_list<std::initializer_list<T>> elem) {
     row = elem.size();
-    col = *(elem.begin()).size();
-    for (auto e : elem) matrix.push_back(e);
+    col = elem.begin()->size();
+    for (auto e : elem)
+      matrix.push_back(e);
   }
   // cppcheck-suppress noExplicitConstructor
   Matrix(std::vector<std::vector<T>> elem) {
     row = elem.size();
     col = elem[0].size();
-    for (auto e : elem) matrix.push_back(e);
+    for (auto e : elem)
+      matrix.push_back(e);
   }
 
-  Matrix operator+(const Matrix& other) const {
+  Matrix operator+(const Matrix &other) const {
     Matrix res(row, col);
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
@@ -51,21 +53,21 @@ class Matrix {
     return res;
   }
 
-  Matrix operator-(const Matrix& other) const {
+  Matrix operator-(const Matrix &other) const {
     Matrix res(row, col);
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
         res.matrix[t][j] = matrix[t][j] - other.matrix[t][j];
     return res;
   }
-  Matrix operator*(const Matrix& other) const {
+  Matrix operator*(const Matrix &other) const {
     Matrix res(row, col);
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
         res.matrix[t][j] = matrix[t][j] * other.matrix[t][j];
     return res;
   }
-  Matrix operator/(const Matrix& other) const {
+  Matrix operator/(const Matrix &other) const {
     Matrix res(row, col);
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
@@ -73,16 +75,28 @@ class Matrix {
     return res;
   }
 
-  bool operator==(const Matrix& other) const {
+  bool operator==(const Matrix &other) const {
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
-        if (matrix[t][j] != other.matrix[t][j]) return false;
+        if (matrix[t][j] != other.matrix[t][j])
+          return false;
+    return true;
+  }
+
+  bool operator==(const boost::test::matrix_int &other) const {
+    for (int t = 0; t < row; t++)
+      for (int j = 0; j < col; j++)
+        if (matrix[t][j] != other.get(t, j))
+          return false;
     return true;
   }
 
   void view() const {
-    for (int t = 0; t < row; t++) {
-      for (int j = 0; j < col; j++) std::cout << matrix[t][j] << " ";
+    int rc = 10 > row ? row : 10;
+    int cc = 10 > col ? col : 10;
+    for (int t = 0; t < rc; t++) {
+      for (int j = 0; j < cc; j++)
+        std::cout << matrix[t][j] << " ";
       std::cout << "\n";
     }
   }
@@ -90,8 +104,20 @@ class Matrix {
   size_t get_row() const { return row; }
   size_t get_col() const { return col; }
 
-  // todo (More operations will go here)
+  static Matrix dot(Matrix const &a, Matrix const &b) {
+    if (a.get_col() != b.get_row())
+      throw std::runtime_error("Not defined dot product");
+    size_t k = a.get_col();
+    Matrix m(a.get_row(), b.get_col());
+    for (size_t i = 0; i < a.get_row(); i++)
+      for (size_t j = 0; j < b.get_col(); j++) {
+        m.matrix[i][j] = 0;
+        for (size_t p = 0; p < k; p++)
+          m.matrix[i][j] += a.matrix[i][p] * b.matrix[p][j];
+      }
+    return m;
+  }
 };
-}  // namespace boost::test
+} // namespace boost::test
 
 #endif

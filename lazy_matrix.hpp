@@ -46,30 +46,20 @@
 /**
  * @brief PRINT_ROW_LIMIT
  * This MACRO sets how much of row to print in the call to matrix.view()
- * Defaults to 30 Rows.
+ * Defaults to 10 Rows.
  */
 #ifndef PRINT_ROW_LIMIT
-#define PRINT_ROW_LIMIT (30)
+#define PRINT_ROW_LIMIT (10)
 #endif
 
 /**
  * @brief PRINT_COL_LIMIT
  * This MACRO sets how much of column to print in the call to matrix.view()
- * Defaults to 30 Columns
+ * Defaults to 10 Columns
  *
  */
 #ifndef PRINT_COL_LIMIT
-#define PRINT_COL_LIMIT (30)
-#endif
-
-/**
- * @brief LAZY_MULTIPLY
- * This Macro if defined true causes the dot product of two Matrices to be
- * lazy-ly evaluated. Default behaviour is to Eagerly Compute it.
- */
-
-#ifndef LAZY_MULTIPLY
-#define LAZY_MULTIPLY (false)
+#define PRINT_COL_LIMIT (10)
 #endif
 
 /**
@@ -207,7 +197,7 @@ public:
    * @param cc the columns in the matrix
    */
   lazy_matrix(size_t rc, size_t cc)
-      : dimension(rc, cc), matrix(rc, std::vector<dtype>(cc)) {}
+      : dimen(rc, cc), matrix(rc, std::vector<dtype>(cc)) {}
   /**
    * @brief Construct a new lazy matrix object from an initializer list.
    *
@@ -215,7 +205,7 @@ public:
    */
   // cppcheck-suppress noExplicitConstructor
   lazy_matrix(std::initializer_list<std::initializer_list<dtype>> elem)
-      : dimen(elem.size(), *(elem.begin()).size()) {
+      : dimen(elem.size(), elem.begin()->size()) {
     for (auto e : elem) {
       if (e.size() != dimen.col_dimen)
         std::logic_error(
@@ -808,7 +798,7 @@ div_expr<E1, E2> operator/(E1 const &u, E2 const &v) {
  * @return lazy_matrix the result matrix.
  */
 template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
-  if (u.get_dimention().col_dimen != v.get_dimension().row_dimen) {
+  if (u.get_dimension().col_dimen != v.get_dimension().row_dimen) {
     throw std::logic_error(
         std::string(
             "Dot product cannot be called on matrices with dimension ") +
@@ -819,9 +809,9 @@ template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
                                          v.get_dimension().col_dimen);
   for (size_t i = 0; i < u.get_dimension().row_dimen; i++) {
     for (size_t j = 0; j < v.get_dimension().col_dimen; j++) {
-      ans[i][j] = 0;
+      ans.get(i,j) = 0;
       for (size_t k = 0; k < v.get_dimension().row_dimen; k++)
-        ans[i][j] += u.get(i, k) + v.get(k, j);
+        ans.get(i,j) += u.get(i, k) * v.get(k, j);
     }
   }
   return ans;

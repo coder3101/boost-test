@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
-#include <cassert>
-#include <chrono>
 #include "benchmark.hpp"
 #include "lazy_matrix.hpp"
 #include "normal_matrix.hpp"
+#include <cassert>
+#include <chrono>
 
-auto get_iMatrix = [](size_t row, size_t col, int v) -> boost::test::iMatrix {
+/**
+ * @brief A Lambda that returns the lazy_matrix with [row,col] and filled with v
+ *
+ */
+auto get_lazy_matrix = [](size_t row, size_t col,
+                          int v) -> boost::test::matrix_int {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
   for (size_t t = 0; t < row; t++)
     for (size_t j = 0; j < col; j++)
       data[t][j] = v;
-  return boost::test::iMatrix(data);
+  return boost::test::matrix_int(data);
 };
 
-auto get_NormalMatrix =
-    [](size_t row, size_t col, int v) -> boost::test::Matrix<int> {
+/**
+ * @brief A Lambda that returns a normat matrix of dimension [row, col] filled
+ * with v
+ *
+ */
+auto get_normal_matrix = [](size_t row, size_t col,
+                            int v) -> boost::test::Matrix<int> {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
   for (size_t t = 0; t < row; t++)
     for (size_t j = 0; j < col; j++)
@@ -37,73 +47,67 @@ auto get_NormalMatrix =
   return boost::test::Matrix<int>(data);
 };
 
-auto compute_sum = [](auto& target, auto& scope) {
+/**
+ * @brief A Generic Lambda that is computes a very long operation in one chain.
+ *
+ */
+auto compute_something = [](auto &target, auto &scope) {
   target =
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
-      scope + scope + scope + scope + scope + scope + scope + scope + scope +
+      scope + scope * scope + scope / scope + scope + scope + scope + scope +
+      scope + scope + scope + scope / scope + scope + scope + scope + scope -
+      scope + scope + scope + scope / scope + scope + scope + scope + scope +
+      scope + scope + scope + scope / scope + scope + scope + scope + scope -
+      scope + scope + scope + scope / scope + scope + scope + scope + scope +
+      scope + scope + scope + scope / scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope +
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
+      scope + scope + scope + scope * scope + scope + scope + scope + scope -
       scope + scope + scope;
 };
 
-auto answer = [](auto target) {
-  size_t row = target.get_dimension().row_dimen;
-  size_t col = target.get_dimension().col_dimen;
-  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (size_t t = 0; t < row; t++)
-    for (size_t j = 0; j < col; j++)
-      data[t][j] = 192;
-  return boost::test::iMatrix(data);
-};
-
-auto answer2 = [](auto target) {
-  size_t row = target.get_row();
-  size_t col = target.get_col();
-  std::vector<std::vector<int>> data{row, std::vector<int>(col)};
-  for (size_t t = 0; t < row; t++)
-    for (size_t j = 0; j < col; j++)
-      data[t][j] = 192;
-  return boost::test::Matrix<int>(data);
-};
 int main() {
   using boost::test::benchmark;
-  using boost::test::iMatrix;
+  using boost::test::matrix_int;
   using Matrix = boost::test::Matrix<int>;
-  // Create the matrices a and b filled with 1 and 0
-  iMatrix a = get_iMatrix(1000, 1000, 0);
-  iMatrix b = get_iMatrix(1000, 1000, 1);
 
-  Matrix a2 = get_NormalMatrix(1000, 1000, 0);
-  Matrix b2 = get_NormalMatrix(1000, 1000, 1);
+  // Block 1
+  {
+    matrix_int a = get_lazy_matrix(1000, 1000, 0);
+    matrix_int b = get_lazy_matrix(1000, 1000, 10);
 
-  // Run a benchmark with 192 length chained addition.
-  benchmark::run("Execution with Expression template",
-                 [&]() { compute_sum(a, b); })
-      .print_beautifully();
-  benchmark::run("Execution without Expression template",
-                 [&]() { compute_sum(a2, b2); })
-      .print_beautifully();
+    Matrix a2 = get_normal_matrix(1000, 1000, 0);
+    Matrix b2 = get_normal_matrix(1000, 1000, 10);
 
-  assert(a2 == answer2(a2));
-  assert(a == answer(a));
+    auto result1 = benchmark::run("Execution with Expression template",
+                                  [&]() { compute_something(a, b); });
+    auto result2 = benchmark::run("Execution without Expression template",
+                                  [&]() { compute_something(a2, b2); });
+    result2.print_beautifully();
+    result1.print_beautifully();
+    assert(a2 == a);
+  }
+  // Block 2
+  {
+    matrix_int a = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    matrix_int b = {{7, 8, 9}, {4, 5, 6}, {1, 2, 3}};
+    Matrix a2 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    Matrix b2 = {{7, 8, 9}, {4, 5, 6}, {1, 2, 3}};
+    auto result = Matrix::dot(a2, b2);
+    auto c = (a | b);
+    assert(result == c);
+  }
 
-  // call .view() to see the contents of the matrix on stdout
   return 0;
 }
