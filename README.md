@@ -1,80 +1,96 @@
-# Programming competency test : uBLAS
+# Lazy Matrix : A Programming competency test for uBLAS
 
-This repository contains the test code for uBLAS Linear Algebra Proposal of **Google Summer Of Code 2019**. 
-
-
+This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. 
 
 #### Beware other my friends (Students)
 
-> *Do not try to copy this code to apply into `boost.uBLAS` this summer 2019 at Google Summer of Code. All the code in this repository is already submitted by me. You can just take an idea from this repository*
+> *Do not try to copy this code to apply into `boost.uBLAS` this summer 2019 at Google Summer of Code. All the code in this repository is already submitted by me. Although You are free to take some idea from this repository*
 
-> **Please Google MOSS(Measure Of Software Similarity), before blindly copying this code. ** 
+---
 
+## Introduction to Lazy Matrix
 
-
-The code contains following things :
-
-- Generic Matrix Class(es)
-
-  - It contains two types of Matrix Class. One is `Matrix` and other called `blas_matrix`. `Matrix` contains all operations using traditional operator overloads. It is only meant for benchmark purpose to show how fast **`blas_matrix` is which uses expression templates for `lazy evalution`**.
-
-- Contains Following operator Overloads and Special Functions
-
-  | Operator / Functions available  | Normal Matrix (normal_matrix.hpp) | BLAS Matrix (blas_matrix.hpp) |
-  | :-----------------------------: | --------------------------------- | ----------------------------- |
-  |          + (Addition)           | YES                               | YES (with lazy eval)          |
-  |        -  (Subtraction)         | YES                               | YES (with lazy eval)          |
-  | * (Element-wise Multiplication) | YES                               | YES (with lazy eval)          |
-  |    / (Element-wise Division)    | YES                               | YES (with lazy eval)          |
-  |          == (Equality)          | YES                               | YES (with lazy eval)          |
-  |               +=                | NO                                | YES (with lazy eval)          |
-  |               -=                | NO                                | YES (with lazy eval)          |
-  |               *=                | NO                                | YES (with lazy eval)          |
-  |               /=                | NO                                | YES (with lazy eval)          |
-  |         scalar_add(T t)         | NO                                | YES (with lazy eval)          |
-  |         scalar_sub(T t)         | NO                                | YES (with lazy eval)          |
-  |         scalar_mul(T t)         | NO                                | YES (with lazy eval)          |
-  |       view (Show Matrix)        | YES                               | YES                           |
-  |   \| (Dot Product of Matrix)    | NO                                | YES (with lazy eval)          |
-
-- `benchmark.hpp` contains a method (run) for bench-marking the execution time of a function. We use this to compare how fast out BLAS Matrix is as compared to Normal Matrix. It then also prints the result in a beautiful way in the console (with ***)
-
-- `result.png` contains a screenshot of the result of execution of the two matrix classes. The bench-mark ran 192 length long single matrix expression with 1000 by 1000 elements. The Operation performed was Element wise-addition. The results are as follow :
-
-  ![Imgur](https://i.imgur.com/yWJl6rb.png)
-
-* `main.cc` contains the driver program.
-* I have tried my best to use all the modern C++11 and C++14/17 features. 
-
-
-
-## Slight Introduction to `blas_matrix`
-
-This Matrix does lazy evaluation all the times and only evaluates itself when the `expression` is converted to `blas_matrix` type. 
-
-Say,
+Lazy Matrix is a Single Header only Library that includes some basic subroutines for Matrix Calculations. It is fast thanks to expression templates. It can expand expression like :
 
 ```cpp
-using mat = boost::test::blas_matrix<int>;
-
-mat a = {{1,2,3},
-         {1,2,3},
-         {1,2,3}};
-mat b = {{1,1,1},
-         {2,2,2},
-         {3,3,3}};
-
-mat c = a + b;
-//Quickly Evalutes and stores to c
-
-auto c = a + b;
-// c is not a matrix, It is just a node in AST that represents this computation.
-
-mat d{c};
-// c is now evaluated and result goes to d.
+auto val = a + b - c * d;
 ```
 
-Nothing more...
+into
+
+```cpp
+for(size_t i=0; i< rows; i++)
+    for(size_t j=0; j<cols; j++)
+        vals[i][j] = a[i][j] + b[i][j] - c[i][j] * d[i][j];
+```
+
+Removing the time of copying on every operation. It uses expression template to achieve this task. It also means that any expression that does not calls `=` (assignment) the expression is not at all evaluated. 
+
+### Creating a Lazy Matrix
+
+All Lazy Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Lazy Matrix.
+
+- Using Initializer List of Initializer Lists
+
+  - ```cpp
+    boost::test::lazy_matrix<int> foo = {{1,2,3},
+                                         {4,5,6},
+                                         {7,8,9}};
+    ```
+
+- Using Vector of Vectors
+
+- Using just row and column count.
+
+  - ```cpp
+    boost::test::lazy_matrix<int> baaz(rows, columns);
+    ```
+
+
+
+The `boost::test::lazy_matrix` type can be converted to and from `boost::test::expression` type. An Expression represents the operation to be computed. We have a non-explicit constructor that takes in a `expression` and evaluates it to form the `boost::test::lazy_matrix` .  An expression type will be evaluated upon the call to any assignment operator (=, +=, -= ...etc).
+
+
+
+### Operations on Lazy Matrix
+
+This is a simple library, it does not have a lot to offer when it comes to operations. But it does have almost all basic operations using operator overloading. Following is a list of all the supported operations.
+
+|  Operation   | Description of Operation                                     | Is Lazy? |
+| :----------: | ------------------------------------------------------------ | -------- |
+|  operator=   | Assign the value to *this* variable. If LHS is an expression it is evaluated and result is stored into *this* | No       |
+|  operator+=  | Element wise Add and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
+|  operator-=  | Element wise Subtract and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
+|  operator*=  | Element wise Multiplication and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
+|  operator/=  | Element wise Division and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
+|  operator==  | Element wise Equality check. If all elements are same then true otherwise false is returned. If LHS is an expression it is evaluated then compared. | No       |
+| scalar_add() | Adds the scalar argument to the matrix. It is evaluated eagerly | No       |
+| scalar_sub() | Subtracts the scalar argument from the matrix. It is evaluated eagerly | No       |
+| scalar_mul() | Multiplies the scalar argument to the matrix. It is evaluated eagerly | No       |
+|    view()    | Shows the content of the matrix into stdout or another std::ostream | N/A      |
+|  operator+   | Adds two same dimension matrices together element-wise.      | Yes      |
+|  operator-   | Adds two same dimension matrices together element-wise.      | Yes      |
+|  operator*   | Multiplies two same dimension matrices together element-wise. | Yes      |
+|  operator/   | Divides two same dimension matrices together element-wise.   | Yes      |
+|  operator\|  | Computes dot product of two matrices. It is eagerly evaluated | No       |
+
+
+
+### Performance
+
+Performance is the ultimate goal at the end of the day. Below is an image demonstrating the performance of `lazy_matrix` over the normal implementation. The benchmark was computed after running 192 length long +, -, *, / operations on 1000x1000 matrix.
+
+**It is at-least 20% faster than naive implementation** Of-course, it can be further improved.
+
+![Imgur](https://i.imgur.com/yWJl6rb.png)
+
+
+
+## Documentation
+
+The complete Documentation is available at https://coder3101.github.io/gsoc19-boost-test 
+
+The Documentation was automatically generated using `doxygen` from the source code.
 
 ## Builds
 
