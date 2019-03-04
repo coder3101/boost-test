@@ -27,29 +27,10 @@ compiler:
 - gcc
 - clang
 
-#before_install:
-# sudo ./install.sh
-
 script:
-- sudo ln -s /usr/bin/gcc-6 
-/usr/local/bin/gcc
-- sudo ln -s /usr/bin/g++-6 
-/usr/local/bin/g++
-- cmake . 
+- sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+- sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+- cmake .
 - make clean
 - make
 - make test
-
-# after_install:
-# sudo ./uninstall.sh
-
-# notifications:
-  #email: true
-  # webhooks:
-  #   urls:
-  #   on_success: always
-  #   on_failure: always
-  #   on_start: always
-
-
-
