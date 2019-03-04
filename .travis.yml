@@ -1,0 +1,36 @@
+language: cpp
+sudo: required
+distribution: trusty
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-6
+      - g++-6
+
+os:
+- linux
+- osx
+env:
+- BADGE=linux
+- BADGE=osx
+matrix:
+  exclude:
+    - os: linux
+      env: BADGE=osx
+    - os: osx
+      env: BADGE=linux
+
+compiler:
+- gcc
+- clang
+
+script:
+- sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+- sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
+- cmake .
+- make clean
+- make
+- make test
