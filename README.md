@@ -1,5 +1,8 @@
 # Lazy Matrix : A Programming competency test for uBLAS
 
+[![Build 
+Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=master)](https://travis-ci.org/coder3101/gsoc19-boost-test)
+
 This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. 
 
 #### Beware other my friends (Students)
