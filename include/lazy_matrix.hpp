@@ -471,9 +471,8 @@ public:
                                this->dimen.to_string() + std::string(" and ") +
                                other.get_dimension().to_string());
       }
-      for (size_t i = 0; i < this->dimen.row_dimen; i++)
-        for (size_t j = 0; j < this->dimen.col_dimen; j++)
-          this->matrix(i, j) = other(i, j);
+      for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
+        this->matrix[i] = other.matrix[i];
     }
     return *this;
   }
@@ -601,10 +600,8 @@ public:
    */
 
   template <typename T> void scalar_add(T t) {
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] += t;
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix[a] += t;
   }
 
   /**
@@ -616,10 +613,8 @@ public:
    */
 
   template <typename T> void scalar_sub(int t) {
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] -= t;
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix[a] -= t;
   }
 
   /**
@@ -631,10 +626,8 @@ public:
    */
 
   template <typename T> void scalar_mul(T t) {
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] *= t;
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix[a] *= t;
   }
 
   /**
