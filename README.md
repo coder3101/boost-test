@@ -8,6 +8,16 @@ This repository contains the programming competency test code for `boost.uBLAS` 
 
 ---
 
+## Installation
+
+Run 
+
+```bash
+cd build && cmake .. && make install
+```
+
+It will install the library to `/usr/local/include` and you can use to as a normal header from there after.
+
 ## Introduction to Lazy Matrix
 
 Lazy Matrix is a Single Header only Library that includes some basic subroutines for Matrix Calculations. It is fast thanks to expression templates. It can expand expression like :
@@ -28,14 +38,15 @@ Removing the time of copying on every operation. It uses expression template to 
 
 ### Creating a Lazy Matrix
 
-All Lazy Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Lazy Matrix.
+All Lazy Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Lazy Matrix. You need to pass an optional one of the two policies `boost::test::policy::RowMajorPolicy` or `boost::test::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
 
 - Using Initializer List of Initializer Lists
 
   - ```cpp
-    boost::test::lazy_matrix<int> foo = {{1,2,3},
-                                         {4,5,6},
-                                         {7,8,9}};
+    using boost::test;
+    lazy_matrix<int,policy::ColumnMajorPolicy> foo = {{1,2,3},
+                                         		      {4,5,6},
+                                                      {7,8,9}};
     ```
 
 - Using Vector of Vectors
