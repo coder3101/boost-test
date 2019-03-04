@@ -245,14 +245,13 @@ struct dimension {
 template <typename E> class expression {
 public:
   /**
-   * @brief returns the expression at i, j.
+   * @brief returns the expression at i
    *
-   * @param i the row index
-   * @param j the column index
+   * @param i the index
    * @return expression<E> the expression at that index.
    */
-  auto get(size_t i, size_t j) const {
-    return static_cast<E const &>(*this).get(i, j); // East-Const
+  auto get(size_t i) const {
+    return static_cast<E const &>(*this).get(i); // East-Const
   }
   /**
    * @brief Get the dimension of expression object
@@ -305,13 +304,6 @@ public:
   auto &operator()(size_t a, size_t b) {
     return Major::ordering(data, a, b, r, c);
   }
-  /**
-   * @brief Adds a new element in the specified location in the flattened array.
-   *
-   * @param val the value to add
-   * @param index the index at which to add the value
-   */
-  void add(dtype val, size_t index) { data[index] = val; }
   /**
    * @brief Gets the element from the specified index
    *
@@ -367,6 +359,22 @@ public:
    * @return dtype the element at that position
    */
   auto &get(size_t i, size_t j) { return matrix(i, j); }
+  /**
+   * @brief Returns the value from the ith position in flat array
+   *
+   * @param i the index to look for
+   * @return dtype the value returned
+   */
+  auto get(size_t i) const { return matrix[i]; }
+
+  /**
+   * @brief Returns the value from the ith position in flat array by reference
+   *
+   * @param i the index to look for
+   * @return dtype the value returned by reference
+   */
+  auto &get(size_t i) { return matrix[i]; }
+
   /**
    * @brief Get the dimension of the matrix
    *
@@ -431,9 +439,8 @@ public:
       : dimen(expr.get_dimension()),
         matrix(dimen.row_dimen *
                std::vector<decltype(expr.get(0, 0))>(dimen.col_dimen)) {
-    for (size_t a = 0; a < dimen.row_dimen; a++)
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix(a, b) = expr.get(a, b);
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix.get(a) = expr.get(a);
   }
 
   /**
@@ -451,9 +458,8 @@ public:
                              this->dimen.to_string() + std::string(" and ") +
                              expr.get_dimension().to_string());
     }
-    for (size_t i = 0; i < this->dimen.row_dimen; i++)
-      for (size_t j = 0; j < this->dimen.col_dimen; j++)
-        this->matrix(i, j) = expr.get(i, j);
+    for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
+      this->matrix[i] = expr.get(i);
     return *this;
   }
 
@@ -473,8 +479,8 @@ public:
       }
       for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
         this->matrix[i] = other.matrix[i];
+      return *this;
     }
-    return *this;
   }
 
   /**
@@ -493,9 +499,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++)
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix(a, b) += expr.get(a, b);
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix.get(a) += expr.get(a);
     return *this;
   }
 
@@ -515,9 +520,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++)
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix(a, b) -= expr.get(a, b);
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix.get(a) -= expr.get(a);
     return *this;
   }
 
@@ -537,10 +541,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix(a, b) *= expr.get(a, b);
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix.get(a) *= expr.get(a);
     return *this;
   }
 
@@ -560,10 +562,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix(a, b) /= expr.get(a, b);
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      matrix.get(a) /= expr.get(a);
     return *this;
   }
   /**
@@ -583,11 +583,9 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
-      for (size_t b = 0; b < dimen.col_dimen; b++)
-        if (matrix(a, b) != expr.get(a, b))
-          return false;
-    }
+    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
+      if (matrix[a] != expr.get(a))
+        return false;
     return true;
   }
 
@@ -601,7 +599,7 @@ public:
 
   template <typename T> void scalar_add(T t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix[a] += t;
+      matrix.get(a) += t;
   }
 
   /**
@@ -614,7 +612,7 @@ public:
 
   template <typename T> void scalar_sub(int t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix[a] -= t;
+      matrix, get(a) -= t;
   }
 
   /**
@@ -627,7 +625,7 @@ public:
 
   template <typename T> void scalar_mul(T t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix[a] *= t;
+      matrix.get(a) *= t;
   }
 
   /**
@@ -680,14 +678,13 @@ public:
   }
 
   /**
-   * @brief returns the value at i, j in the result
+   * @brief returns the value at i in the result
    *
    * @param i the row index
-   * @param j the column index
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i, size_t j) const { return _u.get(i, j) + _v.get(i, j); }
+  auto get(size_t i) const { return _u.get(i) + _v.get(i); }
 
   /**
    * @brief Get the dimension of this expression object.
@@ -728,14 +725,13 @@ public:
   }
 
   /**
-   * @brief returns the value at i, j in the result
+   * @brief returns the value at i in the result
    *
    * @param i the row index
-   * @param j the column index
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i, size_t j) const { return _u.get(i, j) - _v.get(i, j); }
+  auto get(size_t i) const { return _u.get(i) - _v.get(i); }
 
   /**
    * @brief Get the dimension of this expression object.
@@ -777,14 +773,13 @@ public:
   }
 
   /**
-   * @brief returns the value at i, j in the result
+   * @brief returns the value at i in the result
    *
    * @param i the row index
-   * @param j the column index
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i, size_t j) const { return _u.get(i, j) * _v.get(i, j); }
+  auto get(size_t i) const { return _u.get(i) * _v.get(i); }
   /**
    * @brief Get the dimension of this expression object.
    *
@@ -825,14 +820,13 @@ public:
   }
 
   /**
-   * @brief returns the value at i, j in the result
+   * @brief returns the value at i in the result
    *
    * @param i the row index
-   * @param j the column index
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i, size_t j) const { return _u.get(i, j) / _v.get(i, j); }
+  auto get(size_t i) const { return _u.get(i) / _v.get(i); }
   /**
    * @brief Get the dimension of this expression object.
    *
@@ -840,66 +834,6 @@ public:
    */
   auto get_dimension() const { return _u.get_dimension(); }
 };
-/**
- * @brief Depreacated and Should not be used. This operation was meant to
- * lazy-ly evaluate the dot product.
- *
- * @tparam E1 the type of the first operand
- * @tparam E2 the type of the second operand
- */
-template <typename E1, typename E2>
-class [[deprecated("This operation computes dot product using lazy methodolgy. "
-                   "Please use the eager_dot instead which uses arranged for "
-                   "loop and quickly computes the dot product")]] dot_expr
-    : public expression<dot_expr<E1, E2>> {
-  E1 const &_u;
-  E2 const &_v;
-
-public:
-  /**
-   * @brief Construct a new dot expr object
-   *
-   * @param u the first operand
-   * @param v the second operand
-   */
-  dot_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension().col_dimen != v.get_dimension().row_dimen) {
-      throw std::logic_error(
-          std::string("Cannot perform binary operation dot product ") +
-          std::string("matrices with different dimensions. Dimensions are ") +
-          u.get_dimension().to_string() + std::string(" and ") +
-          v.get_dimension().to_string());
-    }
-  }
-
-  /**
-   * @brief returns the value at i, j in the result
-   *
-   * @param i the row index
-   * @param j the column index
-   * @return dtype the element of the matrix or expression
-   */
-
-  auto get(size_t i, size_t j) const {
-    decltype(_u.get(0, 0)) ans = decltype(_u.get(0, 0))();
-    for (int t = 0; t < _u.get_dimension().col_dimen; t++) {
-      ans += _u.get(i, t) * _v.get(t, j);
-    }
-    return ans;
-  }
-  /**
-   * @brief Get the dimension of this expression object.
-   *
-   * @return dimension of the expression.
-   */
-  auto get_dimension() const {
-    dimension res;
-    res.row_dimen = _u.get_dimension().row_dimen;
-    res.col_dimen = _v.get_dimension().col_dimen;
-    return res;
-  }
-};
-
 /**
  * @brief Overload for Expression type. This operation returns a add_expr object
  * which can be evaluated to result it holds.
@@ -963,6 +897,17 @@ template <typename E1, typename E2>
 div_expr<E1, E2> operator/(E1 const &u, E2 const &v) {
   return div_expr<E1, E2>(u, v);
 }
+
+/*
+@NOTICE :
+This dot product code cannot be very much optimized. I am forced to access the
+the elements in a matrix form to actually do the dot product. However I found
+that if two operands have different ordering {i.e Row and Column} we may in fact
+be able to sequencially access the values. However if the two have same ordering
+{say Row and Row} the rules of algebra forces us to evaluate the product by
+accessing non adjacent memory blocks. For Now I keep it same as old.
+*/
+
 /**
  * @brief Computes the dot product of two Matrices or expression and returns the
  * result matrix immediately.
