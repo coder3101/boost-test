@@ -1,0 +1,42 @@
+language: cpp
+sudo: required
+distribution: trusty
+os:
+- linux
+- osx
+env:
+- BADGE=linux
+- BADGE=osx
+matrix:
+  exclude:
+    - os: linux
+      env: BADGE=osx
+    - os: osx
+      env: BADGE=linux
+
+compiler:
+- gcc
+- clang
+
+#before_install:
+# sudo ./install.sh
+
+script:
+- cmake . 
+- make clean
+- make
+- make test
+
+# after_install:
+# sudo ./uninstall.sh
+
+# notifications:
+  #email: true
+  # webhooks:
+  #   urls:
+  #   on_success: always
+  #   on_failure: always
+  #   on_start: always
+
+
+
