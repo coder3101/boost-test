@@ -52,7 +52,7 @@ auto get_normal_matrix = [](size_t row, size_t col,
  *
  */
 auto compute_something = [](auto &target, auto &scope) {
-  target =
+ target =
       scope + scope * scope + scope / scope + scope + scope + scope + scope +
       scope + scope + scope + scope / scope + scope + scope + scope + scope -
       scope + scope + scope + scope / scope + scope + scope + scope + scope +
