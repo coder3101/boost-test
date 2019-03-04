@@ -80,9 +80,9 @@ This is a simple library, it does not have a lot to offer when it comes to opera
 
 Performance is the ultimate goal at the end of the day. Below is an image demonstrating the performance of `lazy_matrix` over the normal implementation. The benchmark was computed after running 192 length long +, -, *, / operations on 1000x1000 matrix.
 
-**It is at-least 20% faster than naive implementation** Of-course, it can be further improved.
+**It is at-least 86% faster than naive implementation** Of-course, it can be further improved.
 
-![Imgur](https://i.imgur.com/yWJl6rb.png)
+![Imgur](https://i.imgur.com/Y1tYoQc.png)
 
 
 
