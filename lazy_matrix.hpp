@@ -74,6 +74,114 @@
 namespace boost::test {
 
 /**
+ * @brief This namespace contains all the policies that can be used with the
+ * lazy_matrix class.
+ *
+ */
+namespace policy {
+/**
+ * @brief Policy that specifies the Row Major Ordering to follow
+ *
+ * @tparam dtype the datatype of the lazy_matrix
+ */
+template <class dtype> struct RowMajorPolicy {
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param rows the total rows in the matrix
+   * @param column the total column in the matrix.
+   * @return dtype& the reference to the element being selected by this policy.
+   */
+  static auto &ordering(std::vector<dtype> &bucket, size_t indexX,
+                        size_t indexY, size_t rows, size_t column) {
+    return bucket[(indexX * (column)) + (indexY)];
+  }
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param rows the total rows in the matrix
+   * @param column the total column in the matrix.
+   * @return dtype& the reference to the element being selected by this policy.
+   */
+  static auto ordering(std::vector<dtype> const &bucket, size_t indexX,
+                       size_t indexY, size_t rows, size_t column) {
+    return bucket[(indexX * (column)) + (indexY)];
+  }
+  /**
+   * @brief Fills the bucket of flattened array using Row major Ordering
+   *
+   * @param bucket the flattened bucket to fill the elements to.
+   * @param elems the elements in the form of vector of vectors.
+   */
+  static void fill(std::vector<dtype> &bucket,
+                   std::vector<std::vector<dtype>> const &elems) {
+    size_t counter = 0;
+    for (auto &e : elems)
+      for (auto &E : e)
+        bucket[counter++] = E;
+  }
+};
+
+/**
+ * @brief Policy that specifies the Column Major Ordering to follow
+ *
+ * @tparam dtype the datatype of the lazy_matrix
+ */
+template <class dtype> struct ColumnMajorPolicy {
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param rows the total rows in the matrix
+   * @param column the total column in the matrix.
+   * @return dtype& the reference to the element being selected by this policy.
+   */
+  static auto &ordering(std::vector<dtype> &bucket, size_t indexX,
+                        size_t indexY, size_t rows, size_t column) {
+    return bucket[(indexY * (rows)) + (indexX)];
+  }
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param rows the total rows in the matrix
+   * @param column the total column in the matrix.
+   * @return dtype& the reference to the element being selected by this policy.
+   */
+  static auto ordering(std::vector<dtype> const &bucket, size_t indexX,
+                       size_t indexY, size_t rows, size_t column) {
+    return bucket[(indexY * (rows)) + (indexX)];
+  }
+
+  /**
+   * @brief Fills the bucket of flattened array using Column major Ordering
+   *
+   * @param bucket the flattened bucket to fill the elements to.
+   * @param elems the elements in the form of vector of vectors.
+   */
+  static void fill(std::vector<dtype> &bucket,
+                   std::vector<std::vector<dtype>> const &elems) {
+    size_t counter = 0;
+    auto row_counts = elems.size();
+    auto col_counts = elems[0].size();
+    for (size_t a = 0; a < col_counts; a++)
+      for (size_t b = 0; b < row_counts; b++)
+        bucket[counter++] = elems[b][a];
+  }
+};
+} // namespace policy
+
+/**
  * @brief This Structure holds the dimension of the Matrix. It overloads the
  * basic operators
  *
@@ -157,16 +265,89 @@ public:
 };
 
 /**
+ * @brief The internal sequencial container of the lazy_matrix.
+ *
+ * @tparam dtype the datatype to store
+ * @tparam Major the ordering to follow during traversal. It must be one of the
+ * valid policy.
+ */
+template <class dtype, class Major> class linear_holding {
+  std::vector<dtype> data;
+  size_t r, c;
+
+public:
+  /**
+   * @brief Construct a new linear holding object
+   *
+   * @param row the rows in the matrix
+   * @param columns the columns in the matrix
+   */
+  linear_holding(size_t row, size_t columns)
+      : data(row * columns), r(row), c(columns){};
+  /**
+   * @brief returns the value at i,j in the matrix. Using the ordering.
+   *
+   * @param a the row index
+   * @param b the column index
+   * @return dtype the value type in the container.
+   */
+  auto operator()(size_t a, size_t b) const {
+    return Major::ordering(data, a, b, r, c);
+  }
+  /**
+   * @brief returns the value at i,j in the matrix by reference. Using the
+   * ordering.
+   *
+   * @param a the row index
+   * @param b the column index
+   * @return dtype& the value type in the container.
+   */
+  auto &operator()(size_t a, size_t b) {
+    return Major::ordering(data, a, b, r, c);
+  }
+  /**
+   * @brief Adds a new element in the specified location in the flattened array.
+   *
+   * @param val the value to add
+   * @param index the index at which to add the value
+   */
+  void add(dtype val, size_t index) { data[index] = val; }
+  /**
+   * @brief Gets the element from the specified index
+   *
+   * @param index the index to look the value for.
+   * @return dtype the value at that index.
+   */
+  auto operator[](size_t index) const { return data[index]; }
+  /**
+   * @brief Gets the element from the specified index by reference
+   *
+   * @param index the index to look the value for.
+   * @return dtype the value at that index by refernce.
+   */
+  auto &operator[](size_t index) { return data[index]; }
+  /**
+   * @brief Fills the elements in the flattened value by the specified ordering.
+   *
+   * @param elements the values to fill with.
+   */
+  void fill(std::vector<std::vector<dtype>> const &elements) {
+    Major::fill(data, elements);
+  }
+};
+
+/**
+ *
  * @brief The template class of the lazy matrix. It is final and implements
  * Curiously Recurring Templates Pattern. These matrices have immutable
  * dimension and shapes will not change once created.
  *
  * @tparam dtype the type that this matrix will hold.
  */
-template <typename dtype>
+template <typename dtype, class OrderPolicy = policy::RowMajorPolicy<dtype>>
 class lazy_matrix final : public expression<lazy_matrix<dtype>> {
   dimension const dimen;
-  std::vector<std::vector<dtype>> matrix;
+  linear_holding<dtype, OrderPolicy> matrix;
 
 public:
   /**
@@ -176,7 +357,7 @@ public:
    * @param j the column index
    * @return dtype the element at that position
    */
-  auto get(size_t i, size_t j) const { return matrix[i][j]; }
+  auto get(size_t i, size_t j) const { return matrix(i, j); }
   /**
    * @brief returns element at i, j position in the matrix by reference. It can
    * be used to assign values to i,j as well.
@@ -185,7 +366,7 @@ public:
    * @param j the column index
    * @return dtype the element at that position
    */
-  auto &get(size_t i, size_t j) { return matrix[i][j]; }
+  auto &get(size_t i, size_t j) { return matrix(i, j); }
   /**
    * @brief Get the dimension of the matrix
    *
@@ -199,8 +380,7 @@ public:
    * @param rc the rows in the matrix
    * @param cc the columns in the matrix
    */
-  lazy_matrix(size_t rc, size_t cc)
-      : dimen(rc, cc), matrix(rc, std::vector<dtype>(cc)) {}
+  lazy_matrix(size_t rc, size_t cc) : dimen(rc, cc), matrix(rc, cc) {}
   /**
    * @brief Construct a new lazy matrix object from an initializer list.
    *
@@ -208,15 +388,18 @@ public:
    */
   // cppcheck-suppress noExplicitConstructor
   lazy_matrix(std::initializer_list<std::initializer_list<dtype>> elem)
-      : dimen(elem.size(), elem.begin()->size()) {
+      : dimen(elem.size(), elem.begin()->size()),
+        matrix(elem.size(), elem.begin()->size()) {
     for (auto e : elem) {
       if (e.size() != dimen.col_dimen)
         std::logic_error(
             "Cannot create a matrix out of the provided initializer_list. "
             "Length of each initializer list must be same");
     }
-    for (auto e : elem)
-      matrix.push_back(e);
+    std::vector<std::vector<dtype>> res;
+    for (auto &e : elem)
+      res.push_back(e);
+    matrix.fill(res);
   }
   /**
    * @brief Construct a new lazy matrix object from vectors
@@ -225,14 +408,14 @@ public:
    */
   // cppcheck-suppress noExplicitConstructor
   lazy_matrix(std::vector<std::vector<dtype>> elem)
-      : dimen(elem.size(), elem[0].size()) {
+      : dimen(elem.size(), elem[0].size()),
+        matrix(elem.size(), elem[0].size()) {
     for (auto e : elem) {
       if (e.size() != dimen.col_dimen)
         std::logic_error("Cannot create a matrix out of the provided vector of "
                          "vector.Lenght of each vector must be same");
     }
-    for (auto e : elem)
-      matrix.push_back(e);
+    matrix.fill(elem);
   }
 
   /**
@@ -246,12 +429,11 @@ public:
   template <typename E>
   lazy_matrix(expression<E> const &expr)
       : dimen(expr.get_dimension()),
-        matrix(dimen.row_dimen,
+        matrix(dimen.row_dimen *
                std::vector<decltype(expr.get(0, 0))>(dimen.col_dimen)) {
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
+    for (size_t a = 0; a < dimen.row_dimen; a++)
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] = expr.get(a, b);
-    }
+        matrix(a, b) = expr.get(a, b);
   }
 
   /**
@@ -271,7 +453,7 @@ public:
     }
     for (size_t i = 0; i < this->dimen.row_dimen; i++)
       for (size_t j = 0; j < this->dimen.col_dimen; j++)
-        this->matrix[i][j] = expr.get(i, j);
+        this->matrix(i, j) = expr.get(i, j);
     return *this;
   }
 
@@ -291,7 +473,7 @@ public:
       }
       for (size_t i = 0; i < this->dimen.row_dimen; i++)
         for (size_t j = 0; j < this->dimen.col_dimen; j++)
-          this->matrix[i][j] = other.matrix[i][j];
+          this->matrix(i, j) = other(i, j);
     }
     return *this;
   }
@@ -312,10 +494,9 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
+    for (size_t a = 0; a < dimen.row_dimen; a++)
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] += expr.get(a, b);
-    }
+        matrix(a, b) += expr.get(a, b);
     return *this;
   }
 
@@ -335,10 +516,9 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen; a++) {
+    for (size_t a = 0; a < dimen.row_dimen; a++)
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] -= expr.get(a, b);
-    }
+        matrix(a, b) -= expr.get(a, b);
     return *this;
   }
 
@@ -360,7 +540,7 @@ public:
     }
     for (size_t a = 0; a < dimen.row_dimen; a++) {
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] *= expr.get(a, b);
+        matrix(a, b) *= expr.get(a, b);
     }
     return *this;
   }
@@ -383,7 +563,7 @@ public:
     }
     for (size_t a = 0; a < dimen.row_dimen; a++) {
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        matrix[a][b] /= expr.get(a, b);
+        matrix(a, b) /= expr.get(a, b);
     }
     return *this;
   }
@@ -406,7 +586,7 @@ public:
     }
     for (size_t a = 0; a < dimen.row_dimen; a++) {
       for (size_t b = 0; b < dimen.col_dimen; b++)
-        if (matrix[a][b] != expr.get(a, b))
+        if (matrix(a, b) != expr.get(a, b))
           return false;
     }
     return true;
@@ -471,7 +651,7 @@ public:
 
     for (size_t i = 0; i < min_row; i++) {
       for (size_t j = 0; j < min_col; j++)
-        stream << matrix[i][j] << " ";
+        stream << matrix(i, j) << " ";
       stream << "\n";
     }
   }
