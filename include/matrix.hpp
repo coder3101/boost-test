@@ -738,7 +738,7 @@ template <typename E>
 bool operator==(expression<E> const &lexpr, expression<E> const &expr) {
   util::assert_same_dimensions(lexpr, expr);
   for (size_t a = 0; a < lexpr.get_dimension().count(); a++)
-    if (lexpr.get(a) != expr.get(util::safe_index(expr, a)))
+    if (lexpr.get(a) != expr.get(util::safe_index(lexpr, expr, a)))
       return false;
   return true;
 }

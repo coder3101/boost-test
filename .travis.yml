@@ -30,7 +30,9 @@ compiler:
 script:
 - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-- cmake .
+- cd build
+- cmake -DCMAKE_BUILD_TYPE=Release ..
 - make clean
 - make
 - make test
+- ./main
