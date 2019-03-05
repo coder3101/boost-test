@@ -38,9 +38,15 @@ auto \mbox{\hyperlink{classtest_1_1matrix_a8ae828048f36dc401ec79755c782a204}{get
 \begin{DoxyCompactList}\small\item\em Construct a new lazy matrix object from vectors. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}{matrix}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
 \begin{DoxyCompactList}\small\item\em Construct a new matrix object from an expression type. The Expression will be evaluated to initialize the new variable. \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}{operator=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix_a828352ca5c85f6d1d6a4be23940d76e6}{matrix}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ \&\&expr)
+\begin{DoxyCompactList}\small\item\em Construct a new matrix object from an rvalue expression. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\auto \& \mbox{\hyperlink{classtest_1_1matrix_ac1ee57e3db511b178d37cff278d9eefd}{operator=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
 \begin{DoxyCompactList}\small\item\em Assignment from an expression will cause the expression to be evaluated. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}{operator=}} (\mbox{\hyperlink{classtest_1_1matrix}{matrix}} const \&other)
+{\footnotesize template$<$typename E $>$ }\\auto \& \mbox{\hyperlink{classtest_1_1matrix_a2451869ee60cb1642d730aeacbef0e06}{operator=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ \&\&expr)
+\begin{DoxyCompactList}\small\item\em Assignment from an expression will cause the expression to be evaluated. It evaluates the lvalue and swaps with this. \end{DoxyCompactList}\item 
+auto \& \mbox{\hyperlink{classtest_1_1matrix_ae4e2d18c1244f4c163181cc30c72a5b7}{operator=}} (\mbox{\hyperlink{classtest_1_1matrix}{matrix}} const \&other)
+\begin{DoxyCompactList}\small\item\em Assignment from other Matrix Variable. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_ad0cf3573578dc69c13400be5c158c1fc}{operator=}} (\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \&\&other)
 \begin{DoxyCompactList}\small\item\em Assignment from other Matrix Variable. \end{DoxyCompactList}\item 
 {\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_acacdf5c7f4c7c687691b8daf03d1821d}{operator+=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
 \begin{DoxyCompactList}\small\item\em Add and Assignment overload with expression. It will cause expression to be evaluated. \end{DoxyCompactList}\item 
@@ -77,7 +83,7 @@ The template class of the matrix. It is final and implements Curiously Recurring
 \mbox{\Hypertarget{classtest_1_1matrix_a1180d3216a2862c1352abc179ecb9e70}\label{classtest_1_1matrix_a1180d3216a2862c1352abc179ecb9e70}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
 \index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
 \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{rc,  }\item[{size\+\_\+t}]{cc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -95,7 +101,7 @@ Construct a new lazy matrix object.
 \mbox{\Hypertarget{classtest_1_1matrix_ad0412fdd504edcd16c8ad6a0e6a41789}\label{classtest_1_1matrix_ad0412fdd504edcd16c8ad6a0e6a41789}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
 \index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
 \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ std\+::initializer\+\_\+list$<$ value\+\_\+t $>$$>$}]{elem }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -111,7 +117,7 @@ Construct a new matrix object from an initializer list.
 \mbox{\Hypertarget{classtest_1_1matrix_abf4537692c748dbec4ffdcc616e83592}\label{classtest_1_1matrix_abf4537692c748dbec4ffdcc616e83592}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
 \index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
 \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ value\+\_\+t $>$$>$}]{elem }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -127,7 +133,7 @@ Construct a new lazy matrix object from vectors.
 \mbox{\Hypertarget{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}\label{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
 \index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
 template$<$typename E $>$ \\
 \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
@@ -144,6 +150,28 @@ Construct a new matrix object from an expression type. The Expression will be ev
 
 \begin{DoxyParams}{Parameters}
 {\em expr} & the expression to create the matrix from \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_a828352ca5c85f6d1d6a4be23940d76e6}\label{classtest_1_1matrix_a828352ca5c85f6d1d6a4be23940d76e6}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ \&\&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new matrix object from an rvalue expression. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the actual expression \\
 \hline
 \end{DoxyParams}
 
@@ -357,13 +385,38 @@ Division and Assignment overload with expression. It will cause expression to be
 \begin{DoxyReturn}{Returns}
 matrix\& the reference to $\ast$this 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}\label{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}} 
+\mbox{\Hypertarget{classtest_1_1matrix_a2451869ee60cb1642d730aeacbef0e06}\label{classtest_1_1matrix_a2451869ee60cb1642d730aeacbef0e06}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
 \index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
 template$<$typename E $>$ \\
-\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+auto\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ \&\&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assignment from an expression will cause the expression to be evaluated. It evaluates the lvalue and swaps with this. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template type, should be deduced by compiler. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression from which to evaluate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lazy\+\_\+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_ac1ee57e3db511b178d37cff278d9eefd}\label{classtest_1_1matrix_ac1ee57e3db511b178d37cff278d9eefd}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+auto\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -382,12 +435,31 @@ Assignment from an expression will cause the expression to be evaluated.
 \begin{DoxyReturn}{Returns}
 lazy\+\_\+matrix\& the reference to $\ast$this 
 \end{DoxyReturn}
-\mbox{\Hypertarget{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}\label{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}} 
+\mbox{\Hypertarget{classtest_1_1matrix_ad0cf3573578dc69c13400be5c158c1fc}\label{classtest_1_1matrix_ad0cf3573578dc69c13400be5c158c1fc}} 
 \index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
 \index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
-\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
 {\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
-\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$ const \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assignment from other Matrix Variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the value with which to assign this variable. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lazy\+\_\+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_ae4e2d18c1244f4c163181cc30c72a5b7}\label{classtest_1_1matrix_ae4e2d18c1244f4c163181cc30c72a5b7}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$ const \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 

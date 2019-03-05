@@ -147,6 +147,15 @@ struct util {
       return decltype(expr1.get_format())::to_other_major(
           target, expr1.get_dimension());
   }
+  template <class A, class B>
+  static void assert_same_dimensions(A const &a, B const &b) {
+    if (a.get_dimension() != b.get_dimension())
+      throw std::logic_error(
+          std::string(
+              "Dimension assertion failed. Required same dimensions found ") +
+          a.get_dimension().to_string() + std::string(" and ") +
+          b.get_dimension().to_string());
+  }
 };
 } // namespace
 
@@ -378,6 +387,17 @@ class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
   template <typename E> void _safe_copy(E &expr, size_t i) {
     this->_elements[i] = expr.get(_safe_index(expr, i));
   }
+  /**
+   * @brief Swaps the elements from the given expression
+   *
+   * @tparam E the expression template
+   * @param expr the actual expression
+   * @param i the index of swap
+   */
+
+  template <typename E> void _safe_move(E &&expr, size_t i) {
+    this->_elements[i] = std::move(expr.get(_safe_index(expr, i)));
+  }
 
 public:
   /**
@@ -490,6 +510,26 @@ public:
       _safe_copy(expr, a);
   }
 
+  matrix(matrix &&other) : _dimen(std::move(other.get_dimension())) {
+    _construct_container();
+    for (size_t i = 0; i < this->_dimen.count(); i++)
+      _safe_move(other, i);
+  }
+
+  /**
+   * @brief Construct a new matrix object from an rvalue expression
+   *
+   * @tparam E the expression template
+   * @param expr the actual expression
+   */
+
+  template <typename E>
+  matrix(expression<E> &&expr) : _dimen(expr.get_dimension()) {
+    _construct_container();
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _safe_move(expr, a);
+  }
+
   /**
    * @brief Assignment from an expression will cause the expression to be
    * evaluated.
@@ -499,14 +539,26 @@ public:
    * @return lazy_matrix& the reference to *this
    */
 
-  template <typename E> matrix &operator=(expression<E> const &expr) {
-    if (expr.get_dimension() != this->get_dimension()) {
-      throw std::logic_error(std::string("Cannot assign. Dimensions are ") +
-                             this->_dimen.to_string() + std::string(" and ") +
-                             expr.get_dimension().to_string());
-    }
+  template <typename E> auto &operator=(expression<E> const &expr) {
+    util::assert_same_dimensions(*this, expr);
     for (size_t i = 0; i < this->_dimen.count(); i++)
       _safe_copy(expr, i);
+    return *this;
+  }
+
+  /**
+   * @brief Assignment from an expression will cause the expression to be
+   * evaluated. It evaluates the lvalue and swaps with this
+   *
+   * @tparam E the expression template type, should be deduced by compiler.
+   * @param expr the expression from which to evaluate.
+   * @return lazy_matrix& the reference to *this
+   */
+
+  template <typename E> auto &operator=(expression<E> &&expr) {
+    util::assert_same_dimensions(*this, expr);
+    for (size_t i = 0; i < this->_dimen.count(); i++)
+      _safe_move(expr, i);
     return *this;
   }
 
@@ -516,16 +568,20 @@ public:
    * @param other the value with which to assign this variable.
    * @return lazy_matrix& the reference to *this
    */
-
-  matrix &operator=(matrix const &other) {
+  auto &operator=(matrix const &other) {
     if (this != &other) {
-      if (this->get_dimension() != other.get_dimension()) {
-        throw std::logic_error(std::string("Cannot assign. Dimensions are ") +
-                               this->dimen.to_string() + std::string(" and ") +
-                               other.get_dimension().to_string());
-      }
+      util::assert_same_dimensions(*this, other);
       for (size_t i = 0; i < this->_dimen.count(); i++)
         _safe_copy(other, i);
+      return *this;
+    }
+  }
+
+  auto &operator=(matrix &&other) {
+    if (this != &other) {
+      util::assert_same_dimensions(*this, other);
+      for (size_t i = 0; i < this->_dimen.count(); i++)
+        _safe_move(other, i);
       return *this;
     }
   }
@@ -540,12 +596,7 @@ public:
    */
 
   template <typename E> matrix &operator+=(expression<E> const &expr) {
-    if (this->_dimen != expr.get_dimension()) {
-      throw std::logic_error(
-          std::string("+= operator not permitted. Dimensions are ") +
-          this->_dimen.to_string() + std::string(" and ") +
-          expr.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(*this, expr);
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] += expr.get(_safe_copy(expr, a));
     return *this;
@@ -561,12 +612,7 @@ public:
    */
 
   template <typename E> matrix &operator-=(expression<E> const &expr) {
-    if (this->_dimen != expr.get_dimension()) {
-      throw std::logic_error(
-          std::string("-= operator not permitted. Dimensions are ") +
-          this->dimen.to_string() + std::string(" and ") +
-          expr.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(*this, expr);
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] -= expr.get(_safe_copy(expr, a));
     return *this;
@@ -582,12 +628,7 @@ public:
    */
 
   template <typename E> matrix &operator*=(expression<E> const &expr) {
-    if (this->dimen != expr.get_dimension()) {
-      throw std::logic_error(
-          std::string("*= operator not permitted. Dimensions are ") +
-          this->dimen.to_string() + std::string(" and ") +
-          expr.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(*this, expr);
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] *= expr.get(_safe_copy(expr, a));
     return *this;
@@ -603,12 +644,7 @@ public:
    */
 
   template <typename E> matrix &operator/=(expression<E> const &expr) {
-    if (this->dimen != expr.get_dimension()) {
-      throw std::logic_error(
-          std::string("/= operator not permitted. Dimensions are ") +
-          this->dimen.to_string() + std::string(" and ") +
-          expr.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(*this, expr);
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] /= expr.get(_safe_copy(expr, a));
     return *this;
@@ -683,20 +719,16 @@ public:
 
 /**
  * @brief The == (equality) operator overload. Checks lexpr is equal to expr
- * 
+ *
  * @tparam E the expression template
  * @param lexpr the left side expression
  * @param expr the right side expression
  * @return true if they are same
  * @return false otherwise
  */
-template <typename E> bool operator==(expression<E> const &lexpr, expression<E> const &expr) {
-  if (lexpr.get_dimension() != expr.get_dimension()) {
-    throw std::logic_error(
-        std::string("== operator not permitted. Dimensions are ") +
-        lexpr.get_dimension().to_string() + std::string(" and ") +
-        expr.get_dimension().to_string());
-  }
+template <typename E>
+bool operator==(expression<E> const &lexpr, expression<E> const &expr) {
+  util::assert_same_dimensions(lexpr, expr);
   for (size_t a = 0; a < lexpr.get_dimension().count(); a++)
     if (lexpr.get(a) != expr.get(_safe_copy(expr, a)))
       return false;
@@ -723,13 +755,7 @@ public:
    * @param v the second operand
    */
   add_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()) {
-      throw std::logic_error(
-          std::string("Cannot perform binary operation addition ") +
-          std::string("matrices with different dimensions. Dimensions are ") +
-          u.get_dimension().to_string() + std::string(" and ") +
-          v.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(u, v);
   }
 
   /**
@@ -781,13 +807,7 @@ public:
    * @param v the second operand
    */
   sub_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()) {
-      throw std::logic_error(
-          std::string("Cannot perform binary operation subtraction ") +
-          std::string("matrices with different dimensions. Dimensions are ") +
-          u.get_dimension().to_string() + std::string(" and ") +
-          v.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(u, v);
   }
 
   /**
@@ -838,14 +858,7 @@ public:
    * @param v the second operand
    */
   mul_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()) {
-      throw std::logic_error(
-          std::string("Cannot perform binary operation element wise "
-                      "multiplication ") +
-          std::string("matrices with different dimensions. Dimensions are ") +
-          u.get_dimension().to_string() + std::string(" and ") +
-          v.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(u, v);
   }
 
   /**
@@ -896,14 +909,7 @@ public:
    * @param v the second operand
    */
   div_expr(E1 const &u, E2 const &v) : _u(u), _v(v) {
-    if (u.get_dimension() != v.get_dimension()) {
-      throw std::logic_error(
-          std::string(
-              "Cannot perform binary operation element wise division ") +
-          std::string("matrices with different dimensions. Dimensions are ") +
-          u.get_dimension().to_string() + std::string(" and ") +
-          v.get_dimension().to_string());
-    }
+    util::assert_same_dimensions(u, v);
   }
 
   /**
