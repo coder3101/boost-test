@@ -17,7 +17,7 @@
 #ifndef NORMAL_MATRIX_HPP
 #define NORMAL_MATRIX_HPP
 
-#include "include/lazy_matrix.hpp"
+#include "include/matrix.hpp"
 #include <iostream>
 #include <vector>
 

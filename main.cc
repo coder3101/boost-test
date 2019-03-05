@@ -15,7 +15,7 @@
  */
 
 #include "benchmark.hpp"
-#include "include/lazy_matrix.hpp"
+#include "include/matrix.hpp"
 #include "normal_matrix.hpp"
 #include <cassert>
 #include <chrono>
