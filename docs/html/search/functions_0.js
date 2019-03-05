@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['add_5fexpr',['add_expr',['../classboost_1_1test_1_1add__expr.html#af71312b5da7142245e8aaa7b3f0f1889',1,'boost::test::add_expr']]]
+  ['add_5fexpr',['add_expr',['../classtest_1_1add__expr.html#a1c76d0d18615c7ddabb4323a7ea4c885',1,'test::add_expr']]]
 ];

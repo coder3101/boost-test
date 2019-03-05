@@ -16,10 +16,38 @@ This repository contains the programming competency test code for `boost.uBLAS` 
 Run 
 
 ```bash
-cd build && cmake .. && make install
+cd build && cmake .. && sudo make install
 ```
 
-It will install the library to `/usr/local/include` and you can use to as a normal header from there after.
+It will install the library to `/usr/local/include`.
+
+Now you should be able to compile following, 
+
+```cpp
+
+#include <matrix.hpp>
+
+int main(){
+    using test::matrix;
+    matrix_int a = {{1,1,1},
+                    {5,5,5},  
+                    {7,8,9}};
+    auto b = a * a;
+    b.view();
+    return 0;
+}
+
+```
+
+## Uninstallation
+
+It's simple, simply remove the file from the directory `/usr/local/include/` by running :
+
+```bash
+
+sudo rm /usr/local/include/matrix.hpp
+
+```
 
 ## Introduction to Matrix
 

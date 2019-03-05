@@ -1,0 +1,119 @@
+\hypertarget{classtest_1_1div__expr}{}\section{test\+::div\+\_\+expr$<$ E1, E2 $>$ Class Template Reference}
+\label{classtest_1_1div__expr}\index{test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}}
+
+
+Constructs a representation of node for div operation in the Abstract Syntax Tree.  
+
+
+
+
+{\ttfamily \#include $<$matrix.\+hpp$>$}
+
+Inheritance diagram for test\+::div\+\_\+expr$<$ E1, E2 $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtest_1_1div__expr}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtest_1_1div__expr_a957776b1695f22338e6e425957e55f0c}{div\+\_\+expr}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Construct a new div expr object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1div__expr_ace8d78b6843d8233525f767cd0096a74}{get}} (size\+\_\+t i) const
+\begin{DoxyCompactList}\small\item\em returns the value at i in the result \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1div__expr_a8ef783b35224398db59e2b042917363e}{get\+\_\+dimension}} () const
+\begin{DoxyCompactList}\small\item\em Get the dimension of this expression object. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1div__expr_af40ab6cc22828f40ebe6b38075a35ede}{get\+\_\+format}} () const
+\begin{DoxyCompactList}\small\item\em Get the format object. Please note all the formats will collapse to the format of first operand. Natrually because of our evaluation startegy. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename E1, typename E2$>$\newline
+class test\+::div\+\_\+expr$<$ E1, E2 $>$}
+
+Constructs a representation of node for div operation in the Abstract Syntax Tree. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & the first operand type \\
+\hline
+{\em E2} & the second operand type \\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtest_1_1div__expr_a957776b1695f22338e6e425957e55f0c}\label{classtest_1_1div__expr_a957776b1695f22338e6e425957e55f0c}} 
+\index{test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}!div\_expr@{div\_expr}}
+\index{div\_expr@{div\_expr}!test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}}
+\subsubsection{\texorpdfstring{div\_expr()}{div\_expr()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+\mbox{\hyperlink{classtest_1_1div__expr}{test\+::div\+\_\+expr}}$<$ E1, E2 $>$\+::\mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}} (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new div expr object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the first operand \\
+\hline
+{\em v} & the second operand \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtest_1_1div__expr_ace8d78b6843d8233525f767cd0096a74}\label{classtest_1_1div__expr_ace8d78b6843d8233525f767cd0096a74}} 
+\index{test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}!get@{get}}
+\index{get@{get}!test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+auto \mbox{\hyperlink{classtest_1_1div__expr}{test\+::div\+\_\+expr}}$<$ E1, E2 $>$\+::get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns the value at i in the result 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the row index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+dtype the element of the matrix or expression 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1div__expr_a8ef783b35224398db59e2b042917363e}\label{classtest_1_1div__expr_a8ef783b35224398db59e2b042917363e}} 
+\index{test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}!get\_dimension@{get\_dimension}}
+\index{get\_dimension@{get\_dimension}!test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}}
+\subsubsection{\texorpdfstring{get\_dimension()}{get\_dimension()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+auto \mbox{\hyperlink{classtest_1_1div__expr}{test\+::div\+\_\+expr}}$<$ E1, E2 $>$\+::get\+\_\+dimension (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the dimension of this expression object. 
+
+\begin{DoxyReturn}{Returns}
+dimension of the expression. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1div__expr_af40ab6cc22828f40ebe6b38075a35ede}\label{classtest_1_1div__expr_af40ab6cc22828f40ebe6b38075a35ede}} 
+\index{test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}!get\_format@{get\_format}}
+\index{get\_format@{get\_format}!test::div\_expr$<$ E1, E2 $>$@{test::div\_expr$<$ E1, E2 $>$}}
+\subsubsection{\texorpdfstring{get\_format()}{get\_format()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+auto \mbox{\hyperlink{classtest_1_1div__expr}{test\+::div\+\_\+expr}}$<$ E1, E2 $>$\+::get\+\_\+format (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the format object. Please note all the formats will collapse to the format of first operand. Natrually because of our evaluation startegy. 
+
+\begin{DoxyReturn}{Returns}
+the type of the format used in this matrix 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/matrix.\+hpp\end{DoxyCompactItemize}

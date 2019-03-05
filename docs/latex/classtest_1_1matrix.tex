@@ -1,0 +1,490 @@
+\hypertarget{classtest_1_1matrix}{}\section{test\+::matrix$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$ Class Template Reference}
+\label{classtest_1_1matrix}\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+
+
+The template class of the matrix. It is final and implements Curiously Recurring Templates Pattern. These matrices have immutable dimension and shapes will not change once created.  
+
+
+
+
+{\ttfamily \#include $<$matrix.\+hpp$>$}
+
+Inheritance diagram for test\+::matrix$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtest_1_1matrix}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+auto \mbox{\hyperlink{classtest_1_1matrix_a29885efc9b15c38610a6595f5aa18c19}{get}} (size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em returns element at i, j position in the matrix. \end{DoxyCompactList}\item 
+auto \& \mbox{\hyperlink{classtest_1_1matrix_ad101d663d9026d4a09aeae44350f4842}{get}} (size\+\_\+t i, size\+\_\+t j)
+\begin{DoxyCompactList}\small\item\em returns element at i, j position in the matrix by reference. It can be used to assign values to i,j as well. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1matrix_a30b5e83cc4d03d78c9df3b9aea4808fd}{get}} (size\+\_\+t i) const
+\begin{DoxyCompactList}\small\item\em Returns the value from the ith position in flat array. \end{DoxyCompactList}\item 
+auto \& \mbox{\hyperlink{classtest_1_1matrix_ae97c6a005660b4a3b3d231d913527a9e}{get}} (size\+\_\+t i)
+\begin{DoxyCompactList}\small\item\em Returns the value from the ith position in flat array by reference. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1matrix_ad441a590a304dabb40950e5dfaee698a}{get\+\_\+dimension}} () const
+\begin{DoxyCompactList}\small\item\em Get the dimension of the matrix. \end{DoxyCompactList}\item 
+auto \mbox{\hyperlink{classtest_1_1matrix_a8ae828048f36dc401ec79755c782a204}{get\+\_\+format}} () const
+\begin{DoxyCompactList}\small\item\em Get the format policy object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtest_1_1matrix_a1180d3216a2862c1352abc179ecb9e70}{matrix}} (size\+\_\+t rc, size\+\_\+t cc)
+\begin{DoxyCompactList}\small\item\em Construct a new lazy matrix object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtest_1_1matrix_ad0412fdd504edcd16c8ad6a0e6a41789}{matrix}} (std\+::initializer\+\_\+list$<$ std\+::initializer\+\_\+list$<$ value\+\_\+t $>$$>$ elem)
+\begin{DoxyCompactList}\small\item\em Construct a new matrix object from an initializer list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtest_1_1matrix_abf4537692c748dbec4ffdcc616e83592}{matrix}} (std\+::vector$<$ std\+::vector$<$ value\+\_\+t $>$$>$ elem)
+\begin{DoxyCompactList}\small\item\em Construct a new lazy matrix object from vectors. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}{matrix}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Construct a new matrix object from an expression type. The Expression will be evaluated to initialize the new variable. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}{operator=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Assignment from an expression will cause the expression to be evaluated. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}{operator=}} (\mbox{\hyperlink{classtest_1_1matrix}{matrix}} const \&other)
+\begin{DoxyCompactList}\small\item\em Assignment from other Matrix Variable. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_acacdf5c7f4c7c687691b8daf03d1821d}{operator+=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Add and Assignment overload with expression. It will cause expression to be evaluated. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_a3bc463949a4ca9267e6ca9c23fabb9e8}{operator-\/=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Subtract and Assignment overload with expression. It will cause expression to be evaluated. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_a693b7a5396ba6a51342a525cb6738be1}{operator$\ast$=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Multiply and Assignment overload with expression. It will cause expression to be evaluated. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E $>$ }\\\mbox{\hyperlink{classtest_1_1matrix}{matrix}} \& \mbox{\hyperlink{classtest_1_1matrix_af775ea504d511a5bd706c510b428a832}{operator/=}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em Division and Assignment overload with expression. It will cause expression to be evaluated. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classtest_1_1matrix_a0bb59ea5c15a548758863aa46b291219}{scalar\+\_\+add}} (T t)
+\begin{DoxyCompactList}\small\item\em Scaler Addition to all the elements in the matrix. Type must have an overload with + operator to dtype of matrix. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classtest_1_1matrix_a65df8dc2b0c24cdc45e6063e9a779784}{scalar\+\_\+sub}} (int t)
+\begin{DoxyCompactList}\small\item\em Scaler subtraction to all the elements in the matrix. Type must have an overload with -\/ operator to dtype of matrix. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{classtest_1_1matrix_a5c36fb88feb075b3302575914d3de483}{scalar\+\_\+mul}} (T t)
+\begin{DoxyCompactList}\small\item\em Scaler Multiplication to all the elements in the matrix. Type must have an overload with $\ast$ operator to dtype of matrix. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtest_1_1matrix_a854639ce240ca81c977aa7a1cc4be932}{view}} (std\+::ostream \&stream=std\+::cout)
+\begin{DoxyCompactList}\small\item\em Prints the content of a matrix to the stream. Default to std\+::cout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename value\+\_\+t, class format\+\_\+t = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t = std\+::vector$<$value\+\_\+t$>$$>$\newline
+class test\+::matrix$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$}
+
+The template class of the matrix. It is final and implements Curiously Recurring Templates Pattern. These matrices have immutable dimension and shapes will not change once created. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em dtype} & the type that this matrix will hold. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtest_1_1matrix_a1180d3216a2862c1352abc179ecb9e70}\label{classtest_1_1matrix_a1180d3216a2862c1352abc179ecb9e70}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{rc,  }\item[{size\+\_\+t}]{cc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new lazy matrix object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rc} & the rows in the matrix \\
+\hline
+{\em cc} & the columns in the matrix \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_ad0412fdd504edcd16c8ad6a0e6a41789}\label{classtest_1_1matrix_ad0412fdd504edcd16c8ad6a0e6a41789}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ std\+::initializer\+\_\+list$<$ value\+\_\+t $>$$>$}]{elem }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new matrix object from an initializer list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em elem} & the initializer list of initialiazer lists \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_abf4537692c748dbec4ffdcc616e83592}\label{classtest_1_1matrix_abf4537692c748dbec4ffdcc616e83592}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ value\+\_\+t $>$$>$}]{elem }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new lazy matrix object from vectors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em elem} & vectors of vectors of elements. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}\label{classtest_1_1matrix_a8ff0fb4c772493b77b89ad49e09673ea}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{matrix()}{matrix()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::\mbox{\hyperlink{classtest_1_1matrix}{matrix}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new matrix object from an expression type. The Expression will be evaluated to initialize the new variable. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template paramater \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression to create the matrix from \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classtest_1_1matrix_ae97c6a005660b4a3b3d231d913527a9e}\label{classtest_1_1matrix_ae97c6a005660b4a3b3d231d913527a9e}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get@{get}}
+\index{get@{get}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value from the ith position in flat array by reference. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the index to look for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+dtype the value returned by reference 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a30b5e83cc4d03d78c9df3b9aea4808fd}\label{classtest_1_1matrix_a30b5e83cc4d03d78c9df3b9aea4808fd}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get@{get}}
+\index{get@{get}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value from the ith position in flat array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the index to look for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+dtype the value returned 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_ad101d663d9026d4a09aeae44350f4842}\label{classtest_1_1matrix_ad101d663d9026d4a09aeae44350f4842}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get@{get}}
+\index{get@{get}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns element at i, j position in the matrix by reference. It can be used to assign values to i,j as well. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the row index \\
+\hline
+{\em j} & the column index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+dtype the element at that position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a29885efc9b15c38610a6595f5aa18c19}\label{classtest_1_1matrix_a29885efc9b15c38610a6595f5aa18c19}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get@{get}}
+\index{get@{get}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+returns element at i, j position in the matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & the row index \\
+\hline
+{\em j} & the column index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+dtype the element at that position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_ad441a590a304dabb40950e5dfaee698a}\label{classtest_1_1matrix_ad441a590a304dabb40950e5dfaee698a}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get\_dimension@{get\_dimension}}
+\index{get\_dimension@{get\_dimension}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get\_dimension()}{get\_dimension()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get\+\_\+dimension (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the dimension of the matrix. 
+
+\begin{DoxyReturn}{Returns}
+dimension the dimension of the matrix. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a8ae828048f36dc401ec79755c782a204}\label{classtest_1_1matrix_a8ae828048f36dc401ec79755c782a204}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!get\_format@{get\_format}}
+\index{get\_format@{get\_format}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{get\_format()}{get\_format()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+auto \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::get\+\_\+format (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the format policy object. 
+
+\begin{DoxyReturn}{Returns}
+the format policy object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a693b7a5396ba6a51342a525cb6738be1}\label{classtest_1_1matrix_a693b7a5396ba6a51342a525cb6738be1}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator$\ast$=()}{operator*=()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator$\ast$= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Multiply and Assignment overload with expression. It will cause expression to be evaluated. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template paramater \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression with which we will evaluate and assign to $\ast$this \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_acacdf5c7f4c7c687691b8daf03d1821d}\label{classtest_1_1matrix_acacdf5c7f4c7c687691b8daf03d1821d}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator+= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add and Assignment overload with expression. It will cause expression to be evaluated. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template paramater \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression with which we will evaluate and assign to $\ast$this \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a3bc463949a4ca9267e6ca9c23fabb9e8}\label{classtest_1_1matrix_a3bc463949a4ca9267e6ca9c23fabb9e8}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator-\/=()}{operator-=()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator-\/= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Subtract and Assignment overload with expression. It will cause expression to be evaluated. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template paramater \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression with which we will evaluate and assign to $\ast$this \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_af775ea504d511a5bd706c510b428a832}\label{classtest_1_1matrix_af775ea504d511a5bd706c510b428a832}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator/=()}{operator/=()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator/= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Division and Assignment overload with expression. It will cause expression to be evaluated. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template paramater \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression with which we will evaluate and assign to $\ast$this \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}\label{classtest_1_1matrix_ada18ba8ec2867844a1054b42e26ce13b}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename E $>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assignment from an expression will cause the expression to be evaluated. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template type, should be deduced by compiler. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expression from which to evaluate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lazy\+\_\+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}\label{classtest_1_1matrix_aa7bbe72d7ffc9d74738f55f490f0f9ea}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+\mbox{\hyperlink{classtest_1_1matrix}{matrix}}\& \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$ const \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Assignment from other Matrix Variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the value with which to assign this variable. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lazy\+\_\+matrix\& the reference to $\ast$this 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classtest_1_1matrix_a0bb59ea5c15a548758863aa46b291219}\label{classtest_1_1matrix_a0bb59ea5c15a548758863aa46b291219}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!scalar\_add@{scalar\_add}}
+\index{scalar\_add@{scalar\_add}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{scalar\_add()}{scalar\_add()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename T $>$ \\
+void \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::scalar\+\_\+add (\begin{DoxyParamCaption}\item[{T}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scaler Addition to all the elements in the matrix. Type must have an overload with + operator to dtype of matrix. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & the type to add. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & the value to add to all element. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_a5c36fb88feb075b3302575914d3de483}\label{classtest_1_1matrix_a5c36fb88feb075b3302575914d3de483}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!scalar\_mul@{scalar\_mul}}
+\index{scalar\_mul@{scalar\_mul}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{scalar\_mul()}{scalar\_mul()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename T $>$ \\
+void \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::scalar\+\_\+mul (\begin{DoxyParamCaption}\item[{T}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scaler Multiplication to all the elements in the matrix. Type must have an overload with $\ast$ operator to dtype of matrix. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & the type to multiply. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & the value to multiply to all element. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_a65df8dc2b0c24cdc45e6063e9a779784}\label{classtest_1_1matrix_a65df8dc2b0c24cdc45e6063e9a779784}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!scalar\_sub@{scalar\_sub}}
+\index{scalar\_sub@{scalar\_sub}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{scalar\_sub()}{scalar\_sub()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+template$<$typename T $>$ \\
+void \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::scalar\+\_\+sub (\begin{DoxyParamCaption}\item[{int}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Scaler subtraction to all the elements in the matrix. Type must have an overload with -\/ operator to dtype of matrix. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & the type to subtract. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em t} & the value to subtracted from all element. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classtest_1_1matrix_a854639ce240ca81c977aa7a1cc4be932}\label{classtest_1_1matrix_a854639ce240ca81c977aa7a1cc4be932}} 
+\index{test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}!view@{view}}
+\index{view@{view}!test::matrix$<$ value\_t, format\_t, storage\_t $>$@{test::matrix$<$ value\_t, format\_t, storage\_t $>$}}
+\subsubsection{\texorpdfstring{view()}{view()}}
+{\footnotesize\ttfamily template$<$typename value\+\_\+t , class format\+\_\+t  = policy\+::\+Row\+Major\+Policy$<$value\+\_\+t$>$, class storage\+\_\+t  = std\+::vector$<$value\+\_\+t$>$$>$ \\
+void \mbox{\hyperlink{classtest_1_1matrix}{test\+::matrix}}$<$ value\+\_\+t, format\+\_\+t, storage\+\_\+t $>$\+::view (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{stream = {\ttfamily std\+:\+:cout} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Prints the content of a matrix to the stream. Default to std\+::cout. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stream} & the stream to print the values. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/matrix.\+hpp\end{DoxyCompactItemize}

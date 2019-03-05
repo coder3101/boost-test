@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lazy_20matrix',['Lazy Matrix',['../index.html',1,'']]]
+  ['matrix',['Matrix',['../index.html',1,'']]]
 ];

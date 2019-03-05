@@ -48,171 +48,12 @@
 #include <vector>
 
 /**
- * @brief PRINT_ROW_LIMIT
- * This MACRO sets how much of row to print in the call to matrix.view()
- * Defaults to 10 Rows.
- */
-#ifndef PRINT_ROW_LIMIT
-#define PRINT_ROW_LIMIT (10)
-#endif
-
-/**
- * @brief PRINT_COL_LIMIT
- * This MACRO sets how much of column to print in the call to matrix.view()
- * Defaults to 10 Columns
- *
- */
-#ifndef PRINT_COL_LIMIT
-#define PRINT_COL_LIMIT (10)
-#endif
-
-/**
  * @brief This namespace holds the matrix library. It has been named so
- * because it is meant for boost.uBLAS Google Summer of Code 2019 Proposal
- * Competency test
+ * because it is meant for boost.uBLAS Google Summer of Code 2019 Proposal.
+ * It is the part of it's Competency test
  *
  */
 namespace test {
-
-/**
- * @brief This namespace contains all the policies that can be used with the
- * matrix class.
- *
- */
-namespace policy {
-/**
- * @brief Policy that specifies the Row Major Ordering to follow
- *
- * @tparam value_t the datatype of the matrix
- */
-template <class value_t> struct RowMajorPolicy {
-  /**
-   * @brief Actual Implementation of the ordering
-   *
-   * @param bucket the flattened matrix representation vector.
-   * @param indexX the row index that is requested
-   * @param indexY the column index that is requested
-   * @param rows the total rows in the matrix
-   * @param column the total column in the matrix.
-   * @return value_t& the reference to the element being selected by this
-   * policy.
-   */
-  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
-                        size_t indexY, size_t rows, size_t column) {
-    return bucket[(indexX * (column)) + (indexY)];
-  }
-  /**
-   * @brief Actual Implementation of the ordering
-   *
-   * @param bucket the flattened matrix representation vector.
-   * @param indexX the row index that is requested
-   * @param indexY the column index that is requested
-   * @param rows the total rows in the matrix
-   * @param column the total column in the matrix.
-   * @return value_t& the reference to the element being selected by this
-   * policy.
-   */
-  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
-                       size_t indexY, size_t rows, size_t column) {
-    return bucket[(indexX * (column)) + (indexY)];
-  }
-  /**
-   * @brief Fills the bucket of flattened array using Row major Ordering
-   *
-   * @param bucket the flattened bucket to fill the elements to.
-   * @param elems the elements in the form of vector of vectors.
-   */
-  static void fill(std::vector<value_t> &bucket,
-                   std::vector<std::vector<value_t>> const &elems) {
-    size_t counter = 0;
-    for (auto &e : elems)
-      for (auto &E : e)
-        bucket[counter++] = E;
-  }
-  /**
-   * @brief Converts the given index to its equivalent column major index.
-   *
-   * @param i the index whose equivalent is desired
-   * @param rows the total rows in the matrix
-   * @param columns the total column in the matrix
-   * @return size_t return a value in range [0, row*columns)
-   */
-
-  static size_t to_column_major(size_t i, size_t rows, size_t columns) {
-    size_t x = i / columns;
-    size_t y = i % columns;
-    return (y * rows + x);
-  }
-};
-
-/**
- * @brief Policy that specifies the Column Major Ordering to follow
- *
- * @tparam value_t the datatype of the matrix
- */
-template <class value_t> struct ColumnMajorPolicy {
-  /**
-   * @brief Actual Implementation of the ordering
-   *
-   * @param bucket the flattened matrix representation vector.
-   * @param indexX the row index that is requested
-   * @param indexY the column index that is requested
-   * @param rows the total rows in the matrix
-   * @param column the total column in the matrix.
-   * @return value_t& the reference to the element being selected by this
-   * policy.
-   */
-  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
-                        size_t indexY, size_t rows, size_t column) {
-    return bucket[(indexY * (rows)) + (indexX)];
-  }
-  /**
-   * @brief Actual Implementation of the ordering
-   *
-   * @param bucket the flattened matrix representation vector.
-   * @param indexX the row index that is requested
-   * @param indexY the column index that is requested
-   * @param rows the total rows in the matrix
-   * @param column the total column in the matrix.
-   * @return value_t& the reference to the element being selected by this
-   * policy.
-   */
-  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
-                       size_t indexY, size_t rows, size_t column) {
-    return bucket[(indexY * (rows)) + (indexX)];
-  }
-
-  /**
-   * @brief Fills the bucket of flattened array using Column major Ordering
-   *
-   * @param bucket the flattened bucket to fill the elements to.
-   * @param elems the elements in the form of vector of vectors.
-   */
-  static void fill(std::vector<value_t> &bucket,
-                   std::vector<std::vector<value_t>> const &elems) {
-    size_t counter = 0;
-    auto row_counts = elems.size();
-    auto col_counts = elems[0].size();
-    for (size_t a = 0; a < col_counts; a++)
-      for (size_t b = 0; b < row_counts; b++)
-        bucket[counter++] = elems[b][a];
-  }
-  /**
-   * @brief Converts the given index to its equivalent row major index.
-   *
-   * @param i the index whose equivalent is desired
-   * @param rows the total rows in the matrix
-   * @param columns the total column in the matrix
-   * @return size_t return a value in range [0, row*columns)
-   */
-
-  static size_t to_row_major(size_t i, size_t rows, size_t columns) {
-    size_t y = i / rows;
-    size_t x = i % rows;
-    return (x * columns + y);
-  }
-};
-} // namespace policy
 
 /**
  * @brief This Structure holds the dimension of the Matrix. It overloads the
@@ -268,7 +109,176 @@ struct dimension {
     return "[" + std::to_string(row_dimen) + "," + std::to_string(col_dimen) +
            "]";
   }
+  /**
+   * @brief The total elements this dimension can hold
+   *
+   * @return size_t the value it can hold
+   */
+  size_t count() const { return row_dimen * col_dimen; }
 };
+
+/**
+ * @brief An unnamed namespace we want for current file only.
+ *
+ */
+namespace {
+/**
+ * @brief Some internal utility functions
+ *
+ */
+struct util {
+  /**
+   * @brief Converts the indexes from one to other format if necessary
+   *
+   * @tparam E1 the template paramater for the first type
+   * @tparam E2 the template parameter for the second type
+   * @param expr1 the first expression
+   * @param expr2 the second expression
+   * @param target the target index to convert. Index corresponsing to expr1's
+   * format
+   * @return size_t the index that will work in expr2's format.
+   */
+  template <class E1, class E2>
+  static size_t safe_index(E1 const &expr1, E2 const &expr2, size_t target) {
+    if (std::is_same<decltype(expr1.get_format()),
+                     decltype(expr2.get_format())>::value)
+      return target;
+    else
+      return decltype(expr1.get_format())::to_other_major(
+          target, expr1.get_dimension());
+  }
+};
+} // namespace
+
+namespace policy {
+
+/**
+ * @brief Policy that specifies the Row Major Ordering to follow
+ *
+ * @tparam value_t the datatype of the matrix
+ */
+template <class value_t> struct RowMajorPolicy {
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param dimen the dimension of the matrix
+   * @return value_t& the reference to the element being selected by this
+   * policy.
+   */
+  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
+                        size_t indexY, dimension dimen) {
+    return bucket[(indexX * (dimen.col_dimen)) + (indexY)];
+  }
+  /**if(std::is_same<_u.get_format(), _v.get_format()>::value) return
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param dimen the dimension of the matrix
+   * @return value_t& the reference to the element being selected by this
+   * policy.
+   */
+  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
+                       size_t indexY, dimension dimen) {
+    return bucket[(indexX * (dimen.col_dimen)) + (indexY)];
+  }
+  /**
+   * @brief Fills the bucket of flattened array using Row major Ordering
+   *
+   * @param bucket the flattened bucket to fill the elements to.
+   * @param elems the elements in the form of vector of vectors.
+   */
+  static void fill(std::vector<value_t> &bucket,
+                   std::vector<std::vector<value_t>> const &elems) {
+    size_t counter = 0;
+    for (auto &e : elems)
+      for (auto &E : e)
+        bucket[counter++] = E;
+  }
+  /**
+   * @brief Converts the given index to its equivalent column major index.
+   *
+   * @param i the index whose equivalent is desired
+   * @param dimen the dimension of the matrix
+   * @return size_t return a value in range [0, row*columns)
+   */
+
+  static size_t to_other_major(size_t const &i, dimension const &dimen) {
+    size_t x = i / dimen.col_dimen;
+    size_t y = i % dimen.col_dimen;
+    return (y * dimen.row_dimen + x);
+  }
+};
+
+/**
+ * @brief Policy that specifies the Column Major Ordering to follow
+ *
+ * @tparam value_t the datatype of the matrix
+ */
+template <class value_t> struct ColumnMajorPolicy {
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param dimen the dimension of the matrix
+   * @return value_t& the reference to the element being selected by this
+   * policy.
+   */
+  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
+                        size_t indexY, dimension dimen) {
+    return bucket[(indexY * (dimen.row_dimen)) + (indexX)];
+  }
+  /**
+   * @brief Actual Implementation of the ordering
+   *
+   * @param bucket the flattened matrix representation vector.
+   * @param indexX the row index that is requested
+   * @param indexY the column index that is requested
+   * @param dimen the dimension of the matrix
+   * @return value_t& the reference to the element being selected by this
+   * policy.
+   */
+  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
+                       size_t indexY, dimension dimen) {
+    return bucket[(indexY * (dimen.row_dimen)) + (indexX)];
+  }
+
+  /**
+   * @brief Fills the bucket of flattened array using Column major Ordering
+   *
+   * @param bucket the flattened bucket to fill the elements to.
+   * @param elems the elements in the form of vector of vectors.
+   */
+  static void fill(std::vector<value_t> &bucket,
+                   std::vector<std::vector<value_t>> const &elems) {
+    size_t counter = 0;
+    auto row_counts = elems.size();
+    auto col_counts = elems[0].size();
+    for (size_t a = 0; a < col_counts; a++)
+      for (size_t b = 0; b < row_counts; b++)
+        bucket[counter++] = elems[b][a];
+  }
+  /**
+   * @brief Converts the given index to its equivalent row major index.
+   *
+   * @param i the index whose equivalent is desired
+   * @param dimen the dimension of the matrix
+   * @return size_t return a value in range [0, row*columns)
+   */
+
+  static size_t to_other_major(size_t const &i, dimension const &dimen) {
+    size_t y = i / dimen.row_dimen;
+    size_t x = i % dimen.row_dimen;
+    return (x * dimen.col_dimen + y);
+  }
+};
+} // namespace policy
 
 /**
  * @brief An template Expression class for a node in AST of lazy evalution.
@@ -291,9 +301,17 @@ public:
    *
    * @return dimension the dimension of the expression.
    */
-  dimension get_dimension() const {
+  auto get_dimension() const {
     return static_cast<E const &>(*this).get_dimension();
   }
+
+  /**
+   * @brief Get the format object
+   *
+   * @return the type of the format used in this matrix
+   */
+
+  auto get_format() const { return static_cast<E const &>(*this).get_format(); }
 };
 
 /**
@@ -309,21 +327,56 @@ template <typename value_t, class format_t = policy::RowMajorPolicy<value_t>,
 class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
   dimension const _dimen;
   storage_t _elements;
+  format_t _format;
 
+  /**
+   * @brief Constructs the values in the container. If it is
+   *
+   */
   void _construct_container() {
     if (std::is_same<std::vector<value_t>, storage_t>::value) {
-      _elements =
-          std::move(std::vector<value_t>(_dimen.row_dimen * _dimen.col_dimen));
+      _elements = std::move(std::vector<value_t>(_dimen.count()));
       // @todo(coder3101) : Make dimension non-constant as it can change because
       // container is vector.
     } else {
-      if (_dimen.row_dimen * _dimen.col_dimen != _elements.size()) {
+      if (_dimen.count() != _elements.size()) {
         throw std::logic_error(
             std::string("Cannot Create a matrix out of provided array size. "
                         "Array size must be ") +
-            std::to_string(_dimen.row_dimen * _dimen.col_dimen));
+            std::to_string(_dimen.count()));
       }
     }
+  }
+
+  /**
+   * @brief This functions returns the index in such a way that regardless of
+   * the format. We always assign correct values to indices.
+   *
+   * @tparam E the expr or the matrix type
+   * @param expr the expression or matrix object
+   * @param index the index of to read
+   * @return size_t the index in the other format if they differ.
+   */
+  template <class E> size_t _safe_index(E &expr, size_t index) const {
+    return util::safe_index(*this, expr, index);
+  }
+
+  /**
+   * @brief This is an implentation that will copy the expr to the matrix.
+   * Even if they are of different order format. If the two formats are same
+   * then we simply copy the internal representation of the expr to this. Else
+   * we will assign the values by converting indices so that correct elements
+   * are assigned or acessed. This causes the implementation to slow down as
+   * compared to former as we try to non-sequencially access the expr internal
+   * representation.
+   *
+   * @tparam E the expression/matrix template
+   * @param expr the actual expression
+   * @param i the index to copy.
+   */
+
+  template <typename E> void _safe_copy(E &expr, size_t i) {
+    this->_elements[i] = expr.get(_safe_index(expr, i));
   }
 
 public:
@@ -335,8 +388,7 @@ public:
    * @return dtype the element at that position
    */
   auto get(size_t i, size_t j) const {
-    return format_t::ordering(_elements, i, j, _dimen.row_dimen,
-                              _dimen.col_dimen);
+    return format_t::ordering(_elements, i, j, _dimen);
   }
   /**
    * @brief returns element at i, j position in the matrix by reference. It can
@@ -347,8 +399,7 @@ public:
    * @return dtype the element at that position
    */
   auto &get(size_t i, size_t j) {
-    return format_t::ordering(_elements, i, j, _dimen.row_dimen,
-                              _dimen.col_dimen);
+    return format_t::ordering(_elements, i, j, _dimen);
   }
   /**
    * @brief Returns the value from the ith position in flat array
@@ -372,6 +423,13 @@ public:
    * @return dimension the dimension of the matrix.
    */
   auto get_dimension() const { return _dimen; }
+
+  /**
+   * @brief Get the format policy object
+   *
+   * @return the format policy object
+   */
+  auto get_format() const { return _format; }
 
   /**
    * @brief Construct a new lazy matrix object
@@ -428,12 +486,12 @@ public:
   template <typename E>
   matrix(expression<E> const &expr) : _dimen(expr.get_dimension()) {
     _construct_container();
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      _elements[a] = expr.get(a);
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _safe_copy(expr, a);
   }
 
   /**
-   * @brief Assignment from a expression will cause the expression to be
+   * @brief Assignment from an expression will cause the expression to be
    * evaluated.
    *
    * @tparam E the expression template type, should be deduced by compiler.
@@ -447,8 +505,8 @@ public:
                              this->_dimen.to_string() + std::string(" and ") +
                              expr.get_dimension().to_string());
     }
-    for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen; i++)
-      this->_elements[i] = expr.get(i);
+    for (size_t i = 0; i < this->_dimen.count(); i++)
+      _safe_copy(expr, i);
     return *this;
   }
 
@@ -466,9 +524,8 @@ public:
                                this->dimen.to_string() + std::string(" and ") +
                                other.get_dimension().to_string());
       }
-      for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen;
-           i++)
-        this->_elements[i] = other._elements[i];
+      for (size_t i = 0; i < this->_dimen.count(); i++)
+        _safe_copy(other, i);
       return *this;
     }
   }
@@ -489,8 +546,8 @@ public:
           this->_dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      _elements[a] += expr.get(a);
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _elements[a] += expr.get(_safe_copy(expr, a));
     return *this;
   }
 
@@ -510,8 +567,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      _elements[a] -= expr.get(a);
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _elements[a] -= expr.get(_safe_copy(expr, a));
     return *this;
   }
 
@@ -531,8 +588,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      _elements[a] *= expr.get(a);
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _elements[a] *= expr.get(_safe_copy(expr, a));
     return *this;
   }
 
@@ -552,31 +609,9 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      _elements[a] /= expr.get(a);
+    for (size_t a = 0; a < _dimen.count(); a++)
+      _elements[a] /= expr.get(_safe_copy(expr, a));
     return *this;
-  }
-  /**
-   * @brief This operator will check if the expression and the matrix have same
-   * value. It will cause the expression to be evalauted.
-   *
-   * @tparam E the template parameter of expression
-   * @param expr the expresssion type to evaluate
-   * @return true if the expresssion's evaluated value is same as this
-   * @return false otherwise
-   */
-
-  template <typename E> bool operator==(expression<E> const &expr) {
-    if (this->dimen != expr.get_dimension()) {
-      throw std::logic_error(
-          std::string("== operator not permitted. Dimensions are ") +
-          this->dimen.to_string() + std::string(" and ") +
-          expr.get_dimension().to_string());
-    }
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
-      if (_elements[a] != expr.get(a))
-        return false;
-    return true;
   }
 
   /**
@@ -588,7 +623,7 @@ public:
    */
 
   template <typename T> void scalar_add(T t) {
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+    for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] += t;
   }
 
@@ -601,7 +636,7 @@ public:
    */
 
   template <typename T> void scalar_sub(int t) {
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+    for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] -= t;
   }
 
@@ -614,7 +649,7 @@ public:
    */
 
   template <typename T> void scalar_mul(T t) {
-    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+    for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] *= t;
   }
 
@@ -625,10 +660,8 @@ public:
    */
 
   void view(std::ostream &stream = std::cout) {
-    auto min_row = (PRINT_ROW_LIMIT > _dimen.row_dimen ? _dimen.row_dimen
-                                                       : PRINT_ROW_LIMIT);
-    auto min_col = (PRINT_COL_LIMIT > _dimen.col_dimen ? _dimen.col_dimen
-                                                       : PRINT_COL_LIMIT);
+    auto min_row = (10 > _dimen.row_dimen ? _dimen.row_dimen : 10);
+    auto min_col = (10 > _dimen.col_dimen ? _dimen.col_dimen : 10);
 
     for (size_t i = 0; i < min_row; i++) {
       for (size_t j = 0; j < min_col; j++)
@@ -637,6 +670,38 @@ public:
     }
   }
 };
+
+/**
+ * @brief This operator will check if the expression and the matrix have same
+ * value. It will cause the expression to be evalauted.
+ *
+ * @tparam E the template parameter of expression
+ * @param expr the expresssion type to evaluate
+ * @return true if the expresssion's evaluated value is same as this
+ * @return false otherwise
+ */
+
+/**
+ * @brief The == (equality) operator overload. Checks lexpr is equal to expr
+ * 
+ * @tparam E the expression template
+ * @param lexpr the left side expression
+ * @param expr the right side expression
+ * @return true if they are same
+ * @return false otherwise
+ */
+template <typename E> bool operator==(expression<E> const &lexpr, expression<E> const &expr) {
+  if (lexpr.get_dimension() != expr.get_dimension()) {
+    throw std::logic_error(
+        std::string("== operator not permitted. Dimensions are ") +
+        lexpr.get_dimension().to_string() + std::string(" and ") +
+        expr.get_dimension().to_string());
+  }
+  for (size_t a = 0; a < lexpr.get_dimension().count(); a++)
+    if (lexpr.get(a) != expr.get(_safe_copy(expr, a)))
+      return false;
+  return true;
+}
 
 /**
  * @brief Constructs a representation of node for add operation in the Abstract
@@ -674,7 +739,9 @@ public:
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i) const { return _u.get(i) + _v.get(i); }
+  auto get(size_t i) const {
+    return _u.get(i) + _v.get(util::safe_index(_u, _v, i));
+  }
 
   /**
    * @brief Get the dimension of this expression object.
@@ -683,6 +750,15 @@ public:
    */
 
   auto get_dimension() const { return _u.get_dimension(); }
+
+  /**
+   * @brief Get the format object. Please note all the formats will collapse to
+   * the format of first operand. Natrually because of our evaluation startegy.
+   *
+   * @return the type of the format used in this matrix
+   */
+
+  auto get_format() const { return _u.get_format(); }
 };
 
 /**
@@ -721,7 +797,9 @@ public:
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i) const { return _u.get(i) - _v.get(i); }
+  auto get(size_t i) const {
+    return _u.get(i) - _v.get(util::safe_index(_u, _v, i));
+  }
 
   /**
    * @brief Get the dimension of this expression object.
@@ -729,6 +807,14 @@ public:
    * @return dimension of the expression.
    */
   auto get_dimension() const { return _u.get_dimension(); }
+
+  /**
+   * @brief Get the format object. Please note all the formats will collapse to
+   * the format of first operand. Natrually because of our evaluation startegy.
+   *
+   * @return the type of the format used in this matrix / expression
+   */
+  auto get_format() const { return _u.get_format(); }
 };
 
 /**
@@ -769,13 +855,24 @@ public:
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i) const { return _u.get(i) * _v.get(i); }
+  auto get(size_t i) const {
+    return _u.get(i) * _v.get(util::safe_index(_u, _v, i));
+  }
+
   /**
    * @brief Get the dimension of this expression object.
    *
    * @return dimension of the expression.
    */
+
   auto get_dimension() const { return _u.get_dimension(); }
+  /**
+   * @brief Get the format object. Please note all the formats will collapse to
+   * the format of first operand. Natrually because of our evaluation startegy.
+   *
+   * @return the type of the format used in this matrix
+   */
+  auto get_format() const { return _u.get_format(); }
 };
 
 /**
@@ -816,13 +913,23 @@ public:
    * @return dtype the element of the matrix or expression
    */
 
-  auto get(size_t i) const { return _u.get(i) / _v.get(i); }
+  auto get(size_t i) const {
+    return _u.get(i) / _v.get(util::safe_index(_u, _v, i));
+  }
+
   /**
    * @brief Get the dimension of this expression object.
    *
    * @return dimension of the expression.
    */
   auto get_dimension() const { return _u.get_dimension(); }
+  /**
+   * @brief Get the format object. Please note all the formats will collapse to
+   * the format of first operand. Natrually because of our evaluation startegy.
+   *
+   * @return the type of the format used in this matrix
+   */
+  auto get_format() const { return _u.get_format(); }
 };
 /**
  * @brief Overload for Expression type. This operation returns a add_expr object

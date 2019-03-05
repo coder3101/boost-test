@@ -1,0 +1,254 @@
+\hypertarget{namespacetest}{}\section{test Namespace Reference}
+\label{namespacetest}\index{test@{test}}
+
+
+This namespace holds the matrix library. It has been named so because it is meant for boost.\+u\+B\+L\+AS Google Summer of Code 2019 Proposal. It is the part of it\textquotesingle{}s Competency test.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtest_1_1add__expr}{add\+\_\+expr}}
+\begin{DoxyCompactList}\small\item\em Constructs a representation of node for add operation in the Abstract Syntax Tree. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structtest_1_1dimension}{dimension}}
+\begin{DoxyCompactList}\small\item\em This Structure holds the dimension of the Matrix. It overloads the basic operators. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}}
+\begin{DoxyCompactList}\small\item\em Constructs a representation of node for div operation in the Abstract Syntax Tree. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtest_1_1expression}{expression}}
+\begin{DoxyCompactList}\small\item\em An template Expression class for a node in A\+ST of lazy evalution. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtest_1_1matrix}{matrix}}
+\begin{DoxyCompactList}\small\item\em The template class of the matrix. It is final and implements Curiously Recurring Templates Pattern. These matrices have immutable dimension and shapes will not change once created. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtest_1_1mul__expr}{mul\+\_\+expr}}
+\begin{DoxyCompactList}\small\item\em Constructs a representation of node for multiplication operation in the Abstract Syntax Tree. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtest_1_1sub__expr}{sub\+\_\+expr}}
+\begin{DoxyCompactList}\small\item\em Constructs a representation of node for subtraction operation in the Abstract Syntax Tree. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacetest_a69806fc8b5b61fc4657f12f28ab961c0}\label{namespacetest_a69806fc8b5b61fc4657f12f28ab961c0}} 
+using {\bfseries matrix\+\_\+int} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ int $>$
+\item 
+\mbox{\Hypertarget{namespacetest_ae0d41fab07012aa4aeb82b7b64900ed5}\label{namespacetest_ae0d41fab07012aa4aeb82b7b64900ed5}} 
+using {\bfseries matrix\+\_\+long} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ long long $>$
+\item 
+\mbox{\Hypertarget{namespacetest_ab9bf1cdf5f02172d62045d12c97feda7}\label{namespacetest_ab9bf1cdf5f02172d62045d12c97feda7}} 
+using {\bfseries matrix\+\_\+float} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ float $>$
+\item 
+\mbox{\Hypertarget{namespacetest_ad965d4aedb3467b9200b740eabd0285f}\label{namespacetest_ad965d4aedb3467b9200b740eabd0285f}} 
+using {\bfseries matrix\+\_\+double} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ double $>$
+\item 
+\mbox{\Hypertarget{namespacetest_a0d0695689353608a7e3dc3a28a79600c}\label{namespacetest_a0d0695689353608a7e3dc3a28a79600c}} 
+using {\bfseries matrix\+\_\+complex\+\_\+float} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ std\+::complex$<$ float $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacetest_adb1c1a799a26028b63e44d7a3b9e7a9c}\label{namespacetest_adb1c1a799a26028b63e44d7a3b9e7a9c}} 
+using {\bfseries matrix\+\_\+complex\+\_\+double} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ std\+::complex$<$ double $>$ $>$
+\item 
+\mbox{\Hypertarget{namespacetest_adfaf60b1607a89f0f5c159a6988461be}\label{namespacetest_adfaf60b1607a89f0f5c159a6988461be}} 
+using {\bfseries matrix\+\_\+complex\+\_\+long} = \mbox{\hyperlink{classtest_1_1matrix}{matrix}}$<$ std\+::complex$<$ long long $>$ $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename E $>$ }\\bool \mbox{\hyperlink{namespacetest_a4789bcc417e51b81dfa45a4e173a435c}{operator==}} (\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&lexpr, \mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&expr)
+\begin{DoxyCompactList}\small\item\em This operator will check if the expression and the matrix have same value. It will cause the expression to be evalauted. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E1 , typename E2 $>$ }\\\mbox{\hyperlink{classtest_1_1add__expr}{add\+\_\+expr}}$<$ E1, E2 $>$ \mbox{\hyperlink{namespacetest_a2c910f0835e7bdf9b31af85264e4c3b2}{operator+}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1add__expr}{add\+\_\+expr}} object which can be evaluated to result it holds. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E1 , typename E2 $>$ }\\\mbox{\hyperlink{classtest_1_1sub__expr}{sub\+\_\+expr}}$<$ E1, E2 $>$ \mbox{\hyperlink{namespacetest_a949d3230afe0418cb028b829e9bf9a94}{operator-\/}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1sub__expr}{sub\+\_\+expr}} object which can be evaluated to result it holds. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E1 , typename E2 $>$ }\\\mbox{\hyperlink{classtest_1_1mul__expr}{mul\+\_\+expr}}$<$ E1, E2 $>$ \mbox{\hyperlink{namespacetest_a56ea9d576f5f2398586286d7f01fba47}{operator$\ast$}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1mul__expr}{mul\+\_\+expr}} object which can be evaluated to result it holds. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E1 , typename E2 $>$ }\\\mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}}$<$ E1, E2 $>$ \mbox{\hyperlink{namespacetest_a3de54d71b553c223f2b4619023186a17}{operator/}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}} object which can be evaluated to result it holds. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename E1 , typename E2 $>$ }\\auto \mbox{\hyperlink{namespacetest_a66f5af8ef66f6c5a47d2a5075a63fd3a}{operator$\vert$}} (E1 const \&u, E2 const \&v)
+\begin{DoxyCompactList}\small\item\em Computes the dot product of two Matrices or expression and returns the result matrix immediately. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This namespace holds the matrix library. It has been named so because it is meant for boost.\+u\+B\+L\+AS Google Summer of Code 2019 Proposal. It is the part of it\textquotesingle{}s Competency test. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacetest_a56ea9d576f5f2398586286d7f01fba47}\label{namespacetest_a56ea9d576f5f2398586286d7f01fba47}} 
+\index{test@{test}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!test@{test}}
+\subsubsection{\texorpdfstring{operator$\ast$()}{operator*()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+\mbox{\hyperlink{classtest_1_1mul__expr}{mul\+\_\+expr}}$<$E1, E2$>$ test\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1mul__expr}{mul\+\_\+expr}} object which can be evaluated to result it holds. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & type of first operand \\
+\hline
+{\em E2} & type of second operand \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the first argument \\
+\hline
+{\em v} & the second argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+mul\+\_\+expr$<$\+E1, E2$>$ a proxy that represents a add operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetest_a2c910f0835e7bdf9b31af85264e4c3b2}\label{namespacetest_a2c910f0835e7bdf9b31af85264e4c3b2}} 
+\index{test@{test}!operator+@{operator+}}
+\index{operator+@{operator+}!test@{test}}
+\subsubsection{\texorpdfstring{operator+()}{operator+()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+\mbox{\hyperlink{classtest_1_1add__expr}{add\+\_\+expr}}$<$E1, E2$>$ test\+::operator+ (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1add__expr}{add\+\_\+expr}} object which can be evaluated to result it holds. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & type of first operand \\
+\hline
+{\em E2} & type of second operand \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the first argument \\
+\hline
+{\em v} & the second argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+add\+\_\+expr$<$\+E1, E2$>$ a proxy that represents a add operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetest_a949d3230afe0418cb028b829e9bf9a94}\label{namespacetest_a949d3230afe0418cb028b829e9bf9a94}} 
+\index{test@{test}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!test@{test}}
+\subsubsection{\texorpdfstring{operator-\/()}{operator-()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+\mbox{\hyperlink{classtest_1_1sub__expr}{sub\+\_\+expr}}$<$E1, E2$>$ test\+::operator-\/ (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1sub__expr}{sub\+\_\+expr}} object which can be evaluated to result it holds. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & type of first operand \\
+\hline
+{\em E2} & type of second operand \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the first argument \\
+\hline
+{\em v} & the second argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sub\+\_\+expr$<$\+E1, E2$>$ a proxy that represents a add operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetest_a3de54d71b553c223f2b4619023186a17}\label{namespacetest_a3de54d71b553c223f2b4619023186a17}} 
+\index{test@{test}!operator/@{operator/}}
+\index{operator/@{operator/}!test@{test}}
+\subsubsection{\texorpdfstring{operator/()}{operator/()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+\mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}}$<$E1, E2$>$ test\+::operator/ (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Overload for Expression type. This operation returns a \mbox{\hyperlink{classtest_1_1div__expr}{div\+\_\+expr}} object which can be evaluated to result it holds. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & type of first operand \\
+\hline
+{\em E2} & type of second operand \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the first argument \\
+\hline
+{\em v} & the second argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+div\+\_\+expr$<$\+E1, E2$>$ a proxy that represents a add operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetest_a4789bcc417e51b81dfa45a4e173a435c}\label{namespacetest_a4789bcc417e51b81dfa45a4e173a435c}} 
+\index{test@{test}!operator==@{operator==}}
+\index{operator==@{operator==}!test@{test}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename E $>$ \\
+bool test\+::operator== (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{lexpr,  }\item[{\mbox{\hyperlink{classtest_1_1expression}{expression}}$<$ E $>$ const \&}]{expr }\end{DoxyParamCaption})}
+
+
+
+This operator will check if the expression and the matrix have same value. It will cause the expression to be evalauted. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the template parameter of expression \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em expr} & the expresssion type to evaluate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the expresssion\textquotesingle{}s evaluated value is same as this 
+
+false otherwise\+The == (equality) operator overload. Checks lexpr is equal to expr
+\end{DoxyReturn}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E} & the expression template \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em lexpr} & the left side expression \\
+\hline
+{\em expr} & the right side expression \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if they are same 
+
+false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetest_a66f5af8ef66f6c5a47d2a5075a63fd3a}\label{namespacetest_a66f5af8ef66f6c5a47d2a5075a63fd3a}} 
+\index{test@{test}!operator\texttt{"|}@{operator\texttt{"|}}}
+\index{operator\texttt{"|}@{operator\texttt{"|}}!test@{test}}
+\subsubsection{\texorpdfstring{operator\texttt{"|}()}{operator|()}}
+{\footnotesize\ttfamily template$<$typename E1 , typename E2 $>$ \\
+auto test\+::operator$\vert$ (\begin{DoxyParamCaption}\item[{E1 const \&}]{u,  }\item[{E2 const \&}]{v }\end{DoxyParamCaption})}
+
+
+
+Computes the dot product of two Matrices or expression and returns the result matrix immediately. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em E1} & the type of first operand \\
+\hline
+{\em E2} & the type of second operand \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em u} & the actual first argument \\
+\hline
+{\em v} & the actual second argument \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+lazy\+\_\+matrix the result matrix. 
+\end{DoxyReturn}

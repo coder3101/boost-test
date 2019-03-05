@@ -47,7 +47,7 @@ auto get_normal_matrix = [](size_t row, size_t col,
 };
 
 /**
- * @brief A Generic Lambda that is computes a very long operation in one chain.
+ * @brief A Generic Lambda that computes a very long operation.
  *
  */
 auto compute_something = [](auto &target, auto &scope) {
@@ -96,6 +96,7 @@ int main() {
     result2.print_beautifully();
     result1.print_beautifully();
     assert(a2 == a);
+    assert(a == a);
   }
   // Block 2
   {

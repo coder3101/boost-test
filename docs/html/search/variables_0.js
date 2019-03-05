@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['col_5fdimen',['col_dimen',['../structboost_1_1test_1_1dimension.html#aec2eb72845bed9b2997eda3985305edf',1,'boost::test::dimension']]]
+  ['col_5fdimen',['col_dimen',['../structtest_1_1dimension.html#afdf8e5f0709b3e8cfdbb77f9896b03cf',1,'test::dimension']]]
 ];

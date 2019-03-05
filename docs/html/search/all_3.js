@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['dimension',['dimension',['../structboost_1_1test_1_1dimension.html',1,'boost::test::dimension'],['../structboost_1_1test_1_1dimension.html#a994469ba24de50ea73d852cc92b80bd4',1,'boost::test::dimension::dimension()=default'],['../structboost_1_1test_1_1dimension.html#a550aa7f36f42fb470ccffd6c8c11dabb',1,'boost::test::dimension::dimension(size_t r, size_t c)']]],
-  ['div_5fexpr',['div_expr',['../classboost_1_1test_1_1div__expr.html',1,'boost::test::div_expr&lt; E1, E2 &gt;'],['../classboost_1_1test_1_1div__expr.html#ace035a15cb161fddbee21afb89991670',1,'boost::test::div_expr::div_expr()']]],
-  ['dot_5fexpr',['dot_expr',['../classboost_1_1test_1_1dot__expr.html',1,'boost::test::dot_expr&lt; E1, E2 &gt;'],['../classboost_1_1test_1_1dot__expr.html#a7116d6c7f6859d4edcddf9eddf4af6d3',1,'boost::test::dot_expr::dot_expr()']]]
+  ['expression',['expression',['../classtest_1_1expression.html',1,'test']]],
+  ['expression_3c_20add_5fexpr_3c_20e1_2c_20e2_20_3e_20_3e',['expression&lt; add_expr&lt; E1, E2 &gt; &gt;',['../classtest_1_1expression.html',1,'test']]],
+  ['expression_3c_20div_5fexpr_3c_20e1_2c_20e2_20_3e_20_3e',['expression&lt; div_expr&lt; E1, E2 &gt; &gt;',['../classtest_1_1expression.html',1,'test']]],
+  ['expression_3c_20matrix_3c_20value_5ft_2c_20format_5ft_2c_20storage_5ft_20_3e_20_3e',['expression&lt; matrix&lt; value_t, format_t, storage_t &gt; &gt;',['../classtest_1_1expression.html',1,'test']]],
+  ['expression_3c_20mul_5fexpr_3c_20e1_2c_20e2_20_3e_20_3e',['expression&lt; mul_expr&lt; E1, E2 &gt; &gt;',['../classtest_1_1expression.html',1,'test']]],
+  ['expression_3c_20sub_5fexpr_3c_20e1_2c_20e2_20_3e_20_3e',['expression&lt; sub_expr&lt; E1, E2 &gt; &gt;',['../classtest_1_1expression.html',1,'test']]]
 ];
