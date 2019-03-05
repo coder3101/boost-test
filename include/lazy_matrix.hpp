@@ -307,8 +307,24 @@ public:
 template <typename value_t, class format_t = policy::RowMajorPolicy<value_t>,
           class storage_t = std::vector<value_t>>
 class matrix final : public expression<matrix<value_t>> {
-  dimension const dimen;
-  storage_t elements;
+  dimension const _dimen;
+  storage_t _elements;
+
+  void _construct_container() {
+    if (std::is_same<std::vector<value_t>, storage_t>::value) {
+      _elements =
+          std::move(std::vector<value_t>(_dimen.row_dimen * _dimen.col_dimen));
+      // @todo(coder3101) : Make dimension non-constant as it can change because
+      // container is vector.
+    } else {
+      if (_dimen.row_dimen * _dimen.col_dimen != _elements.size()) {
+        throw std::logic_error(
+            std::string("Cannot Create a matrix out of provided array size. "
+                        "Array size must be ") +
+            std::to_string(_dimen.row_dimen * _dimen.col_dimen));
+      }
+    }
+  }
 
 public:
   /**
@@ -319,7 +335,8 @@ public:
    * @return dtype the element at that position
    */
   auto get(size_t i, size_t j) const {
-    return format_t::ordering(elements, i, j, dimen.row_dimen, dimen.col_dimen);
+    return format_t::ordering(_elements, i, j, _dimen.row_dimen,
+                              _dimen.col_dimen);
   }
   /**
    * @brief returns element at i, j position in the matrix by reference. It can
@@ -330,7 +347,8 @@ public:
    * @return dtype the element at that position
    */
   auto &get(size_t i, size_t j) {
-    return format_t::ordering(elements, i, j, dimen.row_dimen, dimen.col_dimen);
+    return format_t::ordering(_elements, i, j, _dimen.row_dimen,
+                              _dimen.col_dimen);
   }
   /**
    * @brief Returns the value from the ith position in flat array
@@ -338,7 +356,7 @@ public:
    * @param i the index to look for
    * @return dtype the value returned
    */
-  auto get(size_t i) const { return elements[i]; }
+  auto get(size_t i) const { return _elements[i]; }
 
   /**
    * @brief Returns the value from the ith position in flat array by reference
@@ -346,14 +364,14 @@ public:
    * @param i the index to look for
    * @return dtype the value returned by reference
    */
-  auto &get(size_t i) { return elements[i]; }
+  auto &get(size_t i) { return _elements[i]; }
 
   /**
    * @brief Get the dimension of the matrix
    *
    * @return dimension the dimension of the matrix.
    */
-  auto get_dimension() const { return dimen; }
+  auto get_dimension() const { return _dimen; }
 
   /**
    * @brief Construct a new lazy matrix object
@@ -361,7 +379,7 @@ public:
    * @param rc the rows in the matrix
    * @param cc the columns in the matrix
    */
-  matrix(size_t rc, size_t cc) : dimen(rc, cc), elements(rc * cc) {}
+  matrix(size_t rc, size_t cc) : _dimen(rc, cc) { _construct_container(); }
   /**
    * @brief Construct a new matrix object from an initializer list.
    *
@@ -369,10 +387,10 @@ public:
    */
   // cppcheck-suppress noExplicitConstructor
   matrix(std::initializer_list<std::initializer_list<value_t>> elem)
-      : dimen(elem.size(), elem.begin()->size()),
-        elements(elem.size() * elem.begin()->size()) {
+      : _dimen(elem.size(), elem.begin()->size()) {
+    _construct_container();
     for (auto e : elem) {
-      if (e.size() != dimen.col_dimen)
+      if (e.size() != _dimen.col_dimen)
         std::logic_error(
             "Cannot create a matrix out of the provided initializer_list. "
             "Length of each initializer list must be same");
@@ -380,7 +398,7 @@ public:
     std::vector<std::vector<value_t>> res;
     for (auto &e : elem)
       res.push_back(e);
-    format_t::fill(elements, res);
+    format_t::fill(_elements, res);
   }
   /**
    * @brief Construct a new lazy matrix object from vectors
@@ -389,14 +407,14 @@ public:
    */
   // cppcheck-suppress noExplicitConstructor
   matrix(std::vector<std::vector<value_t>> elem)
-      : dimen(elem.size(), elem[0].size()),
-        elements(elem.size() * elem[0].size()) {
+      : _dimen(elem.size(), elem[0].size()) {
+    _construct_container();
     for (auto e : elem) {
-      if (e.size() != dimen.col_dimen)
+      if (e.size() != _dimen.col_dimen)
         std::logic_error("Cannot create a matrix out of the provided vector of "
                          "vector.Lenght of each vector must be same");
     }
-    format_t::fill(elements, elem);
+    format_t::fill(_elements, elem);
   }
 
   /**
@@ -408,11 +426,10 @@ public:
    */
 
   template <typename E>
-  matrix(expression<E> const &expr)
-      : dimen(expr.get_dimension()),
-        elements(dimen.row_dimen * dimen.col_dimen) {
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] = expr.get(a);
+  matrix(expression<E> const &expr) : _dimen(expr.get_dimension()) {
+    _construct_container();
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] = expr.get(a);
   }
 
   /**
@@ -427,11 +444,11 @@ public:
   template <typename E> matrix &operator=(expression<E> const &expr) {
     if (expr.get_dimension() != this->get_dimension()) {
       throw std::logic_error(std::string("Cannot assign. Dimensions are ") +
-                             this->dimen.to_string() + std::string(" and ") +
+                             this->_dimen.to_string() + std::string(" and ") +
                              expr.get_dimension().to_string());
     }
-    for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
-      this->elements[i] = expr.get(i);
+    for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen; i++)
+      this->_elements[i] = expr.get(i);
     return *this;
   }
 
@@ -449,8 +466,8 @@ public:
                                this->dimen.to_string() + std::string(" and ") +
                                other.get_dimension().to_string());
       }
-      for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
-        this->elements[i] = other.elements[i];
+      for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen; i++)
+        this->_elements[i] = other._elements[i];
       return *this;
     }
   }
@@ -465,14 +482,14 @@ public:
    */
 
   template <typename E> matrix &operator+=(expression<E> const &expr) {
-    if (this->dimen != expr.get_dimension()) {
+    if (this->_dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("+= operator not permitted. Dimensions are ") +
-          this->dimen.to_string() + std::string(" and ") +
+          this->_dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] += expr.get[a];
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] += expr.get(a);
     return *this;
   }
 
@@ -486,14 +503,14 @@ public:
    */
 
   template <typename E> matrix &operator-=(expression<E> const &expr) {
-    if (this->dimen != expr.get_dimension()) {
+    if (this->_dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("-= operator not permitted. Dimensions are ") +
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] -= expr.get[a];
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] -= expr.get(a);
     return *this;
   }
 
@@ -513,8 +530,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] *= expr.get[a];
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] *= expr.get(a);
     return *this;
   }
 
@@ -534,8 +551,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] /= expr.get[a];
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] /= expr.get(a);
     return *this;
   }
   /**
@@ -555,8 +572,8 @@ public:
           this->dimen.to_string() + std::string(" and ") +
           expr.get_dimension().to_string());
     }
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      if (elements[a] != expr.get(a))
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      if (_elements[a] != expr.get(a))
         return false;
     return true;
   }
@@ -570,8 +587,8 @@ public:
    */
 
   template <typename T> void scalar_add(T t) {
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] += t;
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] += t;
   }
 
   /**
@@ -583,8 +600,8 @@ public:
    */
 
   template <typename T> void scalar_sub(int t) {
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] -= t;
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] -= t;
   }
 
   /**
@@ -596,8 +613,8 @@ public:
    */
 
   template <typename T> void scalar_mul(T t) {
-    for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      elements[a] *= t;
+    for (size_t a = 0; a < _dimen.row_dimen * _dimen.col_dimen; a++)
+      _elements[a] *= t;
   }
 
   /**
@@ -608,13 +625,13 @@ public:
 
   void view(std::ostream &stream = std::cout) {
     auto min_row =
-        (PRINT_ROW_LIMIT > dimen.row_dimen ? dimen.row_dimen : PRINT_ROW_LIMIT);
+        (PRINT_ROW_LIMIT > _dimen.row_dimen ? _dimen.row_dimen : PRINT_ROW_LIMIT);
     auto min_col =
-        (PRINT_COL_LIMIT > dimen.col_dimen ? dimen.col_dimen : PRINT_COL_LIMIT);
+        (PRINT_COL_LIMIT > _dimen.col_dimen ? _dimen.col_dimen : PRINT_COL_LIMIT);
 
     for (size_t i = 0; i < min_row; i++) {
       for (size_t j = 0; j < min_col; j++)
-        stream << matrix(i, j) << " ";
+        stream << _elements.get(i, j) << " ";
       stream << "\n";
     }
   }
