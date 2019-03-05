@@ -41,7 +41,7 @@ Removing the time of copying on every operation. It uses expression template to 
 
 ### Creating a Matrix
 
-All Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Matrix. You need to pass an optional one of the two policies `boost::test::policy::RowMajorPolicy` or `boost::test::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
+All Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Matrix. You need to pass an optional one of the two policies `test::policy::RowMajorPolicy` or `test::policy::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
 
 - Using Initializer List of Initializer Lists
 
@@ -96,7 +96,7 @@ Performance is the ultimate goal at the end of the day. Below is an image demons
 
 **It is at-least 86% faster than naive implementation** Of-course, it can be further improved.
 
-![Imgur](https://i.imgur.com/Y1tYoQc.png)
+![Imgur](https://i.imgur.com/1Lrv8W4.png)
 
 
 
