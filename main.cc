@@ -24,13 +24,12 @@
  * @brief A Lambda that returns the lazy_matrix with [row,col] and filled with v
  *
  */
-auto get_lazy_matrix = [](size_t row, size_t col,
-                          int v) -> boost::test::matrix_int {
+auto get_lazy_matrix = [](size_t row, size_t col, int v) -> test::matrix_int {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
   for (size_t t = 0; t < row; t++)
     for (size_t j = 0; j < col; j++)
       data[t][j] = v;
-  return boost::test::matrix_int(data);
+  return test::matrix_int(data);
 };
 
 /**
@@ -39,12 +38,12 @@ auto get_lazy_matrix = [](size_t row, size_t col,
  *
  */
 auto get_normal_matrix = [](size_t row, size_t col,
-                            int v) -> boost::test::Matrix<int> {
+                            int v) -> test::Matrix<int> {
   std::vector<std::vector<int>> data{row, std::vector<int>(col)};
   for (size_t t = 0; t < row; t++)
     for (size_t j = 0; j < col; j++)
       data[t][j] = v;
-  return boost::test::Matrix<int>(data);
+  return test::Matrix<int>(data);
 };
 
 /**
@@ -52,7 +51,7 @@ auto get_normal_matrix = [](size_t row, size_t col,
  *
  */
 auto compute_something = [](auto &target, auto &scope) {
- target =
+  target =
       scope + scope * scope + scope / scope + scope + scope + scope + scope +
       scope + scope + scope + scope / scope + scope + scope + scope + scope -
       scope + scope + scope + scope / scope + scope + scope + scope + scope +
@@ -78,9 +77,9 @@ auto compute_something = [](auto &target, auto &scope) {
 };
 
 int main() {
-  using boost::test::benchmark;
-  using boost::test::matrix_int;
-  using Matrix = boost::test::Matrix<int>;
+  using test::benchmark;
+  using test::matrix_int;
+  using Matrix = test::Matrix<int>;
 
   // Block 1
   {

@@ -1,4 +1,4 @@
-# Lazy Matrix : A Programming competency test for uBLAS
+# Matrix : A Programming competency test for uBLAS
 
 [![Build 
 Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=master)](https://travis-ci.org/coder3101/gsoc19-boost-test)
@@ -21,9 +21,9 @@ cd build && cmake .. && make install
 
 It will install the library to `/usr/local/include` and you can use to as a normal header from there after.
 
-## Introduction to Lazy Matrix
+## Introduction to Matrix
 
-Lazy Matrix is a Single Header only Library that includes some basic subroutines for Matrix Calculations. It is fast thanks to expression templates. It can expand expression like :
+Matrix is a Single Header only Library that includes some basic subroutines for Matrix Calculations. It is fast thanks to expression templates. It can expand expression like :
 
 ```cpp
 auto val = a + b - c * d;
@@ -39,17 +39,17 @@ for(size_t i=0; i< rows; i++)
 
 Removing the time of copying on every operation. It uses expression template to achieve this task. It also means that any expression that does not calls `=` (assignment) the expression is not at all evaluated. 
 
-### Creating a Lazy Matrix
+### Creating a Matrix
 
-All Lazy Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Lazy Matrix. You need to pass an optional one of the two policies `boost::test::policy::RowMajorPolicy` or `boost::test::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
+All Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Matrix. You need to pass an optional one of the two policies `boost::test::policy::RowMajorPolicy` or `boost::test::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
 
 - Using Initializer List of Initializer Lists
 
   - ```cpp
-    using boost::test;
-    lazy_matrix<int,policy::ColumnMajorPolicy> foo = {{1,2,3},
-                                         		      {4,5,6},
-                                                      {7,8,9}};
+    using test;
+    matrix<int,policy::ColumnMajorPolicy> foo = {{1,2,3},
+                                         	     {4,5,6},
+                                                 {7,8,9}};
     ```
 
 - Using Vector of Vectors
@@ -57,16 +57,16 @@ All Lazy Matrix variable have immutable dimensions. i.e It cannot be changed onc
 - Using just row and column count.
 
   - ```cpp
-    boost::test::lazy_matrix<int> baaz(rows, columns);
+    test::matrix<int> baaz(rows, columns);
     ```
 
 
 
-The `boost::test::lazy_matrix` type can be converted to and from `boost::test::expression` type. An Expression represents the operation to be computed. We have a non-explicit constructor that takes in a `expression` and evaluates it to form the `boost::test::lazy_matrix` .  An expression type will be evaluated upon the call to any assignment operator (=, +=, -= ...etc).
+The `test::matrix` type can be converted to and from `test::expression` type. An Expression represents the operation to be computed. We have a non-explicit constructor that takes in a `expression` and evaluates it to form the `test::matrix` .  An expression type will be evaluated upon the call to any assignment operator (=, +=, -= ...etc).
 
 
 
-### Operations on Lazy Matrix
+### Operations on Matrix
 
 This is a simple library, it does not have a lot to offer when it comes to operations. But it does have almost all basic operations using operator overloading. Following is a list of all the supported operations.
 
@@ -92,7 +92,7 @@ This is a simple library, it does not have a lot to offer when it comes to opera
 
 ### Performance
 
-Performance is the ultimate goal at the end of the day. Below is an image demonstrating the performance of `lazy_matrix` over the normal implementation. The benchmark was computed after running 192 length long +, -, *, / operations on 1000x1000 matrix.
+Performance is the ultimate goal at the end of the day. Below is an image demonstrating the performance of `matrix` over the normal implementation. The benchmark was computed after running 192 length long +, -, *, / operations on 1000x1000 matrix.
 
 **It is at-least 86% faster than naive implementation** Of-course, it can be further improved.
 
@@ -108,7 +108,9 @@ The Documentation was automatically generated using `doxygen` from the source co
 
 ## Builds
 
-I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . **The complete code has been formatted using `clang-format` using `LLVM` coding style.**
+I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . 
+
+**The complete code has been formatted using `clang-format` using `LLVM` coding style.**
 
 
 

@@ -25,7 +25,7 @@
 #define BEAUTIFICATION_FACTOR (80)
 #endif
 
-namespace boost::test {
+namespace test {
 struct benchmark_result {
   long long execution_time;
   std::string label;

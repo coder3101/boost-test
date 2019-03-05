@@ -1,10 +1,10 @@
 
 
-/*! \mainpage Lazy Matrix
+/*! \mainpage Matrix
  *
  * \section intro_sec Introduction
  *
- * Lazy Matrix is a Single header only Matrix Library for basic operations it
+ * Matrix is a Single header only Matrix Library for basic operations it
  * implements the expression template style to lazy-ly evaluate when it is
  * required. This Project was the part of boost.uBLAS Competancy Test in Google
  * Summer of Codes 2019 However you are free to use this any ways you want.
@@ -12,8 +12,8 @@
  * \section install_sec Documentation
  *
  * Head over to this <a
- * href="https://coder3101.github.io/gsoc19-boost-test/html/classboost_1_1test_1_1lazy__matrix.html"><b>URL</b></a>
- * for the complete documentation of `lazy_matrix.hpp`
+ * href="https://coder3101.github.io/gsoc19-boost-test/html/classboost_1_1test_1_1matrix.html"><b>URL</b></a>
+ * for the complete documentation of `matrix.hpp`
  *
  * You can also read Sample Examples at <a
  * href="https://github.com/coder3101/gsoc19-boost-test">this url</a>
@@ -66,25 +66,25 @@
 #endif
 
 /**
- * @brief This namespace holds the lazy matrix library. It has been named so
+ * @brief This namespace holds the matrix library. It has been named so
  * because it is meant for boost.uBLAS Google Summer of Code 2019 Proposal
  * Competency test
  *
  */
-namespace boost::test {
+namespace test {
 
 /**
  * @brief This namespace contains all the policies that can be used with the
- * lazy_matrix class.
+ * matrix class.
  *
  */
 namespace policy {
 /**
  * @brief Policy that specifies the Row Major Ordering to follow
  *
- * @tparam dtype the datatype of the lazy_matrix
+ * @tparam value_t the datatype of the matrix
  */
-template <class dtype> struct RowMajorPolicy {
+template <class value_t> struct RowMajorPolicy {
   /**
    * @brief Actual Implementation of the ordering
    *
@@ -93,9 +93,10 @@ template <class dtype> struct RowMajorPolicy {
    * @param indexY the column index that is requested
    * @param rows the total rows in the matrix
    * @param column the total column in the matrix.
-   * @return dtype& the reference to the element being selected by this policy.
+   * @return value_t& the reference to the element being selected by this
+   * policy.
    */
-  static auto &ordering(std::vector<dtype> &bucket, size_t indexX,
+  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
                         size_t indexY, size_t rows, size_t column) {
     return bucket[(indexX * (column)) + (indexY)];
   }
@@ -107,9 +108,10 @@ template <class dtype> struct RowMajorPolicy {
    * @param indexY the column index that is requested
    * @param rows the total rows in the matrix
    * @param column the total column in the matrix.
-   * @return dtype& the reference to the element being selected by this policy.
+   * @return value_t& the reference to the element being selected by this
+   * policy.
    */
-  static auto ordering(std::vector<dtype> const &bucket, size_t indexX,
+  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
                        size_t indexY, size_t rows, size_t column) {
     return bucket[(indexX * (column)) + (indexY)];
   }
@@ -119,8 +121,8 @@ template <class dtype> struct RowMajorPolicy {
    * @param bucket the flattened bucket to fill the elements to.
    * @param elems the elements in the form of vector of vectors.
    */
-  static void fill(std::vector<dtype> &bucket,
-                   std::vector<std::vector<dtype>> const &elems) {
+  static void fill(std::vector<value_t> &bucket,
+                   std::vector<std::vector<value_t>> const &elems) {
     size_t counter = 0;
     for (auto &e : elems)
       for (auto &E : e)
@@ -131,9 +133,9 @@ template <class dtype> struct RowMajorPolicy {
 /**
  * @brief Policy that specifies the Column Major Ordering to follow
  *
- * @tparam dtype the datatype of the lazy_matrix
+ * @tparam value_t the datatype of the matrix
  */
-template <class dtype> struct ColumnMajorPolicy {
+template <class value_t> struct ColumnMajorPolicy {
   /**
    * @brief Actual Implementation of the ordering
    *
@@ -142,9 +144,10 @@ template <class dtype> struct ColumnMajorPolicy {
    * @param indexY the column index that is requested
    * @param rows the total rows in the matrix
    * @param column the total column in the matrix.
-   * @return dtype& the reference to the element being selected by this policy.
+   * @return value_t& the reference to the element being selected by this
+   * policy.
    */
-  static auto &ordering(std::vector<dtype> &bucket, size_t indexX,
+  static auto &ordering(std::vector<value_t> &bucket, size_t indexX,
                         size_t indexY, size_t rows, size_t column) {
     return bucket[(indexY * (rows)) + (indexX)];
   }
@@ -156,9 +159,10 @@ template <class dtype> struct ColumnMajorPolicy {
    * @param indexY the column index that is requested
    * @param rows the total rows in the matrix
    * @param column the total column in the matrix.
-   * @return dtype& the reference to the element being selected by this policy.
+   * @return value_t& the reference to the element being selected by this
+   * policy.
    */
-  static auto ordering(std::vector<dtype> const &bucket, size_t indexX,
+  static auto ordering(std::vector<value_t> const &bucket, size_t indexX,
                        size_t indexY, size_t rows, size_t column) {
     return bucket[(indexY * (rows)) + (indexX)];
   }
@@ -169,8 +173,8 @@ template <class dtype> struct ColumnMajorPolicy {
    * @param bucket the flattened bucket to fill the elements to.
    * @param elems the elements in the form of vector of vectors.
    */
-  static void fill(std::vector<dtype> &bucket,
-                   std::vector<std::vector<dtype>> const &elems) {
+  static void fill(std::vector<value_t> &bucket,
+                   std::vector<std::vector<value_t>> const &elems) {
     size_t counter = 0;
     auto row_counts = elems.size();
     auto col_counts = elems[0].size();
@@ -242,7 +246,7 @@ struct dimension {
  *
  * @tparam E the type to create an expression into.
  */
-template <typename E> class expression {
+template <typename E, class format_t> class expression {
 public:
   /**
    * @brief returns the expression at i
@@ -264,82 +268,18 @@ public:
 };
 
 /**
- * @brief The internal sequencial container of the lazy_matrix.
  *
- * @tparam dtype the datatype to store
- * @tparam Major the ordering to follow during traversal. It must be one of the
- * valid policy.
- */
-template <class dtype, class Major> class linear_holding {
-  std::vector<dtype> data;
-  size_t r, c;
-
-public:
-  /**
-   * @brief Construct a new linear holding object
-   *
-   * @param row the rows in the matrix
-   * @param columns the columns in the matrix
-   */
-  linear_holding(size_t row, size_t columns)
-      : data(row * columns), r(row), c(columns){};
-  /**
-   * @brief returns the value at i,j in the matrix. Using the ordering.
-   *
-   * @param a the row index
-   * @param b the column index
-   * @return dtype the value type in the container.
-   */
-  auto operator()(size_t a, size_t b) const {
-    return Major::ordering(data, a, b, r, c);
-  }
-  /**
-   * @brief returns the value at i,j in the matrix by reference. Using the
-   * ordering.
-   *
-   * @param a the row index
-   * @param b the column index
-   * @return dtype& the value type in the container.
-   */
-  auto &operator()(size_t a, size_t b) {
-    return Major::ordering(data, a, b, r, c);
-  }
-  /**
-   * @brief Gets the element from the specified index
-   *
-   * @param index the index to look the value for.
-   * @return dtype the value at that index.
-   */
-  auto operator[](size_t index) const { return data[index]; }
-  /**
-   * @brief Gets the element from the specified index by reference
-   *
-   * @param index the index to look the value for.
-   * @return dtype the value at that index by refernce.
-   */
-  auto &operator[](size_t index) { return data[index]; }
-  /**
-   * @brief Fills the elements in the flattened value by the specified ordering.
-   *
-   * @param elements the values to fill with.
-   */
-  void fill(std::vector<std::vector<dtype>> const &elements) {
-    Major::fill(data, elements);
-  }
-};
-
-/**
- *
- * @brief The template class of the lazy matrix. It is final and implements
+ * @brief The template class of the matrix. It is final and implements
  * Curiously Recurring Templates Pattern. These matrices have immutable
  * dimension and shapes will not change once created.
  *
  * @tparam dtype the type that this matrix will hold.
  */
-template <typename dtype, class OrderPolicy = policy::RowMajorPolicy<dtype>>
-class lazy_matrix final : public expression<lazy_matrix<dtype>> {
+template <typename value_t, class format_t = policy::RowMajorPolicy<value_t>,
+          class storage_t = std::vector<value_t>>
+class matrix final : public expression<matrix<value_t>> {
   dimension const dimen;
-  linear_holding<dtype, OrderPolicy> matrix;
+  storage_t elements;
 
 public:
   /**
@@ -349,7 +289,9 @@ public:
    * @param j the column index
    * @return dtype the element at that position
    */
-  auto get(size_t i, size_t j) const { return matrix(i, j); }
+  auto get(size_t i, size_t j) const {
+    return format_t::ordering(elements, i, j, dimen.row_dimen, dimen.col_dimen);
+  }
   /**
    * @brief returns element at i, j position in the matrix by reference. It can
    * be used to assign values to i,j as well.
@@ -358,14 +300,16 @@ public:
    * @param j the column index
    * @return dtype the element at that position
    */
-  auto &get(size_t i, size_t j) { return matrix(i, j); }
+  auto &get(size_t i, size_t j) {
+    return format_t::ordering(elements, i, j, dimen.row_dimen, dimen.col_dimen);
+  }
   /**
    * @brief Returns the value from the ith position in flat array
    *
    * @param i the index to look for
    * @return dtype the value returned
    */
-  auto get(size_t i) const { return matrix[i]; }
+  auto get(size_t i) const { return elements[i]; }
 
   /**
    * @brief Returns the value from the ith position in flat array by reference
@@ -373,7 +317,7 @@ public:
    * @param i the index to look for
    * @return dtype the value returned by reference
    */
-  auto &get(size_t i) { return matrix[i]; }
+  auto &get(size_t i) { return elements[i]; }
 
   /**
    * @brief Get the dimension of the matrix
@@ -388,26 +332,26 @@ public:
    * @param rc the rows in the matrix
    * @param cc the columns in the matrix
    */
-  lazy_matrix(size_t rc, size_t cc) : dimen(rc, cc), matrix(rc, cc) {}
+  matrix(size_t rc, size_t cc) : dimen(rc, cc), elements(rc * cc) {}
   /**
-   * @brief Construct a new lazy matrix object from an initializer list.
+   * @brief Construct a new matrix object from an initializer list.
    *
    * @param elem the initializer list of initialiazer lists
    */
   // cppcheck-suppress noExplicitConstructor
-  lazy_matrix(std::initializer_list<std::initializer_list<dtype>> elem)
+  matrix(std::initializer_list<std::initializer_list<value_t>> elem)
       : dimen(elem.size(), elem.begin()->size()),
-        matrix(elem.size(), elem.begin()->size()) {
+        elements(elem.size() * elem.begin()->size()) {
     for (auto e : elem) {
       if (e.size() != dimen.col_dimen)
         std::logic_error(
             "Cannot create a matrix out of the provided initializer_list. "
             "Length of each initializer list must be same");
     }
-    std::vector<std::vector<dtype>> res;
+    std::vector<std::vector<value_t>> res;
     for (auto &e : elem)
       res.push_back(e);
-    matrix.fill(res);
+    format_t::fill(elements, res);
   }
   /**
    * @brief Construct a new lazy matrix object from vectors
@@ -415,19 +359,19 @@ public:
    * @param elem vectors of vectors of elements.
    */
   // cppcheck-suppress noExplicitConstructor
-  lazy_matrix(std::vector<std::vector<dtype>> elem)
+  matrix(std::vector<std::vector<value_t>> elem)
       : dimen(elem.size(), elem[0].size()),
-        matrix(elem.size(), elem[0].size()) {
+        elements(elem.size() * elem[0].size()) {
     for (auto e : elem) {
       if (e.size() != dimen.col_dimen)
         std::logic_error("Cannot create a matrix out of the provided vector of "
                          "vector.Lenght of each vector must be same");
     }
-    matrix.fill(elem);
+    format_t::fill(elements, elem);
   }
 
   /**
-   * @brief Construct a new lazy matrix object from an expression type. The
+   * @brief Construct a new matrix object from an expression type. The
    * Expression will be evaluated to initialize the new variable.
    *
    * @tparam E the expression template paramater
@@ -435,12 +379,11 @@ public:
    */
 
   template <typename E>
-  lazy_matrix(expression<E> const &expr)
+  matrix(expression<E> const &expr)
       : dimen(expr.get_dimension()),
-        matrix(dimen.row_dimen *
-               std::vector<decltype(expr.get(0, 0))>(dimen.col_dimen)) {
+        elements(dimen.row_dimen * dimen.col_dimen) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) = expr.get(a);
+      elements[a] = expr.get(a);
   }
 
   /**
@@ -452,14 +395,14 @@ public:
    * @return lazy_matrix& the reference to *this
    */
 
-  template <typename E> lazy_matrix &operator=(expression<E> const &expr) {
+  template <typename E> matrix &operator=(expression<E> const &expr) {
     if (expr.get_dimension() != this->get_dimension()) {
       throw std::logic_error(std::string("Cannot assign. Dimensions are ") +
                              this->dimen.to_string() + std::string(" and ") +
                              expr.get_dimension().to_string());
     }
     for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
-      this->matrix[i] = expr.get(i);
+      this->elements[i] = expr.get(i);
     return *this;
   }
 
@@ -470,7 +413,7 @@ public:
    * @return lazy_matrix& the reference to *this
    */
 
-  lazy_matrix &operator=(lazy_matrix const &other) {
+  matrix &operator=(matrix const &other) {
     if (this != &other) {
       if (this->get_dimension() != other.get_dimension()) {
         throw std::logic_error(std::string("Cannot assign. Dimensions are ") +
@@ -478,7 +421,7 @@ public:
                                other.get_dimension().to_string());
       }
       for (size_t i = 0; i < this->dimen.row_dimen * this->dimen.col_dimen; i++)
-        this->matrix[i] = other.matrix[i];
+        this->elements[i] = other.elements[i];
       return *this;
     }
   }
@@ -489,10 +432,10 @@ public:
    *
    * @tparam E the expression template paramater
    * @param expr the expression with which we will evaluate and assign to *this
-   * @return lazy_matrix& the reference to *this
+   * @return matrix& the reference to *this
    */
 
-  template <typename E> lazy_matrix &operator+=(expression<E> const &expr) {
+  template <typename E> matrix &operator+=(expression<E> const &expr) {
     if (this->dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("+= operator not permitted. Dimensions are ") +
@@ -500,7 +443,7 @@ public:
           expr.get_dimension().to_string());
     }
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) += expr.get(a);
+      elements[a] += expr.get[a];
     return *this;
   }
 
@@ -510,10 +453,10 @@ public:
    *
    * @tparam E the expression template paramater
    * @param expr the expression with which we will evaluate and assign to *this
-   * @return lazy_matrix& the reference to *this
+   * @return matrix& the reference to *this
    */
 
-  template <typename E> lazy_matrix &operator-=(expression<E> const &expr) {
+  template <typename E> matrix &operator-=(expression<E> const &expr) {
     if (this->dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("-= operator not permitted. Dimensions are ") +
@@ -521,7 +464,7 @@ public:
           expr.get_dimension().to_string());
     }
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) -= expr.get(a);
+      elements[a] -= expr.get[a];
     return *this;
   }
 
@@ -531,10 +474,10 @@ public:
    *
    * @tparam E the expression template paramater
    * @param expr the expression with which we will evaluate and assign to *this
-   * @return lazy_matrix& the reference to *this
+   * @return matrix& the reference to *this
    */
 
-  template <typename E> lazy_matrix &operator*=(expression<E> const &expr) {
+  template <typename E> matrix &operator*=(expression<E> const &expr) {
     if (this->dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("*= operator not permitted. Dimensions are ") +
@@ -542,7 +485,7 @@ public:
           expr.get_dimension().to_string());
     }
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) *= expr.get(a);
+      elements[a] *= expr.get[a];
     return *this;
   }
 
@@ -552,10 +495,10 @@ public:
    *
    * @tparam E the expression template paramater
    * @param expr the expression with which we will evaluate and assign to *this
-   * @return lazy_matrix& the reference to *this
+   * @return matrix& the reference to *this
    */
 
-  template <typename E> lazy_matrix &operator/=(expression<E> const &expr) {
+  template <typename E> matrix &operator/=(expression<E> const &expr) {
     if (this->dimen != expr.get_dimension()) {
       throw std::logic_error(
           std::string("/= operator not permitted. Dimensions are ") +
@@ -563,7 +506,7 @@ public:
           expr.get_dimension().to_string());
     }
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) /= expr.get(a);
+      elements[a] /= expr.get[a];
     return *this;
   }
   /**
@@ -584,7 +527,7 @@ public:
           expr.get_dimension().to_string());
     }
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      if (matrix[a] != expr.get(a))
+      if (elements[a] != expr.get(a))
         return false;
     return true;
   }
@@ -599,7 +542,7 @@ public:
 
   template <typename T> void scalar_add(T t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) += t;
+      elements[a] += t;
   }
 
   /**
@@ -612,7 +555,7 @@ public:
 
   template <typename T> void scalar_sub(int t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix, get(a) -= t;
+      elements[a] -= t;
   }
 
   /**
@@ -625,7 +568,7 @@ public:
 
   template <typename T> void scalar_mul(T t) {
     for (size_t a = 0; a < dimen.row_dimen * dimen.col_dimen; a++)
-      matrix.get(a) *= t;
+      elements[a] *= t;
   }
 
   /**
@@ -926,8 +869,8 @@ template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
         u.get_dimension().to_string() + " and " +
         v.get_dimension().to_string());
   }
-  lazy_matrix<decltype(u.get(0, 0))> ans(u.get_dimension().row_dimen,
-                                         v.get_dimension().col_dimen);
+  matrix<decltype(u.get(0, 0))> ans(u.get_dimension().row_dimen,
+                                    v.get_dimension().col_dimen);
   for (size_t i = 0; i < u.get_dimension().row_dimen; i++) {
     for (size_t j = 0; j < v.get_dimension().col_dimen; j++) {
       ans.get(i, j) = 0;
@@ -937,14 +880,13 @@ template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
   }
   return ans;
 }
+using matrix_int = matrix<int>;
+using matrix_long = matrix<long long>;
+using matrix_float = matrix<float>;
+using matrix_double = matrix<double>;
+using matrix_complex_float = matrix<std::complex<float>>;
+using matrix_complex_double = matrix<std::complex<double>>;
+using matrix_complex_long = matrix<std::complex<long long>>;
 
-typedef lazy_matrix<int> matrix_int;
-typedef lazy_matrix<long long> matrix_long;
-typedef lazy_matrix<float> matrix_float;
-typedef lazy_matrix<double> matrix_double;
-typedef lazy_matrix<std::complex<float>> matrix_complex_float;
-typedef lazy_matrix<std::complex<double>> matrix_complex_double;
-typedef lazy_matrix<std::complex<long long>> matrix_complex_long;
-
-} // namespace boost::test
+} // namespace test
 #endif

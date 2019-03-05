@@ -21,7 +21,7 @@
 #include <iostream>
 #include <vector>
 
-namespace boost::test {
+namespace test {
 template <class T> class Matrix {
   int row, col;
 
@@ -83,7 +83,7 @@ public:
     return true;
   }
 
-  bool operator==(const boost::test::matrix_int &other) const {
+  bool operator==(const test::matrix_int &other) const {
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
         if (matrix[t][j] != other.get(t, j))
