@@ -147,6 +147,14 @@ struct util {
       return decltype(expr1.get_format())::to_other_major(
           target, expr1.get_dimension());
   }
+  /**
+   * @brief Checks if two arguments have same dimension
+   * 
+   * @tparam A the type of first argument
+   * @tparam B the type of second argument
+   * @param a the first argument
+   * @param b the second argument
+   */
   template <class A, class B>
   static void assert_same_dimensions(A const &a, B const &b) {
     if (a.get_dimension() != b.get_dimension())
