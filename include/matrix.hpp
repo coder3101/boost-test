@@ -306,7 +306,7 @@ public:
  */
 template <typename value_t, class format_t = policy::RowMajorPolicy<value_t>,
           class storage_t = std::vector<value_t>>
-class matrix final : public expression<matrix<value_t>> {
+class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
   dimension const _dimen;
   storage_t _elements;
 
@@ -466,7 +466,8 @@ public:
                                this->dimen.to_string() + std::string(" and ") +
                                other.get_dimension().to_string());
       }
-      for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen; i++)
+      for (size_t i = 0; i < this->_dimen.row_dimen * this->_dimen.col_dimen;
+           i++)
         this->_elements[i] = other._elements[i];
       return *this;
     }
@@ -624,10 +625,10 @@ public:
    */
 
   void view(std::ostream &stream = std::cout) {
-    auto min_row =
-        (PRINT_ROW_LIMIT > _dimen.row_dimen ? _dimen.row_dimen : PRINT_ROW_LIMIT);
-    auto min_col =
-        (PRINT_COL_LIMIT > _dimen.col_dimen ? _dimen.col_dimen : PRINT_COL_LIMIT);
+    auto min_row = (PRINT_ROW_LIMIT > _dimen.row_dimen ? _dimen.row_dimen
+                                                       : PRINT_ROW_LIMIT);
+    auto min_col = (PRINT_COL_LIMIT > _dimen.col_dimen ? _dimen.col_dimen
+                                                       : PRINT_COL_LIMIT);
 
     for (size_t i = 0; i < min_row; i++) {
       for (size_t j = 0; j < min_col; j++)
