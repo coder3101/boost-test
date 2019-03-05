@@ -44,6 +44,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 /**
@@ -128,6 +129,20 @@ template <class value_t> struct RowMajorPolicy {
       for (auto &E : e)
         bucket[counter++] = E;
   }
+  /**
+   * @brief Converts the given index to its equivalent column major index.
+   *
+   * @param i the index whose equivalent is desired
+   * @param rows the total rows in the matrix
+   * @param columns the total column in the matrix
+   * @return size_t return a value in range [0, row*columns)
+   */
+
+  static size_t to_column_major(size_t i, size_t rows, size_t columns) {
+    size_t x = i / columns;
+    size_t y = i % columns;
+    return (y * rows + x);
+  }
 };
 
 /**
@@ -181,6 +196,20 @@ template <class value_t> struct ColumnMajorPolicy {
     for (size_t a = 0; a < col_counts; a++)
       for (size_t b = 0; b < row_counts; b++)
         bucket[counter++] = elems[b][a];
+  }
+  /**
+   * @brief Converts the given index to its equivalent row major index.
+   *
+   * @param i the index whose equivalent is desired
+   * @param rows the total rows in the matrix
+   * @param columns the total column in the matrix
+   * @return size_t return a value in range [0, row*columns)
+   */
+
+  static size_t to_row_major(size_t i, size_t rows, size_t columns) {
+    size_t y = i / rows;
+    size_t x = i % rows;
+    return (x * columns + y);
   }
 };
 } // namespace policy
@@ -246,7 +275,7 @@ struct dimension {
  *
  * @tparam E the type to create an expression into.
  */
-template <typename E, class format_t> class expression {
+template <typename E> class expression {
 public:
   /**
    * @brief returns the expression at i
