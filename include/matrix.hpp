@@ -47,6 +47,13 @@
 #include <type_traits>
 #include <vector>
 
+#if defined(_OPENMP)
+#include <omp.h>
+#else
+#pragma GCC warning                                                            \
+    "OPENMP is not defined. Please compile with -fopenmp to get parallel for loops"
+#endif
+
 /**
  * @brief This namespace holds the matrix library. It has been named so
  * because it is meant for boost.uBLAS Google Summer of Code 2019 Proposal.
@@ -149,7 +156,7 @@ struct util {
   }
   /**
    * @brief Checks if two arguments have same dimension
-   * 
+   *
    * @tparam A the type of first argument
    * @tparam B the type of second argument
    * @param a the first argument
@@ -277,7 +284,9 @@ template <class value_t> struct ColumnMajorPolicy {
     size_t counter = 0;
     auto row_counts = elems.size();
     auto col_counts = elems[0].size();
+#pragma omp parallel for
     for (size_t a = 0; a < col_counts; a++)
+#pragma omp parallel for
       for (size_t b = 0; b < row_counts; b++)
         bucket[counter++] = elems[b][a];
   }
@@ -514,12 +523,14 @@ public:
   template <typename E>
   matrix(expression<E> const &expr) : _dimen(expr.get_dimension()) {
     _construct_container();
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _safe_copy(expr, a);
   }
 
   matrix(matrix &&other) : _dimen(std::move(other.get_dimension())) {
     _construct_container();
+#pragma omp parallel for
     for (size_t i = 0; i < this->_dimen.count(); i++)
       _safe_move(other, i);
   }
@@ -534,6 +545,7 @@ public:
   template <typename E>
   matrix(expression<E> &&expr) : _dimen(expr.get_dimension()) {
     _construct_container();
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _safe_move(expr, a);
   }
@@ -549,6 +561,7 @@ public:
 
   template <typename E> auto &operator=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t i = 0; i < this->_dimen.count(); i++)
       _safe_copy(expr, i);
     return *this;
@@ -565,6 +578,7 @@ public:
 
   template <typename E> auto &operator=(expression<E> &&expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t i = 0; i < this->_dimen.count(); i++)
       _safe_move(expr, i);
     return *this;
@@ -579,6 +593,7 @@ public:
   auto &operator=(matrix const &other) {
     if (this != &other) {
       util::assert_same_dimensions(*this, other);
+#pragma omp parallel for
       for (size_t i = 0; i < this->_dimen.count(); i++)
         _safe_copy(other, i);
       return *this;
@@ -588,6 +603,7 @@ public:
   auto &operator=(matrix &&other) {
     if (this != &other) {
       util::assert_same_dimensions(*this, other);
+#pragma omp parallel for
       for (size_t i = 0; i < this->_dimen.count(); i++)
         _safe_move(other, i);
       return *this;
@@ -605,6 +621,7 @@ public:
 
   template <typename E> matrix &operator+=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] += expr.get(_safe_copy(expr, a));
     return *this;
@@ -621,6 +638,7 @@ public:
 
   template <typename E> matrix &operator-=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] -= expr.get(_safe_copy(expr, a));
     return *this;
@@ -637,6 +655,7 @@ public:
 
   template <typename E> matrix &operator*=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] *= expr.get(_safe_copy(expr, a));
     return *this;
@@ -653,6 +672,7 @@ public:
 
   template <typename E> matrix &operator/=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] /= expr.get(_safe_copy(expr, a));
     return *this;
@@ -667,6 +687,7 @@ public:
    */
 
   template <typename T> void scalar_add(T t) {
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] += t;
   }
@@ -680,6 +701,7 @@ public:
    */
 
   template <typename T> void scalar_sub(int t) {
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] -= t;
   }
@@ -693,6 +715,7 @@ public:
    */
 
   template <typename T> void scalar_mul(T t) {
+#pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
       _elements[a] *= t;
   }
@@ -706,8 +729,9 @@ public:
   void view(std::ostream &stream = std::cout) {
     auto min_row = (10 > _dimen.row_dimen ? _dimen.row_dimen : 10);
     auto min_col = (10 > _dimen.col_dimen ? _dimen.col_dimen : 10);
-
+#pragma omp parallel for
     for (size_t i = 0; i < min_row; i++) {
+#pragma omp parallel for
       for (size_t j = 0; j < min_col; j++)
         stream << _elements.get(i, j) << " ";
       stream << "\n";
@@ -1039,9 +1063,12 @@ template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
   }
   matrix<decltype(u.get(0, 0))> ans(u.get_dimension().row_dimen,
                                     v.get_dimension().col_dimen);
+#pragma omp parallel for
   for (size_t i = 0; i < u.get_dimension().row_dimen; i++) {
+#pragma omp parallel for
     for (size_t j = 0; j < v.get_dimension().col_dimen; j++) {
       ans.get(i, j) = 0;
+#pragma omp parallel for
       for (size_t k = 0; k < v.get_dimension().row_dimen; k++)
         ans.get(i, j) += u.get(i, k) * v.get(k, j);
     }

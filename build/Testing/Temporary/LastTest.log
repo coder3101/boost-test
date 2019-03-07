@@ -1,24 +1,3 @@
-Start testing: Mar 05 17:33 IST
+Start testing: Mar 07 23:37 IST
 ----------------------------------------------------------
-1/1 Testing: main-test
-1/1 Test: main-test
-Command: "/home/ashar/boost-test/build/main"
-Directory: /home/ashar/boost-test/build
-"main-test" start time: Mar 05 17:33 IST
-Output:
-----------------------------------------------------------
-********************************************************************************
-Execution without Expression template executed for 1193 miliseconds (1.193 s) 
-********************************************************************************
-********************************************************************************
-Execution with Expression template executed for 174 miliseconds (0.174 s) 
-********************************************************************************
-<end of output>
-Test time =   1.48 sec
-----------------------------------------------------------
-Test Passed.
-"main-test" end time: Mar 05 17:33 IST
-"main-test" time elapsed: 00:00:01
-----------------------------------------------------------
-
-End testing: Mar 05 17:33 IST
+End testing: Mar 07 23:37 IST
