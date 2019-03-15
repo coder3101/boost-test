@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20190315-1645-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.14.0-rc2"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="tensor"
+	OSRelease="4.18.0-16-generic"
+	OSVersion="#17-Ubuntu SMP Fri Feb 8 00:06:57 UTC 2019"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="AuthenticAMD"
+	VendorID="Advanced Micro Devices"
+	FamilyID="22"
+	ModelID="48"
+	ProcessorCacheSize="2048"
+	NumberOfLogicalCPU="4"
+	NumberOfPhysicalCPU="4"
+	TotalVirtualMemory="2047"
+	TotalPhysicalMemory="6914"
+	LogicalProcessorsPerPhysical="1"
+	ProcessorClockFrequency="2195.88"
+	>
+	<Testing>
+		<StartDateTime>Mar 15 22:15 IST</StartDateTime>
+		<StartTestTime>1552668302</StartTestTime>
+		<TestList>
+			<Test>./main-test</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>main-test</Name>
+			<Path>.</Path>
+			<FullName>./main-test</FullName>
+			<FullCommandLine>/home/ashar/boost-test/build/main</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>1.623</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="numeric/double" name="Processors">
+					<Value>1</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>/home/ashar/boost-test/build/main</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value encoding="base64" compression="gzip">eJzT0qIu4HKtSE0uLcnMz1MozyzJyC8tUXCtKChKLS4GCZWk5hbkJJakKqSCVaWmKKTlFykYGpsaKeRm5mQWpybn56UUK2gY6oGEijUVuKjsPC3qG4jqYSJ8a2SJ6lkDPZAQTTwLACyxad8=</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Mar 15 22:15 IST</EndDateTime>
+		<EndTestTime>1552668304</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
