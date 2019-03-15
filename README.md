@@ -132,8 +132,6 @@ Performance is the ultimate goal at the end of the day. Below is an image demons
 
 The complete Documentation is available at https://coder3101.github.io/gsoc19-boost-test 
 
-The Documentation was automatically generated using `doxygen` from the source code.
-
 ## Builds
 
 I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . 
