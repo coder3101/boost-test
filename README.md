@@ -5,6 +5,10 @@ Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=master)](ht
 
 This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. 
 
+
+**REVIEWER PLEASE CHECK [no-doc branch](https://github.com/coder3101/gsoc19-boost-test/tree/no-doc) IT IS MUST EASIER TO READ.**
+
+
 #### Beware other my friends (Students)
 
 > *Do not try to copy this code to apply into `boost.uBLAS` this summer 2019 at Google Summer of Code. All the code in this repository is already submitted by me. Although You are free to take some idea from this repository*
