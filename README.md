@@ -1,9 +1,9 @@
-# Matrix : A Programming competency test for uBLAS
+# YAP Matrix : A Programming competency test for uBLAS
 
 [![Build 
-Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=master)](https://travis-ci.org/coder3101/gsoc19-boost-test)
+Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=with-yap)](https://travis-ci.org/coder3101/gsoc19-boost-test)
 
-This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. 
+This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. It uses `boost.YAP` to achieve smart expression templates.
 
 #### Beware other my friends (Students)
 
@@ -25,15 +25,14 @@ Now you should be able to compile following,
 
 ```cpp
 
-#include <matrix.hpp>
+#include <yap_matrix.hpp>
 
 int main(){
-    using test::matrix;
-    matrix_int a = {{1,1,1},
-                    {5,5,5},  
-                    {7,8,9}};
-    auto b = a * a;
-    b.view();
+    using test::yap;
+    matrix a(std::vector(20, 2), 5, 4); // 5 x 4 Matrix with 2 filled in all cells.
+    matrix b(std::vector(20, 0), 5, 4); // Same as above but 0 filled in all cells.
+    auto expression = ((a * a * a) + (a / 5)); // All operations are element-wise.
+    assign(b, expression); // Evaluates the expression and put into b.
     return 0;
 }
 
@@ -45,7 +44,7 @@ It's simple, simply remove the file from the directory `/usr/local/include/` by 
 
 ```bash
 
-sudo rm /usr/local/include/matrix.hpp
+sudo rm /usr/local/include/yap_matrix.hpp
 
 ```
 
@@ -67,76 +66,37 @@ for(size_t i=0; i< rows; i++)
 
 Removing the time of copying on every operation. It uses expression template to achieve this task. It also means that any expression that does not calls `=` (assignment) the expression is not at all evaluated. 
 
-### Creating a Matrix
-
-All Matrix variable have immutable dimensions. i.e It cannot be changed once set. We have following 3 constructor of Matrix. You need to pass an optional one of the two policies `test::policy::RowMajorPolicy` or `test::policy::ColumnMajorPolicy` which determines the policy for storing the elements in flat order. The Policy order defaults to `RowMajorPolicy`
-
-- Using Initializer List of Initializer Lists
-
-  - ```cpp
-    using test;
-    matrix<int,policy::ColumnMajorPolicy> foo = {{1,2,3},
-                                         	     {4,5,6},
-                                                 {7,8,9}};
-    ```
-
-- Using Vector of Vectors
-
-- Using just row and column count.
-
-  - ```cpp
-    test::matrix<int> baaz(rows, columns);
-    ```
-
-
-
-The `test::matrix` type can be converted to and from `test::expression` type. An Expression represents the operation to be computed. We have a non-explicit constructor that takes in a `expression` and evaluates it to form the `test::matrix` .  An expression type will be evaluated upon the call to any assignment operator (=, +=, -= ...etc).
-
-
-
 ### Operations on Matrix
 
-This is a simple library, it does not have a lot to offer when it comes to operations. But it does have almost all basic operations using operator overloading. Following is a list of all the supported operations.
-
-|  Operation   | Description of Operation                                     | Is Lazy? |
-| :----------: | ------------------------------------------------------------ | -------- |
-|  operator=   | Assign the value to *this* variable. If LHS is an expression it is evaluated and result is stored into *this* | No       |
-|  operator+=  | Element wise Add and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
-|  operator-=  | Element wise Subtract and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
-|  operator*=  | Element wise Multiplication and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
-|  operator/=  | Element wise Division and assign to *this*. If LHS is an expression it is evaluated and result is stored into *this* | No       |
-|  operator==  | Element wise Equality check. If all elements are same then true otherwise false is returned. If LHS is an expression it is evaluated then compared. | No       |
-| scalar_add() | Adds the scalar argument to the matrix. It is evaluated eagerly | No       |
-| scalar_sub() | Subtracts the scalar argument from the matrix. It is evaluated eagerly | No       |
-| scalar_mul() | Multiplies the scalar argument to the matrix. It is evaluated eagerly | No       |
-|    view()    | Shows the content of the matrix into stdout or another std::ostream | N/A      |
-|  operator+   | Adds two same dimension matrices together element-wise.      | Yes      |
-|  operator-   | Adds two same dimension matrices together element-wise.      | Yes      |
-|  operator*   | Multiplies two same dimension matrices together element-wise. | Yes      |
-|  operator/   | Divides two same dimension matrices together element-wise.   | Yes      |
-|  operator\|  | Computes dot product of two matrices. It is eagerly evaluated | No       |
+This is a simple library, it does not have a lot to offer when it comes to operations. But it does have almost all basic operations using operator overloading. Following is a list of all the supported operations. All are element-wise operations.
 
 
 
-### Performance
-
-Performance is the ultimate goal at the end of the day. Below is an image demonstrating the performance of `matrix` over the normal implementation. The benchmark was computed after running 192 length long +, -, *, / operations on 1000x1000 matrix.
-
-**It is at-least 86% faster than naive implementation** Of-course, it can be further improved.
-
-![Imgur](https://i.imgur.com/1Lrv8W4.png)
-
-
-
-## Documentation
-
-The complete Documentation is available at https://coder3101.github.io/gsoc19-boost-test 
+> | Operation | Descriptions                                                 | Supported Operands type |
+> | --------- | ------------------------------------------------------------ | ----------------------- |
+> | +         | Adds element-wise to the left hand side expression           | Matrix or Scalar        |
+> | -         | Subtracts elements-wise to the left hand side expression     | Matrix or Scalar        |
+> | *         | Multiplies element-wise to the left hand side expression     | Matrix or Scalar        |
+> | /         | Divides element-wise to the left hand side expression        | Matrix or Scalar        |
+> | %         | Modulus element-wise to the left hand side expression        | Matrix or Scalar        |
+> | - (unary) | Flips the sign of each element                               | Matrix                  |
+> | <         | Computes if left hand side is less than right hand side      | Matrix or Scalar        |
+> | >         | Computes if left hand side is more than right hand side      | Matrix or Scalar        |
+> | `>=`      | Computes if left hand side is more or equal to right hand side | Matrix or Scalar        |
+> | <=        | Computes if left hand side is less or equal to right hand side | Matrix or Scalar        |
+> | ==        | Checks if two Matrices are equal                             | Matrix                  |
+> | !=        | Checks if two Matrices are not equal                         | Matrix                  |
+> | &&        | Logical Or of two sides. They must be convertible to bool    | Matrix or Scalar        |
+> | \|\|      | Logical And of two sides. They must be convertible to bool   | Matrix or Scalar        |
+> | ^         | Element wise XOR of two sides.                               | Matrix or Scalar        |
+> | &         | Element wise bit-wise AND of two sides                       | Matrix or Scalar        |
+> | \|        | Element wise bit-wise OR of two sides                        | Matrix or Scalar        |
 
 ## Builds
 
 I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . 
 
-**The complete code has been formatted using `clang-format` using `LLVM` coding style.**
+**The complete code has been formatted using `clang-format` using `Visual Studio` coding style.**
 
 
 
