@@ -46,29 +46,12 @@ auto get_normal_matrix = [](size_t row, size_t col,
  *
  */
 auto compute_something_naive = [](auto &target, auto &scope) {
-  target = scope + scope * scope + scope / scope + scope + scope + scope +
-           scope + scope + scope + scope + scope + scope + scope + scope +
-           scope + scope + scope / scope + scope + scope + scope + scope -
-           scope + scope + scope + scope / scope + scope + scope + scope +
-           scope + scope + scope + scope + scope / scope + scope + scope +
-           scope + scope - scope + scope + scope + scope / scope + scope +
-           scope + scope + scope + scope + scope + scope + scope / scope +
-           scope + scope + scope + scope - scope + scope + scope +
-           scope * scope + scope + scope + scope + scope;
+  target = scope + scope * scope + scope / scope + scope + scope + scope;
 };
 
 auto compute_something_yap = [](auto &target, auto &scope) {
   test::yap::assign(
-      target, scope + scope * scope + scope / scope + scope + scope + scope +
-                  scope + scope + scope + scope + scope + scope + scope +
-                  scope + scope + scope + scope / scope + scope + scope +
-                  scope + scope - scope + scope + scope + scope / scope +
-                  scope + scope + scope + scope + scope + scope + scope +
-                  scope / scope + scope + scope + scope + scope - scope +
-                  scope + scope + scope / scope + scope + scope + scope +
-                  scope + scope + scope + scope + scope / scope + scope +
-                  scope + scope + scope - scope + scope + scope +
-                  scope * scope + scope + scope + scope + scope);
+      target, scope + scope * scope + scope / scope + scope + scope + scope);
 };
 
 auto is_equal = [](auto const &e1, auto const& e2){
@@ -84,11 +67,11 @@ int main() {
 
   // Block 1
   {
-    auto a = get_lazy_matrix(2000, 2000, 0);
-    auto b = get_lazy_matrix(2000, 2000, 10);
+    auto a = get_lazy_matrix(3000, 3000, 0);
+    auto b = get_lazy_matrix(3000, 3000, 10);
 
-    auto a2 = get_normal_matrix(2000, 2000, 0);
-    auto b2 = get_normal_matrix(2000, 2000, 10);
+    auto a2 = get_normal_matrix(3000, 3000, 0);
+    auto b2 = get_normal_matrix(3000, 3000, 10);
 
     auto result1 = benchmark::run("Execution using YAP Matrix",
                                   [&]() { compute_something_yap(a, b); });
