@@ -21,12 +21,16 @@
 #include <type_traits>
 #include <vector>
 
-namespace test {
-namespace yap {
+namespace test
+{
+namespace yap
+{
 
-namespace details {
+namespace details
+{
 template <typename value_t>
-struct matrix_properties {
+struct matrix_properties
+{
   size_t rows;
   size_t cols;
 
@@ -36,50 +40,59 @@ struct matrix_properties {
   matrix_properties(matrix_properties<value_t> &&rhs) = default;
 
   template <typename value_type_rhs>
-  bool operator==(matrix_properties<value_type_rhs> const &rhs) const noexcept {
+  bool operator==(matrix_properties<value_type_rhs> const &rhs) const noexcept
+  {
     return rhs.rows == this->rows && rhs.cols == this->cols &&
            std::is_same<value_type_rhs, value_t>::value;
   }
   inline size_t count() const noexcept { return rows * cols; }
 };
-}  // namespace details
+} // namespace details
 
 // Is always Row-major
 template <typename value_t>
-class matrix {
+class matrix
+{
   details::matrix_properties<value_t> _properties;
   std::vector<value_t> _elements;
 
- public:
+public:
   matrix(size_t rows, size_t cols)
       : _elements(rows * cols), _properties(rows, cols) {}
   matrix(std::vector<value_t> vals, size_t rows, size_t cols)
-      : _properties(rows, cols) {
+      : _properties(rows, cols)
+  {
     assert(vals.size() == rows * cols);
-    for (auto e : vals) _elements.push_back(e);
+    for (auto e : vals)
+      _elements.push_back(e);
   }
   auto operator[](size_t n) const { return _elements[n]; }
   auto &operator[](size_t n) { return _elements[n]; }
-  auto at(size_t r, size_t c) const {
+  auto at(size_t r, size_t c) const
+  {
     return _elements[_properties.cols * r + c];
   }
   auto &at(size_t r, size_t c) { return _elements[_properties.cols * r + c]; }
   auto &get_properties() const { return _properties; }
 };
 
-struct expand_n {
+struct expand_n
+{
   template <typename value_t>
   auto operator()(boost::yap::expr_tag<boost::yap::expr_kind::terminal>,
-                  matrix<value_t> const &mat) {
+                  matrix<value_t> const &mat)
+  {
     return boost::yap::make_terminal(mat[n]);
   }
   std::size_t n;
 };
 
 template <typename value_t>
-struct equal_sizes_impl {
+struct equal_sizes_impl
+{
   auto operator()(boost::yap::expr_tag<boost::yap::expr_kind::terminal>,
-                  matrix<value_t> const &mat) {
+                  matrix<value_t> const &mat)
+  {
     auto const &expr_properties = mat.get_properties();
     value = expr_properties == properties;
     return 0;
@@ -90,19 +103,22 @@ struct equal_sizes_impl {
 
 template <typename expression_t, typename value_t>
 bool is_equal_dimension(details::matrix_properties<value_t> const &prop,
-                        expression_t const &expr) {
+                        expression_t const &expr)
+{
   equal_sizes_impl<value_t> impl{prop, true};
   boost::yap::transform(boost::yap::as_expr(expr), impl);
   return impl.value;
 };
 
 template <typename value_t, typename Expr>
-matrix<value_t> &assign(matrix<value_t> &mat, Expr const &e) {
+matrix<value_t> &assign(matrix<value_t> &mat, Expr const &e)
+{
   decltype(auto) expr = boost::yap::as_expr(e);
   decltype(auto) prop = mat.get_properties();
   assert(is_equal_dimension(prop, expr));
 #pragma omp parallel for
-  for (std::size_t i = 0; i < prop.count(); ++i) {
+  for (std::size_t i = 0; i < prop.count(); ++i)
+  {
     mat[i] = boost::yap::evaluate(
         boost::yap::transform(boost::yap::as_expr(expr), expand_n{i}));
   }
@@ -110,12 +126,14 @@ matrix<value_t> &assign(matrix<value_t> &mat, Expr const &e) {
 }
 
 template <typename value_t, typename Expr>
-matrix<value_t> &operator+=(matrix<value_t> &mat, Expr const &e) {
+matrix<value_t> &operator+=(matrix<value_t> &mat, Expr const &e)
+{
   decltype(auto) expr = boost::yap::as_expr(e);
   decltype(auto) prop = mat.get_properties();
   assert(is_equal_dimension(prop, expr));
 #pragma omp parallel for
-  for (std::size_t i = 0; i < prop.count(); ++i) {
+  for (std::size_t i = 0; i < prop.count(); ++i)
+  {
     mat[i] += boost::yap::evaluate(
         boost::yap::transform(boost::yap::as_expr(expr), expand_n{i}));
   }
@@ -123,46 +141,50 @@ matrix<value_t> &operator+=(matrix<value_t> &mat, Expr const &e) {
 }
 
 template <typename T>
-struct is_matrix : std::false_type {};
+struct is_matrix : std::false_type
+{
+};
 
 template <typename value_t>
-struct is_matrix<matrix<value_t>> : std::true_type {};
+struct is_matrix<matrix<value_t>> : std::true_type
+{
+};
 
 BOOST_YAP_USER_UDT_UNARY_OPERATOR(negate, boost::yap::expression,
-                                  is_matrix);  // -
+                                  is_matrix); // -
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(multiplies, boost::yap::expression,
-                                       is_matrix);  // *
+                                       is_matrix); // *
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(divides, boost::yap::expression,
-                                       is_matrix);  // /
+                                       is_matrix); // /
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(modulus, boost::yap::expression,
-                                       is_matrix);  // %
+                                       is_matrix); // %
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(plus, boost::yap::expression,
-                                       is_matrix);  // +
+                                       is_matrix); // +
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(minus, boost::yap::expression,
-                                       is_matrix);  // -
+                                       is_matrix); // -
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(less, boost::yap::expression,
-                                       is_matrix);  // <
+                                       is_matrix); // <
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(greater, boost::yap::expression,
-                                       is_matrix);  // >
+                                       is_matrix); // >
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(less_equal, boost::yap::expression,
-                                       is_matrix);  // <=
+                                       is_matrix); // <=
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(greater_equal, boost::yap::expression,
-                                       is_matrix);  // >=
+                                       is_matrix); // >=
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(equal_to, boost::yap::expression,
-                                       is_matrix);  // ==
+                                       is_matrix); // ==
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(not_equal_to, boost::yap::expression,
-                                       is_matrix);  // !=
+                                       is_matrix); // !=
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(logical_or, boost::yap::expression,
-                                       is_matrix);  // ||
+                                       is_matrix); // ||
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(logical_and, boost::yap::expression,
-                                       is_matrix);  // &&
+                                       is_matrix); // &&
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(bitwise_and, boost::yap::expression,
-                                       is_matrix);  // &
+                                       is_matrix); // &
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(bitwise_or, boost::yap::expression,
-                                       is_matrix);  // |
+                                       is_matrix); // |
 BOOST_YAP_USER_UDT_ANY_BINARY_OPERATOR(bitwise_xor, boost::yap::expression,
-                                       is_matrix);  // ^
+                                       is_matrix); // ^
 
-}  // namespace yap
+} // namespace yap
 
-}  // namespace test
+} // namespace test
