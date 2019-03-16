@@ -19,5 +19,5 @@ add_test(main-test main)
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/
     DESTINATION include
-    FILES_MATCHING PATTERN "lazy_matrix.hpp"
+    FILES_MATCHING PATTERN "yap_matrix.hpp"
 )
