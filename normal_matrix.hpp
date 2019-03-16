@@ -17,7 +17,7 @@
 #ifndef NORMAL_MATRIX_HPP
 #define NORMAL_MATRIX_HPP
 
-#include "include/matrix.hpp"
+#include "include/yap_matrix.hpp"
 #include <iostream>
 #include <vector>
 
@@ -83,10 +83,10 @@ public:
     return true;
   }
 
-  bool operator==(const test::matrix_int &other) const {
+  bool operator==(const test::yap::matrix<int> &other) const {
     for (int t = 0; t < row; t++)
       for (int j = 0; j < col; j++)
-        if (matrix[t][j] != other.get(t, j))
+        if (matrix[t][j] != other.at(t, j))
           return false;
     return true;
   }
