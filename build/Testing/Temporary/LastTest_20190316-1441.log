@@ -1,24 +1,24 @@
-Start testing: Mar 16 20:11 IST
+Start testing: Mar 16 23:54 IST
 ----------------------------------------------------------
 1/1 Testing: main-test
 1/1 Test: main-test
 Command: "/home/ashar/boost-test/build/main"
 Directory: /home/ashar/boost-test/build
-"main-test" start time: Mar 16 20:11 IST
+"main-test" start time: Mar 16 23:54 IST
 Output:
 ----------------------------------------------------------
 ********************************************************************************
-Execution without Expression template executed for 1781 miliseconds (1.781 s) 
+Execution without Expression template executed for 2171 miliseconds (2.171 s) 
 ********************************************************************************
 ********************************************************************************
-Execution using YAP Matrix executed for 1696 miliseconds (1.696 s) 
+Execution using YAP Matrix executed for 3567 miliseconds (3.567 s) 
 ********************************************************************************
 <end of output>
-Test time =   3.78 sec
+Test time =   6.06 sec
 ----------------------------------------------------------
 Test Passed.
-"main-test" end time: Mar 16 20:11 IST
-"main-test" time elapsed: 00:00:03
+"main-test" end time: Mar 16 23:54 IST
+"main-test" time elapsed: 00:00:06
 ----------------------------------------------------------
 
-End testing: Mar 16 20:11 IST
+End testing: Mar 16 23:54 IST

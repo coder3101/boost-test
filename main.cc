@@ -25,7 +25,7 @@
  *
  */
 auto get_lazy_matrix = [](size_t row, size_t col, int v) {
-  return test::yap::matrix(std::vector<int>(row * col, v), row, col);
+  return test::yap::matrix<int>(std::vector<int>(row * col, v), row, col);
 };
 
 /**
@@ -71,6 +71,13 @@ auto compute_something_yap = [](auto &target, auto &scope) {
                   scope * scope + scope + scope + scope + scope);
 };
 
+auto is_equal = [](auto const &e1, auto const& e2){
+  for(int t=0;t<e1.get_row();t++)
+  for(int j=0;j<e1.get_col();j++)
+  if(e1.matrix[t][j] != e2.at(t,j)) return false;
+  return true;
+};
+
 int main() {
   using test::benchmark;
   using Matrix = test::Matrix<int>;
@@ -89,8 +96,7 @@ int main() {
                                   [&]() { compute_something_naive(a2, b2); });
     result2.print_beautifully();
     result1.print_beautifully();
-    assert(result2 == result1);
-    fflush(stdout);
+    assert(is_equal(a2, a));
   }
 
   return 0;

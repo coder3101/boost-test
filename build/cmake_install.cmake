@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ashar/boost-test/include/" FILES_MATCHING REGEX "/lazy\\_matrix\\.hpp$")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/ashar/boost-test/include/" FILES_MATCHING REGEX "/yap\\_matrix\\.hpp$")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
