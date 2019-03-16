@@ -38,7 +38,7 @@ script:
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
 - wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz
 - tar -zxf boost_1_69_0.tar.gz
-- sudo cp ./boost_1_69_0/boost /usr/local/include/
+- sudo cp -r ./boost_1_69_0/boost /usr/local/include/
 - cd build
 - cmake -DCMAKE_BUILD_TYPE=Release ..
 - make clean
