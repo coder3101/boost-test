@@ -6,9 +6,12 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - boost-latest
     packages:
       - gcc-6
       - g++-6
+      - libboost1.69-all-dev
+
 
 os:
 - linux
@@ -33,11 +36,6 @@ before_install:
 script:
 - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
 - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
-- wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.bz2
-- tar xzf boost_1_69_0.tar.bz2
-- cd boost_1_69_0.tar.bz2
-- sudo cp boost/ /usr/local/include
-- cd ..
 - cd build
 - cmake -DCMAKE_BUILD_TYPE=Release ..
 - make clean
