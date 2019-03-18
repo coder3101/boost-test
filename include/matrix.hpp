@@ -36,8 +36,8 @@
  *
  */
 
-#ifndef LAZY_MATRIX_HPP
-#define LAZY_MATRIX_HPP
+#ifndef MATRIX_HPP
+#define MATRIX_HPP
 
 #include <complex>
 #include <initializer_list>
@@ -50,7 +50,7 @@
 #if defined(_OPENMP)
 #include <omp.h>
 #else
-#pragma GCC warning                                                            \
+#pragma GCC warning \
     "OPENMP is not defined. Please compile with -fopenmp to get parallel for loops"
 #endif
 
@@ -172,7 +172,7 @@ struct util {
           b.get_dimension().to_string());
   }
 };
-} // namespace
+}  // namespace
 
 namespace policy {
 
@@ -181,7 +181,8 @@ namespace policy {
  *
  * @tparam value_t the datatype of the matrix
  */
-template <class value_t> struct RowMajorPolicy {
+template <class value_t>
+struct RowMajorPolicy {
   /**
    * @brief Actual Implementation of the ordering
    *
@@ -220,8 +221,7 @@ template <class value_t> struct RowMajorPolicy {
                    std::vector<std::vector<value_t>> const &elems) {
     size_t counter = 0;
     for (auto &e : elems)
-      for (auto &E : e)
-        bucket[counter++] = E;
+      for (auto &E : e) bucket[counter++] = E;
   }
   /**
    * @brief Converts the given index to its equivalent column major index.
@@ -243,7 +243,8 @@ template <class value_t> struct RowMajorPolicy {
  *
  * @tparam value_t the datatype of the matrix
  */
-template <class value_t> struct ColumnMajorPolicy {
+template <class value_t>
+struct ColumnMajorPolicy {
   /**
    * @brief Actual Implementation of the ordering
    *
@@ -287,8 +288,7 @@ template <class value_t> struct ColumnMajorPolicy {
 #pragma omp parallel for
     for (size_t a = 0; a < col_counts; a++)
 #pragma omp parallel for
-      for (size_t b = 0; b < row_counts; b++)
-        bucket[counter++] = elems[b][a];
+      for (size_t b = 0; b < row_counts; b++) bucket[counter++] = elems[b][a];
   }
   /**
    * @brief Converts the given index to its equivalent row major index.
@@ -304,15 +304,16 @@ template <class value_t> struct ColumnMajorPolicy {
     return (x * dimen.col_dimen + y);
   }
 };
-} // namespace policy
+}  // namespace policy
 
 /**
  * @brief An template Expression class for a node in AST of lazy evalution.
  *
  * @tparam E the type to create an expression into.
  */
-template <typename E> class expression {
-public:
+template <typename E>
+class expression {
+ public:
   /**
    * @brief returns the expression at i
    *
@@ -320,7 +321,7 @@ public:
    * @return expression<E> the expression at that index.
    */
   auto get(size_t i) const {
-    return static_cast<E const &>(*this).get(i); // East-Const
+    return static_cast<E const &>(*this).get(i);  // East-Const
   }
   /**
    * @brief Get the dimension of expression object
@@ -346,7 +347,7 @@ public:
  * Curiously Recurring Templates Pattern. These matrices have immutable
  * dimension and shapes will not change once created.
  *
- * @tparam dtype the type that this matrix will hold.
+ * @tparam value_t the type that this matrix will hold.
  */
 template <typename value_t, class format_t = policy::RowMajorPolicy<value_t>,
           class storage_t = std::vector<value_t>>
@@ -383,7 +384,8 @@ class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
    * @param index the index of to read
    * @return size_t the index in the other format if they differ.
    */
-  template <class E> size_t _safe_index(E &expr, size_t index) const {
+  template <class E>
+  size_t _safe_index(E &expr, size_t index) const {
     return util::safe_index(*this, expr, index);
   }
 
@@ -401,7 +403,8 @@ class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
    * @param i the index to copy.
    */
 
-  template <typename E> void _safe_copy(E &expr, size_t i) {
+  template <typename E>
+  void _safe_copy(E &expr, size_t i) {
     this->_elements[i] = expr.get(_safe_index(expr, i));
   }
   /**
@@ -412,11 +415,12 @@ class matrix final : public expression<matrix<value_t, format_t, storage_t>> {
    * @param i the index of swap
    */
 
-  template <typename E> void _safe_move(E &&expr, size_t i) {
+  template <typename E>
+  void _safe_move(E &&expr, size_t i) {
     this->_elements[i] = std::move(expr.get(_safe_index(expr, i)));
   }
 
-public:
+ public:
   /**
    * @brief returns element at i, j position in the matrix.
    *
@@ -491,8 +495,7 @@ public:
             "Length of each initializer list must be same");
     }
     std::vector<std::vector<value_t>> res;
-    for (auto &e : elem)
-      res.push_back(e);
+    for (auto &e : elem) res.push_back(e);
     format_t::fill(_elements, res);
   }
   /**
@@ -506,8 +509,9 @@ public:
     _construct_container();
     for (auto e : elem) {
       if (e.size() != _dimen.col_dimen)
-        std::logic_error("Cannot create a matrix out of the provided vector of "
-                         "vector.Lenght of each vector must be same");
+        std::logic_error(
+            "Cannot create a matrix out of the provided vector of "
+            "vector.Lenght of each vector must be same");
     }
     format_t::fill(_elements, elem);
   }
@@ -524,15 +528,13 @@ public:
   matrix(expression<E> const &expr) : _dimen(expr.get_dimension()) {
     _construct_container();
 #pragma omp parallel for
-    for (size_t a = 0; a < _dimen.count(); a++)
-      _safe_copy(expr, a);
+    for (size_t a = 0; a < _dimen.count(); a++) _safe_copy(expr, a);
   }
 
   matrix(matrix &&other) : _dimen(std::move(other.get_dimension())) {
     _construct_container();
 #pragma omp parallel for
-    for (size_t i = 0; i < this->_dimen.count(); i++)
-      _safe_move(other, i);
+    for (size_t i = 0; i < this->_dimen.count(); i++) _safe_move(other, i);
   }
 
   /**
@@ -546,8 +548,7 @@ public:
   matrix(expression<E> &&expr) : _dimen(expr.get_dimension()) {
     _construct_container();
 #pragma omp parallel for
-    for (size_t a = 0; a < _dimen.count(); a++)
-      _safe_move(expr, a);
+    for (size_t a = 0; a < _dimen.count(); a++) _safe_move(expr, a);
   }
 
   /**
@@ -559,11 +560,11 @@ public:
    * @return lazy_matrix& the reference to *this
    */
 
-  template <typename E> auto &operator=(expression<E> const &expr) {
+  template <typename E>
+  auto &operator=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
-    for (size_t i = 0; i < this->_dimen.count(); i++)
-      _safe_copy(expr, i);
+    for (size_t i = 0; i < this->_dimen.count(); i++) _safe_copy(expr, i);
     return *this;
   }
 
@@ -576,11 +577,11 @@ public:
    * @return lazy_matrix& the reference to *this
    */
 
-  template <typename E> auto &operator=(expression<E> &&expr) {
+  template <typename E>
+  auto &operator=(expression<E> &&expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
-    for (size_t i = 0; i < this->_dimen.count(); i++)
-      _safe_move(expr, i);
+    for (size_t i = 0; i < this->_dimen.count(); i++) _safe_move(expr, i);
     return *this;
   }
 
@@ -594,8 +595,7 @@ public:
     if (this != &other) {
       util::assert_same_dimensions(*this, other);
 #pragma omp parallel for
-      for (size_t i = 0; i < this->_dimen.count(); i++)
-        _safe_copy(other, i);
+      for (size_t i = 0; i < this->_dimen.count(); i++) _safe_copy(other, i);
       return *this;
     }
   }
@@ -604,8 +604,7 @@ public:
     if (this != &other) {
       util::assert_same_dimensions(*this, other);
 #pragma omp parallel for
-      for (size_t i = 0; i < this->_dimen.count(); i++)
-        _safe_move(other, i);
+      for (size_t i = 0; i < this->_dimen.count(); i++) _safe_move(other, i);
       return *this;
     }
   }
@@ -619,7 +618,8 @@ public:
    * @return matrix& the reference to *this
    */
 
-  template <typename E> matrix &operator+=(expression<E> const &expr) {
+  template <typename E>
+  matrix &operator+=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
@@ -636,7 +636,8 @@ public:
    * @return matrix& the reference to *this
    */
 
-  template <typename E> matrix &operator-=(expression<E> const &expr) {
+  template <typename E>
+  matrix &operator-=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
@@ -653,7 +654,8 @@ public:
    * @return matrix& the reference to *this
    */
 
-  template <typename E> matrix &operator*=(expression<E> const &expr) {
+  template <typename E>
+  matrix &operator*=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
@@ -670,7 +672,8 @@ public:
    * @return matrix& the reference to *this
    */
 
-  template <typename E> matrix &operator/=(expression<E> const &expr) {
+  template <typename E>
+  matrix &operator/=(expression<E> const &expr) {
     util::assert_same_dimensions(*this, expr);
 #pragma omp parallel for
     for (size_t a = 0; a < _dimen.count(); a++)
@@ -686,10 +689,10 @@ public:
    * @param t the value to add to all element.
    */
 
-  template <typename T> void scalar_add(T t) {
+  template <typename T>
+  void scalar_add(T t) {
 #pragma omp parallel for
-    for (size_t a = 0; a < _dimen.count(); a++)
-      _elements[a] += t;
+    for (size_t a = 0; a < _dimen.count(); a++) _elements[a] += t;
   }
 
   /**
@@ -700,10 +703,10 @@ public:
    * @param t the value to subtracted from all element.
    */
 
-  template <typename T> void scalar_sub(int t) {
+  template <typename T>
+  void scalar_sub(int t) {
 #pragma omp parallel for
-    for (size_t a = 0; a < _dimen.count(); a++)
-      _elements[a] -= t;
+    for (size_t a = 0; a < _dimen.count(); a++) _elements[a] -= t;
   }
 
   /**
@@ -714,10 +717,10 @@ public:
    * @param t the value to multiply to all element.
    */
 
-  template <typename T> void scalar_mul(T t) {
+  template <typename T>
+  void scalar_mul(T t) {
 #pragma omp parallel for
-    for (size_t a = 0; a < _dimen.count(); a++)
-      _elements[a] *= t;
+    for (size_t a = 0; a < _dimen.count(); a++) _elements[a] *= t;
   }
 
   /**
@@ -732,8 +735,7 @@ public:
 #pragma omp parallel for
     for (size_t i = 0; i < min_row; i++) {
 #pragma omp parallel for
-      for (size_t j = 0; j < min_col; j++)
-        stream << _elements.get(i, j) << " ";
+      for (size_t j = 0; j < min_col; j++) stream << _elements.get(i, j) << " ";
       stream << "\n";
     }
   }
@@ -779,7 +781,7 @@ class add_expr : public expression<add_expr<E1, E2>> {
   E1 const &_u;
   E2 const &_v;
 
-public:
+ public:
   /**
    * @brief Construct a new add expr object
    *
@@ -831,7 +833,7 @@ class sub_expr : public expression<sub_expr<E1, E2>> {
   E1 const &_u;
   E2 const &_v;
 
-public:
+ public:
   /**
    * @brief Construct a new sub expr object
    *
@@ -882,7 +884,7 @@ class mul_expr : public expression<mul_expr<E1, E2>> {
   E1 const &_u;
   E2 const &_v;
 
-public:
+ public:
   /**
    * @brief Construct a new multiplication expr object
    *
@@ -933,7 +935,7 @@ class div_expr : public expression<div_expr<E1, E2>> {
   E1 const &_u;
   E2 const &_v;
 
-public:
+ public:
   /**
    * @brief Construct a new div expr object
    *
@@ -1053,7 +1055,8 @@ accessing non adjacent memory blocks. For Now I keep it same as old.
  * @param v the actual second argument
  * @return lazy_matrix the result matrix.
  */
-template <typename E1, typename E2> auto operator|(E1 const &u, E2 const &v) {
+template <typename E1, typename E2>
+auto operator|(E1 const &u, E2 const &v) {
   if (u.get_dimension().col_dimen != v.get_dimension().row_dimen) {
     throw std::logic_error(
         std::string(
@@ -1083,5 +1086,5 @@ using matrix_complex_float = matrix<std::complex<float>>;
 using matrix_complex_double = matrix<std::complex<double>>;
 using matrix_complex_long = matrix<std::complex<long long>>;
 
-} // namespace test
+}  // namespace test
 #endif
