@@ -44,4 +44,4 @@ script:
 - make clean
 - make
 - make test
-- ./main
+- ./example
