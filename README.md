@@ -36,7 +36,7 @@ sudo rm /usr/local/include/yap_matrix.hpp
 #include <boost/yap/print.hpp>
 #include <boost/yap/yap.hpp>
 #include <iostream>
-#include "expression_matrix.hpp"
+#include "yap_matrix.hpp"
 
 int main() {
   std::vector<std::vector<int>> elem, elem2;
