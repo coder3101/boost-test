@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 project(Boost-Test)
-include_directories(.)
+include_directories(${CMAKE_SOURCE_DIR}/include/)
 set(CMAKE_CXX_STANDARD 17)
 find_package(OpenMP)
 
@@ -11,10 +11,10 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(main ./main.cc)
+add_executable(example ./example.cc)
 
 enable_testing()
-add_test(main-test main)
+add_test(main-test example)
 
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/include/

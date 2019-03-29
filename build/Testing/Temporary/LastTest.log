@@ -1,24 +1,51 @@
-Start testing: Mar 17 00:15 IST
+Start testing: Mar 30 00:12 IST
 ----------------------------------------------------------
 1/1 Testing: main-test
 1/1 Test: main-test
-Command: "/home/ashar/boost-test/build/main"
+Command: "/home/ashar/boost-test/build/example"
 Directory: /home/ashar/boost-test/build
-"main-test" start time: Mar 17 00:15 IST
+"main-test" start time: Mar 30 00:12 IST
 Output:
 ----------------------------------------------------------
-********************************************************************************
-Execution without Expression template executed for 1702 miliseconds (1.702 s) 
-********************************************************************************
-********************************************************************************
-Execution using YAP Matrix executed for 1899 miliseconds (1.899 s) 
-********************************************************************************
+Matrix A: 
+1 2 3 
+1 2 3 
+1 2 3 
+1 2 3 
+1 2 3 
+Matrix B: 
+4 5 6 
+4 5 6 
+4 5 6 
+4 5 6 
+4 5 6 
+Making Expression : ((A + B) * (B - A)) * A 
+YAP Abstrat syntax tree for expression
+expr<*>
+    expr<*>
+        expr<+>
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+        expr<->
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+    term<details::matrix_core<int>>[=<<unprintable-value>>] &
+Creating the result with move constructor for expr
+Creating the result with copy constructor for expr
+Creating the result with assignment of expression
+Evaluated Expression Result Matrix 
+15 42 81 
+15 42 81 
+15 42 81 
+15 42 81 
+15 42 81 
+Expression was Dimension : [5 , 3]
 <end of output>
-Test time =   3.89 sec
+Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"main-test" end time: Mar 17 00:15 IST
-"main-test" time elapsed: 00:00:03
+"main-test" end time: Mar 30 00:12 IST
+"main-test" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Mar 17 00:15 IST
+End testing: Mar 30 00:12 IST

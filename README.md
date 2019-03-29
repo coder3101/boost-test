@@ -5,6 +5,8 @@ Status](https://travis-ci.org/coder3101/gsoc19-boost-test.svg?branch=with-yap)](
 
 This repository contains the programming competency test code for `boost.uBLAS` Linear Algebra Proposal of **Google Summer Of Code 2019**. It uses `boost.YAP` to achieve smart expression templates.
 
+**YOU MUST HAVE BOOST INSTALLED TO COMPILE  THIS PROJECT USING CMAKE*
+
 #### Beware other my friends (Students)
 
 > *Do not try to copy this code to apply into `boost.uBLAS` this summer 2019 at Google Summer of Code. All the code in this repository is already submitted by me. Although You are free to take some idea from this repository*
@@ -21,31 +23,109 @@ cd build && cmake .. && sudo make install
 
 It will install the library to `/usr/local/include`.
 
-Now you should be able to compile following, 
-
-```cpp
-
-#include <yap_matrix.hpp>
-
-int main(){
-    using test::yap;
-    matrix a(std::vector(20, 2), 5, 4); // 5 x 4 Matrix with 2 filled in all cells.
-    matrix b(std::vector(20, 0), 5, 4); // Same as above but 0 filled in all cells.
-    auto expression = ((a * a * a) + (a / 5)); // All operations are element-wise.
-    assign(b, expression); // Evaluates the expression and put into b.
-    return 0;
-}
-
-```
-
 ## Uninstallation
 
 It's simple, simply remove the file from the directory `/usr/local/include/` by running :
 
 ```bash
-
 sudo rm /usr/local/include/yap_matrix.hpp
+```
 
+### Example
+```cpp
+#include <boost/yap/print.hpp>
+#include <boost/yap/yap.hpp>
+#include <iostream>
+#include "expression_matrix.hpp"
+
+int main() {
+  std::vector<std::vector<int>> elem, elem2;
+  
+  for (auto e : {0, 0, 0, 0, 0}) {  // Just for iterating 5 times
+    elem.push_back({1, 2, 3});
+    elem2.push_back({4, 5, 6});
+  }
+
+  yap_matrix<int> mat1(elem);   // This matrix is 5x3
+  yap_matrix<int> mat2(elem2);  // This matrix is 5x3 also
+  
+  std::cout<<"Matrix A: \n";
+  mat1.print(std::cout);
+  std::cout<<"Matrix B: \n";
+  mat2.print(std::cout);
+
+  std::cout<<"Making Expression : ((A + B) * (B - A)) * A \n";
+  
+  auto expr = ((mat1 + mat2) * (mat2 - mat1)) * mat1;
+  
+  std::cout<<"YAP Abstrat syntax tree for expression\n";
+  boost::yap::print(std::cout, expr);
+  
+  std::cout<<"Creating the result with move constructor for expr\n";
+  yap_matrix<int> a((mat1 + mat2) * (mat2 - mat1) * mat1);
+  
+  std::cout<<"Creating the result with copy constructor for expr\n";
+  yap_matrix<int> b(expr);
+
+  std::cout<<"Creating the result with assignment of expression\n";
+  yap_matrix<int> v(mat1);
+  v = expr;
+
+  yap_matrix<int> w(mat1);
+  w = ((mat1 + mat2) * (mat2 - mat1) * mat1);
+  
+
+  assert(a == expr);
+
+  std::cout<<"Evaluated Expression Result Matrix \n";
+  a.print(std::cout);
+
+  auto res = boost::yap::transform(expr, details::transform::get_node_dimension{});
+  std::cout<<"Expression was Dimension : ["<<res.first<<","<<res.second << "]\n"; 
+  
+  a += (mat2 - mat1);
+  a += expr;
+
+  return 0;
+}
+
+
+```
+### Output
+```
+Matrix A: 
+1 2 3 
+1 2 3 
+1 2 3 
+1 2 3 
+1 2 3 
+Matrix B: 
+4 5 6 
+4 5 6 
+4 5 6 
+4 5 6 
+4 5 6 
+Making Expression : ((A + B) * (B - A)) * A 
+YAP Abstrat syntax tree for expression
+expr<*>
+    expr<*>
+        expr<+>
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+        expr<->
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+            term<details::matrix_core<int>>[=<<unprintable-value>>] &
+    term<details::matrix_core<int>>[=<<unprintable-value>>] &
+Creating the result with move constructor for expr
+Creating the result with copy constructor for expr
+Creating the result with assignment of expression
+Evaluated Expression Result Matrix 
+15 42 81 
+15 42 81 
+15 42 81 
+15 42 81 
+15 42 81 
+Expression was Dimension : [5 , 3]
 ```
 
 ## Introduction to Matrix
@@ -72,32 +152,22 @@ This is a simple library, it does not have a lot to offer when it comes to opera
 
 
 
-> | Operation | Descriptions                                                 | Supported Operands type |
-> | --------- | ------------------------------------------------------------ | ----------------------- |
-> | +         | Adds element-wise to the left hand side expression           | Matrix or Scalar        |
-> | -         | Subtracts elements-wise to the left hand side expression     | Matrix or Scalar        |
-> | *         | Multiplies element-wise to the left hand side expression     | Matrix or Scalar        |
-> | /         | Divides element-wise to the left hand side expression        | Matrix or Scalar        |
-> | %         | Modulus element-wise to the left hand side expression        | Matrix or Scalar        |
-> | - (unary) | Flips the sign of each element                               | Matrix                  |
-> | <         | Computes if left hand side is less than right hand side      | Matrix or Scalar        |
-> | >         | Computes if left hand side is more than right hand side      | Matrix or Scalar        |
-> | `>=`      | Computes if left hand side is more or equal to right hand side | Matrix or Scalar        |
-> | <=        | Computes if left hand side is less or equal to right hand side | Matrix or Scalar        |
-> | ==        | Checks if two Matrices are equal                             | Matrix                  |
-> | !=        | Checks if two Matrices are not equal                         | Matrix                  |
-> | &&        | Logical Or of two sides. They must be convertible to bool    | Matrix or Scalar        |
-> | \|\|      | Logical And of two sides. They must be convertible to bool   | Matrix or Scalar        |
-> | ^         | Element wise XOR of two sides.                               | Matrix or Scalar        |
-> | &         | Element wise bit-wise AND of two sides                       | Matrix or Scalar        |
-> | \|        | Element wise bit-wise OR of two sides                        | Matrix or Scalar        |
+|      Operator| Name |      Description|
+| ---- | ---- | ---- |
+| + | Element-wise Addition | Adds two expressions and adds a new node in AST for the operation |
+| - | Element-wise Subtraction | Subtracts two expression or matrix and adds the operation node on AST |
+| * | Element-wise Multiplication | Multiplies two expression or matrix and adds the operation to AST |
+| += | Add and assign | LHS must be a Matrix and RHS can be expression or matrix. |
+| -= | Subtract and assign | LHS must be a Matrix and RHS can be expression or matrix. |
+| *= | Multiply and assign | LHS must be a Matrix and RHS can be expression or matrix. |
+| \| | Dot product | *This is not implemented, Just for AST Dimension deduction it is there* |
+
+
+
 
 ## Builds
 
-I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `main` . 
-
-**The complete code has been formatted using `clang-format` using `Visual Studio` coding style.**
-
+I used CMake as the Build-tool-generator. Main's artifact could be found at `./build` folder named `example` . 
 
 
 ## Issues and Improvements

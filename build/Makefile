@@ -168,44 +168,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main
+# Target rules for targets named example
 
 # Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main
-.PHONY : main
+example: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 example
+.PHONY : example
 
 # fast build rule for target.
-main/fast:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
+example/fast:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/build
+.PHONY : example/fast
 
-main.o: main.cc.o
+example.o: example.cc.o
 
-.PHONY : main.o
+.PHONY : example.o
 
 # target to build an object file
-main.cc.o:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.o
-.PHONY : main.cc.o
+example.cc.o:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cc.o
+.PHONY : example.cc.o
 
-main.i: main.cc.i
+example.i: example.cc.i
 
-.PHONY : main.i
+.PHONY : example.i
 
 # target to preprocess a source file
-main.cc.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.i
-.PHONY : main.cc.i
+example.cc.i:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cc.i
+.PHONY : example.cc.i
 
-main.s: main.cc.s
+example.s: example.cc.s
 
-.PHONY : main.s
+.PHONY : example.s
 
 # target to generate assembly for a file
-main.cc.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cc.s
-.PHONY : main.cc.s
+example.cc.s:
+	$(MAKE) -f CMakeFiles/example.dir/build.make CMakeFiles/example.dir/example.cc.s
+.PHONY : example.cc.s
 
 # Help Target
 help:
@@ -217,13 +217,13 @@ help:
 	@echo "... install/local"
 	@echo "... test"
 	@echo "... list_install_components"
-	@echo "... main"
+	@echo "... example"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... install"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... example.o"
+	@echo "... example.i"
+	@echo "... example.s"
 .PHONY : help
 
 

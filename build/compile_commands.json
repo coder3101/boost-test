@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/ashar/boost-test/build",
-  "command": "/usr/bin/g++-8   -I/home/ashar/boost-test/.   -fopenmp -O3 -DNDEBUG   -std=gnu++17 -o CMakeFiles/main.dir/main.cc.o -c /home/ashar/boost-test/main.cc",
-  "file": "/home/ashar/boost-test/main.cc"
-}
-]
