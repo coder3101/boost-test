@@ -76,13 +76,10 @@ struct count_dot_product_nodes {
     return 0;
   }
   template <typename lhs, typename rhs>
-  int operator()(boost::yap::expr_tag<boost::yap::expr_kind::bitwise_or>,
-                 lhs& lexpr, rhs& rexpr) {
-    int left_side_count =
-        boost::yap::transform(boost::yap::as_expr(lexpr), *this);
-    int right_side_count =
-        boost::yap::transform(boost::yap::as_expr(rexpr), *this);
-    return left_side_count + right_side_count;
+  int operator()(boost::yap::expr_tag<boost::yap::expr_kind::bitwise_or>, lhs &lexpr, rhs& rexpr){
+  	int left_side_count = boost::yap::transform(boost::yap::as_expr(lexpr), *this);
+  	int right_side_count = boost::yap::transform(boost::yap::as_expr(rexpr), *this);
+  	return left_side_count + right_side_count + 1;
   }
 };
 // This transformation returns the dimension of the node. It is dynamically
