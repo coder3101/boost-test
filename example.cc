@@ -36,8 +36,10 @@ int main() {
   yap_matrix<int> v(mat1);
   v = expr;
 
+  // Execute this expression with Parallel thread
+  std::cout<<"Creating a expression with assignment evaluated via parallel device\n";
   yap_matrix<int> w(mat1);
-  w = ((mat1 + mat2) * (mat2 - mat1) * mat1);
+  w = ((mat1 + mat2) * (mat2 - mat1) * mat1).via(details::Parallel);
   
 
   //assert(w == v);
